@@ -23,3 +23,7 @@ def check_file_exists(file_name):
         print("Input File \"{}\" could not be found.".format(file_name))
         return 0
     return 1
+
+def check_result_path_writable(result_path):
+    if (os.access(result_path, os.W_OK)) is False:
+        return 0

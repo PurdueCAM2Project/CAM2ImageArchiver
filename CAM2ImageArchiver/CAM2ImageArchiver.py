@@ -17,7 +17,7 @@ limitations under the License.
 import time
 import csv
 import MySQLdb
-from utils import check_file_exists
+from utils import check_file_exists, check_result_path_writable
 from camera import NonIPCamera, IPCamera, StreamCamera
 from CameraHandler import CameraHandler
 
@@ -44,6 +44,11 @@ class CAM2ImageArchiver:
 
         #verify file exists and can be read
         if not check_file_exists(camera_url_file):
+            print("The given camera url file does not exist.  Aborting.")
+            return -1
+
+        if not check_result_path_writable(result_path):
+            print("Insufficient permissions to write results to result path. Aborting.")
             return -1
 
         with open(camera_url_file, 'r') as camera_file:

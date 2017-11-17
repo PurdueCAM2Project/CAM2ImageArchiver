@@ -2,7 +2,7 @@ from setuptools import setup
 setup(
   name = 'CAM2ImageArchiver',
   packages = ['CAM2ImageArchiver'],
-  version = '0.1',
+  version = '0.3',
   description = 'Network camera image retrieval and archiving.',
   author = 'CAM2 Research Group',
   author_email = 'cam2proj@ecn.purdue.edu',
@@ -15,7 +15,7 @@ setup(
     'Programming Language :: Python :: 2.7',
     'License :: OSI Approved :: Apache Software License'
   ],
-  python_requires='2.7.*',
+  python_requires='<3',
   install_requires=[
     'alabaster',
     'Babel',
@@ -33,8 +33,9 @@ setup(
     'Pygments',
     'pytz',
     'six',
-    'snowballsstemmer',
+    'snowballstemmer',
     'typing',
-    'urllib3'
+    'urllib3',
+    'opencv-python'
   ]
 )
