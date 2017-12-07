@@ -44,12 +44,10 @@ class CAM2ImageArchiver:
 
         #verify file exists and can be read
         if not check_file_exists(camera_url_file):
-            print("The given camera url file does not exist.  Aborting.")
-            return -1
+            raise IOError("Camera ID file does not exist.")
 
         if not check_result_path_writable(result_path):
-            print("Insufficient permissions to write results to result path. Aborting.")
-            return -1
+            raise IOError("Camera ID file does not exist.")
 
         with open(camera_url_file, 'r') as camera_file:
             camera_reader=csv.reader(camera_file)
@@ -72,7 +70,7 @@ class CAM2ImageArchiver:
         Reads camera IDs from csv file, retrieves the associated camera objects from the database, and archives the images at the requested directory.
         '''
         if not check_file_exists(camera_id_file):
-            return -1
+            raise IOError("Camera ID file does not exist.")
 
         with open(camera_id_file, 'r') as id_file:
             id_reader = csv.reader(id_file)
@@ -89,7 +87,6 @@ class CAM2ImageArchiver:
 
         if len(cams):
             self.__archive_cameras(cams, result_path)
-        return 0
 
     def __archive_cameras(self, cams, result_path):
         '''
