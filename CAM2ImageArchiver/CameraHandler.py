@@ -103,5 +103,5 @@ class CameraHandler(threading.Thread):
             if time_to_sleep > 0:
                 time.sleep(time_to_sleep)
             else:
-                print("Warning: Retrieval time exceeded sleep time for chunk {}.  Specified duration cannot be met."
+                print("Warning: Retrieval time exceeded sleep time for chunk {}.  Specified interval cannot be met."
                       .format(self.chunk))
