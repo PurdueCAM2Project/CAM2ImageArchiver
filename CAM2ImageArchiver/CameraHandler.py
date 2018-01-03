@@ -92,6 +92,11 @@ class CameraHandler(threading.Thread):
                         if self.remove_after_failure:
                             print("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                             bad_cams.append(camera)
+                finally:
+                    frame = None
+                    frame_timestamp = None
+                    cam_directory = None
+                    file_name = None
 
             # Remove all bad cameras
             if len(bad_cams) > 0 and self.remove_after_failure:
