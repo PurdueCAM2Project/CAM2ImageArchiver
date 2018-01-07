@@ -2,7 +2,7 @@ from setuptools import setup
 setup(
   name = 'CAM2ImageArchiver',
   packages = ['CAM2ImageArchiver'],
-  version = '0.4',
+  version = '0.5',
   description = 'Network camera image retrieval and archiving.',
   author = 'CAM2 Research Group',
   author_email = 'cam2proj@ecn.purdue.edu',
