@@ -1,62 +1,51 @@
 ImageArchiver package
 =====================
 
-Submodules
-----------
-
-ImageArchiver\.CameraHandler module
+ImageArchiver\.CameraHandler
 -----------------------------------
 
-.. automodule:: ImageArchiver.CameraHandler
+.. automodule:: CameraHandler
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.ImageArchiver module
+ImageArchiver\.ImageArchiver
 -----------------------------------
 
-.. automodule:: ImageArchiver.ImageArchiver
+.. automodule:: CAM2ImageArchiver
     :members:
     :undoc-members:
+    :private-members:
     :show-inheritance:
 
-ImageArchiver\.camera module
+ImageArchiver\.camera
 ----------------------------
 
-.. automodule:: ImageArchiver.camera
+.. automodule:: camera
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.error module
+ImageArchiver\.error
 ---------------------------
 
-.. automodule:: ImageArchiver.error
+.. automodule:: error
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.stream\_parser module
+ImageArchiver\.StreamParser
 ------------------------------------
 
-.. automodule:: ImageArchiver.stream_parser
+.. automodule:: StreamParser
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.utils module
+ImageArchiver\.utils
 ---------------------------
 
-.. automodule:: ImageArchiver.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: ImageArchiver
+.. automodule:: utils
     :members:
     :undoc-members:
     :show-inheritance:
