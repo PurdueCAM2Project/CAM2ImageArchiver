@@ -46,48 +46,67 @@ class CameraHandler(threading.Thread):
 
     # The path of the results directory.
 
-    def __init__(self, camera, result_path):
+    def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure):
         threading.Thread.__init__(self)
-        self.camera = camera
-        self.id = camera.id
-        self.duration = camera.duration
-        self.interval = camera.interval
+        self.cameras = cameras
+        self.duration = duration
+        self.interval = interval
         self.result_path = result_path
+        self.chunk = chunk
+        self.remove_after_failure = remove_after_failure
 
     def run(self):
         """
         Download snapshots from the camera, and save locally.
         """
-        # Create the camera results directory.
-        print("Starting Download from camera with id: {}".format(self.id))
+        print("Starting download of {} cameras from chunk {}".format(len(self.cameras), str(self.chunk)))
+
         # Set the starting timestamp, and process until the end of the duration.
-        cam_directory = os.path.join(self.result_path, str(self.id))
-        try:
-            os.makedirs(cam_directory)
-        except OSError as e:
-            pass
-
         start_timestamp = time.time()
+
         while (time.time() - start_timestamp) < self.duration:
+            # Set the timestamp of the start of the new loop iteration.
+            loop_start_timestamp = time.time()
+            bad_cams = []
+            for camera in self.cameras:
+                try:
+                    # Download the image.
+                    frame, _ = camera.get_frame()
+                except Exception as e:
+                    if self.remove_after_failure:
+                        print("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                        bad_cams.append(camera)
+                    else:
+                        pass
+                else:
+                    if (frame is not None):
+                        # Save the image.
+                        frame_timestamp = time.time()
+                        cam_directory = os.path.join(self.result_path, str(camera.id))
+                        file_name = '{}/{}_{}.png'.format(
+                            cam_directory, camera.id,
+                            datetime.datetime.fromtimestamp(
+                                frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
+                        cv2.imwrite(file_name, frame)
+                    else:
+                        if self.remove_after_failure:
+                            print("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                            bad_cams.append(camera)
+                finally:
+                    frame = None
+                    frame_timestamp = None
+                    cam_directory = None
+                    file_name = None
 
-            # Set the timestamp of the snapshot that will be downloaded.
-            frame_timestamp = time.time()
-
-            try:
-                # Download the image.
-                frame, _ = self.camera.get_frame()
-            except Exception as e:
-                pass
-            else:
-                # Save the image.
-                file_name = '{}/{}_{}.png'.format(
-                    cam_directory, self.id,
-                    datetime.datetime.fromtimestamp(
-                        frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
-                cv2.imwrite(file_name, frame)
-
+            # Remove all bad cameras
+            if len(bad_cams) > 0 and self.remove_after_failure:
+                for bad_camera in bad_cams:
+                    self.cameras.remove(bad_camera)
 
             # Sleep until the interval between frames ends.
-            time_to_sleep = self.interval - (time.time() - frame_timestamp)
+            time_to_sleep = self.interval - (time.time() - loop_start_timestamp)
             if time_to_sleep > 0:
                 time.sleep(time_to_sleep)
+            else:
+                print("Warning: Retrieval time exceeded sleep time for chunk {}.  Specified interval cannot be met."
+                      .format(self.chunk))

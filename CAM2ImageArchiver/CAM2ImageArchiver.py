@@ -17,6 +17,8 @@ limitations under the License.
 import time
 import csv
 import MySQLdb
+import os
+
 from utils import check_file_exists, check_result_path_writable
 from camera import NonIPCamera, IPCamera, StreamCamera
 from CameraHandler import CameraHandler
@@ -30,24 +32,25 @@ class CAM2ImageArchiver:
     '''
     Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
     '''
-    def __init__(self, db_server="localhost", db_username="root", db_password=None, db_name="cam2"):
+    def __init__(self, db_server="localhost", db_username="root", db_password=None, db_name="cam2", num_threads=5):
         self.db_server=db_server
         self.db_username=db_username
         self.db_password=db_password
         self.db_name=db_name
+        self.num_threads = num_threads
 
 
-    def retrieve_csv(self, camera_url_file, duration, interval, result_path):
+    def retrieve_csv(self, camera_url_file, duration, interval, result_path, remove_after_failure=True):
         '''
         Reads camera urls from csv file and archives the images at the requested directory.
         '''
 
         #verify file exists and can be read
         if not check_file_exists(camera_url_file):
-            raise IOError("Camera ID file does not exist.")
+            raise IOError("The given camera url file does not exist.")
 
         if not check_result_path_writable(result_path):
-            raise IOError("Camera ID file does not exist.")
+            raise IOError("Insufficient permissions to write results to result path.")
 
         with open(camera_url_file, 'r') as camera_file:
             camera_reader=csv.reader(camera_file)
@@ -63,14 +66,14 @@ class CAM2ImageArchiver:
                 id+=1
                 cams.append(camera)
         if len(cams):
-            self.__archive_cameras(cams, result_path)
+            self.__archive_cameras(cams, duration, interval, result_path, remove_after_failure)
 
-    def retrieve_db(self, camera_id_file, duration, interval, result_path):
+    def retrieve_db(self, camera_id_file, duration, interval, result_path, remove_after_failure=True):
         '''
         Reads camera IDs from csv file, retrieves the associated camera objects from the database, and archives the images at the requested directory.
         '''
         if not check_file_exists(camera_id_file):
-            raise IOError("Camera ID file does not exist.")
+            raise IOError("The given camera ID file does not exist.")
 
         with open(camera_id_file, 'r') as id_file:
             id_reader = csv.reader(id_file)
@@ -86,16 +89,34 @@ class CAM2ImageArchiver:
                     cams.append(camera)
 
         if len(cams):
-            self.__archive_cameras(cams, result_path)
+            self.__archive_cameras(cams, duration, interval, result_path, remove_after_failure)
 
-    def __archive_cameras(self, cams, result_path):
+    def __archive_cameras(self, cams, duration, interval, result_path, remove_after_failure):
         '''
         Archives images from array of cameras.  Places directory of all results at the given path.
         '''
+
         camera_handlers = []
+        # Create result directories for all cameras
         for camera in cams:
+            cam_directory = os.path.join(result_path, str(camera.id))
+            try:
+                os.makedirs(cam_directory)
+            except OSError as e:
+                pass
+
+        # Split cameras into chunks for threading
+        camera_lists = [cams[i::self.num_threads] for i in range(self.num_threads)]
+
+        # Get rid of empty lists that may result from splitting into more threads than cameras
+        camera_lists = [camera_list for camera_list in camera_lists if camera_list != []]
+
+        chunk = 0
+        for camera_list in camera_lists:
+            # Increment chunk number
+            chunk += 1
             # Create a new thread to handle the camera.
-            camera_handler = CameraHandler(camera, result_path)
+            camera_handler = CameraHandler(camera_list, chunk, duration, interval, result_path, remove_after_failure)
             # Run the thread.
             camera_handler.start()
             # Add the thread to the array of threads.
