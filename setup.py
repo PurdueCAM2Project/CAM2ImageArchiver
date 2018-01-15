@@ -15,7 +15,7 @@ setup(
     'Programming Language :: Python :: 2.7',
     'License :: OSI Approved :: Apache Software License'
   ],
-  python_requires='<3',
+  python_requires='<3', # Support for V3 has not been fully tested.
   install_requires=[
     'alabaster',
     'Babel',
