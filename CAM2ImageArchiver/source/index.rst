@@ -10,7 +10,7 @@
    :maxdepth: 2
    :caption: Contents:
 
-   ImageArchiver
+   CAM2ImageArchiver
 
 Indices and tables
 ------------------
