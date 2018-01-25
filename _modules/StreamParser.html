@@ -104,7 +104,7 @@
 <span class="kn">import</span> <span class="nn">error</span>
 
 
-<div class="viewcode-block" id="StreamParser"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.StreamParser">[docs]</a><span class="k">class</span> <span class="nc">StreamParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamParser"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.StreamParser">[docs]</a><span class="k">class</span> <span class="nc">StreamParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent the base class for camera stream parsers.</span>
 
@@ -122,7 +122,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
 
-<div class="viewcode-block" id="StreamParser.open_stream"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.StreamParser.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamParser.open_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.StreamParser.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Open the stream.</span>
 
 <span class="sd">        Raises</span>
@@ -132,13 +132,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="StreamParser.close_stream"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.StreamParser.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamParser.close_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.StreamParser.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the MJPEG stream.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="StreamParser.restart_stream"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.StreamParser.restart_stream">[docs]</a>    <span class="k">def</span> <span class="nf">restart_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamParser.restart_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.StreamParser.restart_stream">[docs]</a>    <span class="k">def</span> <span class="nf">restart_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Restart the stream.</span>
 
@@ -149,7 +149,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">close_stream</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open_stream</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="StreamParser.get_frame"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.StreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamParser.get_frame"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.StreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the most recent frame from the camera stream.</span>
 
@@ -176,7 +176,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;The get_frame method has to be overridden.&#39;</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="ImageStreamParser"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.ImageStreamParser">[docs]</a><span class="k">class</span> <span class="nc">ImageStreamParser</span><span class="p">(</span><span class="n">StreamParser</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageStreamParser"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.ImageStreamParser">[docs]</a><span class="k">class</span> <span class="nc">ImageStreamParser</span><span class="p">(</span><span class="n">StreamParser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent a parser for a camera image stream.</span>
 
@@ -192,7 +192,7 @@
 <span class="sd">    close_stream since they do nothing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ImageStreamParser.get_frame"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.ImageStreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageStreamParser.get_frame"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.ImageStreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the most recent frame from the camera image stream.</span>
 
@@ -235,7 +235,7 @@
         <span class="k">return</span> <span class="n">frame</span><span class="p">,</span> <span class="n">frame_size</span></div></div>
 
 
-<div class="viewcode-block" id="MJPEGStreamParser"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.MJPEGStreamParser">[docs]</a><span class="k">class</span> <span class="nc">MJPEGStreamParser</span><span class="p">(</span><span class="n">StreamParser</span><span class="p">):</span>
+<div class="viewcode-block" id="MJPEGStreamParser"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.MJPEGStreamParser">[docs]</a><span class="k">class</span> <span class="nc">MJPEGStreamParser</span><span class="p">(</span><span class="n">StreamParser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent a parser for a camera MJPEG stream.</span>
 
@@ -257,7 +257,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">MJPEGStreamParser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mjpeg_stream</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="MJPEGStreamParser.open_stream"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.MJPEGStreamParser.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MJPEGStreamParser.open_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.MJPEGStreamParser.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open the MJPEG stream.</span>
 
@@ -271,7 +271,7 @@
         <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">UnreachableCameraError</span></div>
 
-<div class="viewcode-block" id="MJPEGStreamParser.close_stream"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.MJPEGStreamParser.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MJPEGStreamParser.close_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.MJPEGStreamParser.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the MJPEG stream.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -279,7 +279,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mjpeg_stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mjpeg_stream</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="MJPEGStreamParser.get_frame"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.MJPEGStreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MJPEGStreamParser.get_frame"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.MJPEGStreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the most recent frame from the camera MJPEG stream.</span>
 
@@ -367,7 +367,7 @@
 
 
 
-<div class="viewcode-block" id="mjpgStreamParser"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.mjpgStreamParser">[docs]</a><span class="k">class</span> <span class="nc">mjpgStreamParser</span><span class="p">(</span><span class="n">StreamParser</span><span class="p">):</span>
+<div class="viewcode-block" id="mjpgStreamParser"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.mjpgStreamParser">[docs]</a><span class="k">class</span> <span class="nc">mjpgStreamParser</span><span class="p">(</span><span class="n">StreamParser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent a parser for a camera MJPEG stream.</span>
 <span class="sd">    *Does not have to be MJPEG, .m3u8 media file works as well.</span>
@@ -390,7 +390,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">mjpgStreamParser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mjpeg_stream</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="mjpgStreamParser.get_frame"><a class="viewcode-back" href="../ImageArchiver.html#StreamParser.mjpgStreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="mjpgStreamParser.get_frame"><a class="viewcode-back" href="../CAM2ImageArchiver.html#StreamParser.mjpgStreamParser.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the most recent frame from the camera MJPEG stream.</span>
 
@@ -440,7 +440,7 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../ImageArchiver.html">ImageArchiver package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
 </ul>
 
 <div class="relations">
@@ -470,7 +470,7 @@
       &copy;2017, Tiffany Chen.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

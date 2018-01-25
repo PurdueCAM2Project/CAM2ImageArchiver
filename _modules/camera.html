@@ -115,7 +115,7 @@
 <span class="kn">import</span> <span class="nn">StreamParser</span>
 
 
-<div class="viewcode-block" id="StreamFormat"><a class="viewcode-back" href="../ImageArchiver.html#camera.StreamFormat">[docs]</a><span class="k">class</span> <span class="nc">StreamFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamFormat"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.StreamFormat">[docs]</a><span class="k">class</span> <span class="nc">StreamFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent an Enum for the different camera stream formats.</span>
 
@@ -132,7 +132,7 @@
     <span class="n">MJPEG</span> <span class="o">=</span> <span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="Camera"><a class="viewcode-back" href="../ImageArchiver.html#camera.Camera">[docs]</a><span class="k">class</span> <span class="nc">Camera</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Camera"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.Camera">[docs]</a><span class="k">class</span> <span class="nc">Camera</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent the base class for all types of cameras.</span>
 
@@ -165,7 +165,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Camera.open_stream"><a class="viewcode-back" href="../ImageArchiver.html#camera.Camera.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="p">):</span>
+<div class="viewcode-block" id="Camera.open_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.Camera.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open the camera stream of the given format.</span>
 
@@ -183,13 +183,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="Camera.close_stream"><a class="viewcode-back" href="../ImageArchiver.html#camera.Camera.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Camera.close_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.Camera.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Close the currently open camera stream.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="Camera.restart_stream"><a class="viewcode-back" href="../ImageArchiver.html#camera.Camera.restart_stream">[docs]</a>    <span class="k">def</span> <span class="nf">restart_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Camera.restart_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.Camera.restart_stream">[docs]</a>    <span class="k">def</span> <span class="nf">restart_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Restart the currently open camera stream.</span>
 
@@ -200,7 +200,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">restart_stream</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Camera.get_frame"><a class="viewcode-back" href="../ImageArchiver.html#camera.Camera.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Camera.get_frame"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.Camera.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the most recent frame from the currently open camera stream.</span>
 
@@ -226,7 +226,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get_frame</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="IPCamera"><a class="viewcode-back" href="../ImageArchiver.html#camera.IPCamera">[docs]</a><span class="k">class</span> <span class="nc">IPCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
+<div class="viewcode-block" id="IPCamera"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.IPCamera">[docs]</a><span class="k">class</span> <span class="nc">IPCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent an IP camera.</span>
 
@@ -277,7 +277,7 @@
         <span class="c1"># the image stream without the need to call the open_stream method.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">StreamParser</span><span class="o">.</span><span class="n">ImageStreamParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">())</span>
 
-<div class="viewcode-block" id="IPCamera.open_stream"><a class="viewcode-back" href="../ImageArchiver.html#camera.IPCamera.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="p">):</span>
+<div class="viewcode-block" id="IPCamera.open_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.IPCamera.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open the camera stream of the given format.</span>
 
@@ -308,7 +308,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid Argument: stream_format&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="IPCamera.close_stream"><a class="viewcode-back" href="../ImageArchiver.html#camera.IPCamera.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="IPCamera.close_stream"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.IPCamera.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the currently open camera stream.</span>
 
@@ -323,7 +323,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">close_stream</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">StreamParser</span><span class="o">.</span><span class="n">ImageStreamParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="IPCamera.get_url"><a class="viewcode-back" href="../ImageArchiver.html#camera.IPCamera.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="o">=</span><span class="n">StreamFormat</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">):</span>
+<div class="viewcode-block" id="IPCamera.get_url"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.IPCamera.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="o">=</span><span class="n">StreamFormat</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the URL to the camera stream of the given format.</span>
 
@@ -375,7 +375,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">close_stream</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="NonIPCamera"><a class="viewcode-back" href="../ImageArchiver.html#camera.NonIPCamera">[docs]</a><span class="k">class</span> <span class="nc">NonIPCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
+<div class="viewcode-block" id="NonIPCamera"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.NonIPCamera">[docs]</a><span class="k">class</span> <span class="nc">NonIPCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent a non-IP camera.</span>
 
@@ -411,7 +411,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">StreamParser</span><span class="o">.</span><span class="n">ImageStreamParser</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamCamera"><a class="viewcode-back" href="../ImageArchiver.html#camera.StreamCamera">[docs]</a><span class="k">class</span> <span class="nc">StreamCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamCamera"><a class="viewcode-back" href="../CAM2ImageArchiver.html#camera.StreamCamera">[docs]</a><span class="k">class</span> <span class="nc">StreamCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent a Stream camera similar to a non-ip camera, but faster frame rates.</span>
 
@@ -458,7 +458,7 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../ImageArchiver.html">ImageArchiver package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
 </ul>
 
 <div class="relations">
@@ -488,7 +488,7 @@
       &copy;2017, Tiffany Chen.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

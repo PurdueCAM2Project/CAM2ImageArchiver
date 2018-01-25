@@ -1,16 +1,16 @@
-ImageArchiver package
+CAM2ImageArchiver package
 =====================
 
-ImageArchiver\.CameraHandler
------------------------------------
+CAM2ImageArchiver\.CameraHandler
+--------------------------------
 
 .. automodule:: CameraHandler
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.ImageArchiver
------------------------------------
+CAM2ImageArchiver\.CAM2ImageArchiver
+------------------------------------
 
 .. automodule:: CAM2ImageArchiver
     :members:
@@ -18,32 +18,32 @@ ImageArchiver\.ImageArchiver
     :private-members:
     :show-inheritance:
 
-ImageArchiver\.camera
-----------------------------
+CAM2ImageArchiver\.camera
+-------------------------
 
 .. automodule:: camera
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.error
----------------------------
+CAM2ImageArchiver\.error
+------------------------
 
 .. automodule:: error
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.StreamParser
-------------------------------------
+CAM2ImageArchiver\.StreamParser
+-------------------------------
 
 .. automodule:: StreamParser
     :members:
     :undoc-members:
     :show-inheritance:
 
-ImageArchiver\.utils
----------------------------
+CAM2ImageArchiver\.utils
+------------------------
 
 .. automodule:: utils
     :members:

@@ -61,7 +61,7 @@
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<div class="viewcode-block" id="CameraHandler"><a class="viewcode-back" href="../ImageArchiver.html#CameraHandler.CameraHandler">[docs]</a><span class="k">class</span> <span class="nc">CameraHandler</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+<div class="viewcode-block" id="CameraHandler"><a class="viewcode-back" href="../CAM2ImageArchiver.html#CameraHandler.CameraHandler">[docs]</a><span class="k">class</span> <span class="nc">CameraHandler</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The thread to download snapshots from a single camera.</span>
 
@@ -87,51 +87,70 @@
 
     <span class="c1"># The path of the results directory.</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">result_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cameras</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">,</span> <span class="n">remove_after_failure</span><span class="p">):</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">camera</span> <span class="o">=</span> <span class="n">camera</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">duration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cameras</span> <span class="o">=</span> <span class="n">cameras</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result_path</span> <span class="o">=</span> <span class="n">result_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_after_failure</span> <span class="o">=</span> <span class="n">remove_after_failure</span>
 
-<div class="viewcode-block" id="CameraHandler.run"><a class="viewcode-back" href="../ImageArchiver.html#CameraHandler.CameraHandler.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CameraHandler.run"><a class="viewcode-back" href="../CAM2ImageArchiver.html#CameraHandler.CameraHandler.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download snapshots from the camera, and save locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Create the camera results directory.</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting Download from camera with id: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting download of </span><span class="si">{}</span><span class="s2"> cameras from chunk </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cameras</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk</span><span class="p">)))</span>
+
         <span class="c1"># Set the starting timestamp, and process until the end of the duration.</span>
-        <span class="n">cam_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">cam_directory</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">pass</span>
-
         <span class="n">start_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
         <span class="k">while</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_timestamp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">:</span>
+            <span class="c1"># Set the timestamp of the start of the new loop iteration.</span>
+            <span class="n">loop_start_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">bad_cams</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">camera</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cameras</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># Download the image.</span>
+                    <span class="n">frame</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">get_frame</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_after_failure</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error retrieving from camera </span><span class="si">{}</span><span class="s2">.  Marking camera for removal from chunk </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">camera</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk</span><span class="p">)))</span>
+                        <span class="n">bad_cams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                        <span class="c1"># Save the image.</span>
+                        <span class="n">frame_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                        <span class="n">cam_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">camera</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+                        <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">cam_directory</span><span class="p">,</span> <span class="n">camera</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span>
+                                <span class="n">frame_timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H-%M-%S-</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">))</span>
+                        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_after_failure</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Empty frame retrieved from camera </span><span class="si">{}</span><span class="s2">.  Marking camera for removal from chunk </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">camera</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk</span><span class="p">)))</span>
+                            <span class="n">bad_cams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="n">frame</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">frame_timestamp</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">cam_directory</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="c1"># Set the timestamp of the snapshot that will be downloaded.</span>
-            <span class="n">frame_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># Download the image.</span>
-                <span class="n">frame</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">get_frame</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Save the image.</span>
-                <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">cam_directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                    <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span>
-                        <span class="n">frame_timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H-%M-%S-</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">))</span>
-                <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
-
+            <span class="c1"># Remove all bad cameras</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bad_cams</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_after_failure</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">bad_camera</span> <span class="ow">in</span> <span class="n">bad_cams</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cameras</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">bad_camera</span><span class="p">)</span>
 
             <span class="c1"># Sleep until the interval between frames ends.</span>
-            <span class="n">time_to_sleep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">-</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">frame_timestamp</span><span class="p">)</span>
+            <span class="n">time_to_sleep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">-</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">loop_start_timestamp</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">time_to_sleep</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_sleep</span><span class="p">)</span></div></div>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_sleep</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Retrieval time exceeded sleep time for chunk </span><span class="si">{}</span><span class="s2">.  Specified interval cannot be met.&quot;</span>
+                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk</span><span class="p">))</span></div></div>
 </pre></div>
 
           </div>
@@ -151,7 +170,7 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../ImageArchiver.html">ImageArchiver package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
 </ul>
 
 <div class="relations">
@@ -181,7 +200,7 @@
       &copy;2017, Tiffany Chen.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

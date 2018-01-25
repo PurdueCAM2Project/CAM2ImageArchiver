@@ -58,6 +58,8 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">MySQLdb</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">from</span> <span class="nn">utils</span> <span class="k">import</span> <span class="n">check_file_exists</span><span class="p">,</span> <span class="n">check_result_path_writable</span>
 <span class="kn">from</span> <span class="nn">camera</span> <span class="k">import</span> <span class="n">NonIPCamera</span><span class="p">,</span> <span class="n">IPCamera</span><span class="p">,</span> <span class="n">StreamCamera</span>
 <span class="kn">from</span> <span class="nn">CameraHandler</span> <span class="k">import</span> <span class="n">CameraHandler</span>
@@ -67,28 +69,29 @@
 <span class="sd">@author: Sam Yellin</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CAM2ImageArchiver"><a class="viewcode-back" href="../ImageArchiver.html#CAM2ImageArchiver.CAM2ImageArchiver">[docs]</a><span class="k">class</span> <span class="nc">CAM2ImageArchiver</span><span class="p">:</span>
+<div class="viewcode-block" id="CAM2ImageArchiver"><a class="viewcode-back" href="../CAM2ImageArchiver.html#CAM2ImageArchiver.CAM2ImageArchiver">[docs]</a><span class="k">class</span> <span class="nc">CAM2ImageArchiver</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_server</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">db_username</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="n">db_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">db_name</span><span class="o">=</span><span class="s2">&quot;cam2&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_server</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">db_username</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="n">db_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">db_name</span><span class="o">=</span><span class="s2">&quot;cam2&quot;</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_server</span><span class="o">=</span><span class="n">db_server</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_username</span><span class="o">=</span><span class="n">db_username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_password</span><span class="o">=</span><span class="n">db_password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_name</span><span class="o">=</span><span class="n">db_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">=</span> <span class="n">num_threads</span>
 
 
-<div class="viewcode-block" id="CAM2ImageArchiver.retrieve_csv"><a class="viewcode-back" href="../ImageArchiver.html#CAM2ImageArchiver.CAM2ImageArchiver.retrieve_csv">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera_url_file</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">):</span>
+<div class="viewcode-block" id="CAM2ImageArchiver.retrieve_csv"><a class="viewcode-back" href="../CAM2ImageArchiver.html#CAM2ImageArchiver.CAM2ImageArchiver.retrieve_csv">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera_url_file</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">,</span> <span class="n">remove_after_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reads camera urls from csv file and archives the images at the requested directory.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1">#verify file exists and can be read</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">check_file_exists</span><span class="p">(</span><span class="n">camera_url_file</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Camera ID file does not exist.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The given camera url file does not exist.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">check_result_path_writable</span><span class="p">(</span><span class="n">result_path</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Camera ID file does not exist.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Insufficient permissions to write results to result path.&quot;</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">camera_url_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">camera_file</span><span class="p">:</span>
             <span class="n">camera_reader</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">camera_file</span><span class="p">)</span>
@@ -104,14 +107,14 @@
                 <span class="nb">id</span><span class="o">+=</span><span class="mi">1</span>
                 <span class="n">cams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cams</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__archive_cameras</span><span class="p">(</span><span class="n">cams</span><span class="p">,</span> <span class="n">result_path</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__archive_cameras</span><span class="p">(</span><span class="n">cams</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">,</span> <span class="n">remove_after_failure</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CAM2ImageArchiver.retrieve_db"><a class="viewcode-back" href="../ImageArchiver.html#CAM2ImageArchiver.CAM2ImageArchiver.retrieve_db">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera_id_file</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">):</span>
+<div class="viewcode-block" id="CAM2ImageArchiver.retrieve_db"><a class="viewcode-back" href="../CAM2ImageArchiver.html#CAM2ImageArchiver.CAM2ImageArchiver.retrieve_db">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera_id_file</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">,</span> <span class="n">remove_after_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reads camera IDs from csv file, retrieves the associated camera objects from the database, and archives the images at the requested directory.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">check_file_exists</span><span class="p">(</span><span class="n">camera_id_file</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Camera ID file does not exist.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The given camera ID file does not exist.&quot;</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">camera_id_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">id_file</span><span class="p">:</span>
             <span class="n">id_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">id_file</span><span class="p">)</span>
@@ -127,16 +130,34 @@
                     <span class="n">cams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cams</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__archive_cameras</span><span class="p">(</span><span class="n">cams</span><span class="p">,</span> <span class="n">result_path</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__archive_cameras</span><span class="p">(</span><span class="n">cams</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">,</span> <span class="n">remove_after_failure</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__archive_cameras</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cams</span><span class="p">,</span> <span class="n">result_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__archive_cameras</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cams</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">,</span> <span class="n">remove_after_failure</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Archives images from array of cameras.  Places directory of all results at the given path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="n">camera_handlers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Create result directories for all cameras</span>
         <span class="k">for</span> <span class="n">camera</span> <span class="ow">in</span> <span class="n">cams</span><span class="p">:</span>
+            <span class="n">cam_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">camera</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">cam_directory</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># Split cameras into chunks for threading</span>
+        <span class="n">camera_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">cams</span><span class="p">[</span><span class="n">i</span><span class="p">::</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_threads</span><span class="p">)]</span>
+
+        <span class="c1"># Get rid of empty lists that may result from splitting into more threads than cameras</span>
+        <span class="n">camera_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">camera_list</span> <span class="k">for</span> <span class="n">camera_list</span> <span class="ow">in</span> <span class="n">camera_lists</span> <span class="k">if</span> <span class="n">camera_list</span> <span class="o">!=</span> <span class="p">[]]</span>
+
+        <span class="n">chunk</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">camera_list</span> <span class="ow">in</span> <span class="n">camera_lists</span><span class="p">:</span>
+            <span class="c1"># Increment chunk number</span>
+            <span class="n">chunk</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="c1"># Create a new thread to handle the camera.</span>
-            <span class="n">camera_handler</span> <span class="o">=</span> <span class="n">CameraHandler</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">result_path</span><span class="p">)</span>
+            <span class="n">camera_handler</span> <span class="o">=</span> <span class="n">CameraHandler</span><span class="p">(</span><span class="n">camera_list</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">result_path</span><span class="p">,</span> <span class="n">remove_after_failure</span><span class="p">)</span>
             <span class="c1"># Run the thread.</span>
             <span class="n">camera_handler</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
             <span class="c1"># Add the thread to the array of threads.</span>
@@ -220,7 +241,7 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../ImageArchiver.html">ImageArchiver package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
 </ul>
 
 <div class="relations">
@@ -250,7 +271,7 @@
       &copy;2017, Tiffany Chen.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
