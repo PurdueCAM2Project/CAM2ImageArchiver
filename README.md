@@ -59,6 +59,8 @@ This software requires a database that stores cameras' information
 (how to retrieve the data). The repository contains some examples of
 entries in a database (using MySQL).
 
+### Documentation ###
+Full documentation can be found at https://purduecam2project.github.io/CAM2ImageArchiver/index.html
 ### Prerequisites ###
 
 * [Install MySQL](https://help.ubuntu.com/lts/serverguide/mysql.html) to maintain the camera database.
@@ -97,44 +99,18 @@ DB_NAME = 'cameras'
 
 ### Files ###
 
-* ```archiver.py``` is the main Python module. It archives images from a single camera.
-* ```camera.py``` provides classes to communicate with different types of cameras: IP cameras and non-IP cameras.
-* ```stream_parser.py``` is used by ```camera.py``` to parse JPEG and MJPEG streams.
+* ```CAM2ImageArchiver.py``` is the main Python module. It archives images from a single camera.
+* ```camera.py``` provides classes to communicate with different types of cameras: IP cameras, non-IP cameras, and stream cameras.
+* ```StreamParser.py``` is used by ```camera.py``` to parse JPEG and MJPEG streams.
 * ```error.py``` contains custom Python Exceptions.
-* ```cameras.sql``` can be used to build the database. It has the data of 20 cameras.
+* ```CamerHandler.py``` splits the retrieval job into threads for parallel processing.
 
 ### Usage ###
-python archiver.py [-h] [-f FILENAME] [-l LIST [LIST ...]] [-d DURATION] [-i INTERVAL]
 
+Example usage can be found in the documentation.
+ 
 This program downloads image snapshots from 2 sources
 
   (1) A given URL address
 
   (2) A camera ID in the MySQL database * MySQL database must be available on host computer.
-
-**Varify Database Connection Information**
-```
-    DB_SERVER = 'localhost'
-    DB_USER_NAME = 'root'
-    DB_PASSWORD = ''
-    DB_NAME = 'cam2'
-```
-
-Arguments:
-  -h, --help            show the help message
-
--f FILENAME, --filename FILENAME: Name of CSV file containing camera info with .csv
-
--l LIST [LIST ...], --list LIST [LIST ...]: List of camera ID's to be archived separated by spaces. * This requires a version of the MYSQL database on your local machine.
-
-  -d DURATION, --duration DURATION: Duration of time to archive snapshots from the cameras. Required for -l argument.
-
-  -i INTERVAL, --interval INTERVAL: Interval between snapshots from each camera. Required for -l argument.
-
-### Note
-
-To save MySQL query results into text file, use the following command:
-```
-  mysql -uroot -p -e "select * from database_name.table_name" > filename.txt
-```
-Enter password and file will be saved.
