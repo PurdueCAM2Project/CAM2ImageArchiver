@@ -17,24 +17,15 @@ setup(
   ],
   python_requires='<3', # Support for V3 has not been fully tested.
   install_requires=[
-    'alabaster',
-    'Babel',
     'certifi',
     'chardet',
     'funcsigs',
     'idna',
-    'imagesize',
-    'Jinja2',
-    'MarkupSafe',
     'mock',
     'MySQL-python',
     'numpy',
     'pbr',
-    'Pygments',
     'pytz',
-    'six',
-    'snowballstemmer',
-    'typing',
     'urllib3',
     'opencv-python'
   ]
