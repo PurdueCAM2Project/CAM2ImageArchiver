@@ -45,7 +45,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Cam2ImageArchiver'
+project = u'CAM2ImageArchiver'
 copyright = u'2017, Tiffany Chen'
 author = u'Tiffany Chen'
 
@@ -114,7 +114,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Cam2ImageArchiverdoc'
+htmlhelp_basename = 'CAM2ImageArchiverdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -141,7 +141,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Cam2ImageArchiver.tex', u'Cam2ImageArchiver Documentation',
+    (master_doc, 'CAM2ImageArchiver.tex', u'CAM2ImageArchiver Documentation',
      u'Tiffany Chen', 'manual'),
 ]
 
@@ -151,7 +151,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'cam2imagearchiver', u'Cam2ImageArchiver Documentation',
+    (master_doc, 'CAM2ImageArchiver', u'CAM2ImageArchiver Documentation',
      [author], 1)
 ]
 
@@ -162,7 +162,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Cam2ImageArchiver', u'Cam2ImageArchiver Documentation',
-     author, 'Cam2ImageArchiver', 'One line description of project.',
+    (master_doc, 'CAM2ImageArchiver', u'CAM2ImageArchiver Documentation',
+     author, 'CAM2ImageArchiver', 'One line description of project.',
      'Miscellaneous'),
 ]
