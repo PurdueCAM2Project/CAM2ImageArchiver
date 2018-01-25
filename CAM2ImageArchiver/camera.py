@@ -397,4 +397,4 @@ class StreamCamera(Camera):
         super(StreamCamera, self).__init__(id, duration, interval)
         self.is_video = 0
         self.url = url
-        self.parser = StreamParser.mjpgStreamParser(url)
+        self.parser = StreamParser.mjpgm3u8StreamParser(url)

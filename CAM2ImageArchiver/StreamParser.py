@@ -193,7 +193,8 @@ class ImageStreamParser(StreamParser):
 
         return frame, frame_size
 
-
+# DEPRECIATED.  Use m3u8mjpgStreamParser
+@DeprecationWarning
 class MJPEGStreamParser(StreamParser):
     """
     Represent a parser for a camera MJPEG stream.
@@ -326,7 +327,7 @@ class MJPEGStreamParser(StreamParser):
 
 
 
-class mjpgStreamParser(StreamParser):
+class mjpgm3u8StreamParser(StreamParser):
     """
     Represent a parser for a camera MJPEG stream.
     *Does not have to be MJPEG, .m3u8 media file works as well.
@@ -346,7 +347,7 @@ class mjpgStreamParser(StreamParser):
     """
 
     def __init__(self, url):
-        super(mjpgStreamParser, self).__init__(url)
+        super(mjpgm3u8StreamParser, self).__init__(url)
         self.mjpeg_stream = None
 
     def get_frame(self):

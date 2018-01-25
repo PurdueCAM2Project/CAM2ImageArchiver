@@ -20,6 +20,9 @@ import cv2
 import datetime
 import os
 
+'''
+
+'''
 class CameraHandler(threading.Thread):
     """
     The thread to download snapshots from a single camera.
@@ -67,6 +70,8 @@ class CameraHandler(threading.Thread):
         while (time.time() - start_timestamp) < self.duration:
             # Set the timestamp of the start of the new loop iteration.
             loop_start_timestamp = time.time()
+
+            # bad_cams is initialized in the while loop so that the array is emptied after each iteration
             bad_cams = []
             for camera in self.cameras:
                 try:
@@ -93,6 +98,7 @@ class CameraHandler(threading.Thread):
                             print("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                             bad_cams.append(camera)
                 finally:
+                    #These variables are explicitely set to None to encourage the garbage collector. Testing showed that without this these variables would persist.
                     frame = None
                     frame_timestamp = None
                     cam_directory = None

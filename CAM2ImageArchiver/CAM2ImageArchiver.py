@@ -26,6 +26,10 @@ from CameraHandler import CameraHandler
 """
 Created on 5 September 2017
 @author: Sam Yellin
+
+Full documentation available at https://purduecam2project.github.io/CAM2ImageArchiver/index.html
+
+See README for database setup information.
 """
 
 class CAM2ImageArchiver:
