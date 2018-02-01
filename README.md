@@ -61,6 +61,7 @@ entries in a database (using MySQL).
 
 ### Documentation ###
 Full documentation can be found at https://purduecam2project.github.io/CAM2ImageArchiver/index.html
+
 ### Prerequisites ###
 
 * [Install MySQL](https://help.ubuntu.com/lts/serverguide/mysql.html) to maintain the camera database.
