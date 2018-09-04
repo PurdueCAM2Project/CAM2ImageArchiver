@@ -281,7 +281,7 @@ class Archiver(object):
             if cam['camera_type'] == 'ip':
                 self.ip = cam['ip']
                 self.image_path = cam['image_path']
-                self.mjpeg_path = cam['mjpeg_path']
+                self.mjpeg_path = cam['video_path']
                 self.port = cam['port']
                 self.parser = StreamParser.ImageStreamParser(self.get_url())
             elif cam['camera_type'] == 'non_ip':
