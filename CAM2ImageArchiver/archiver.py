@@ -72,6 +72,7 @@ camera.close_stream()
 """
 import error
 import StreamParser
+import time
 
 
 class StreamFormat(object):
@@ -270,7 +271,10 @@ class Archiver(object):
         Returns
         -------
         list of tuples
-            For image stream
+            For image stream, return a list of tuples ( frame, frame_size )
+
+        list of list of tuples
+            For MJPEG stream, return [[(frame, frame_size)], [(frame, frame_size)]]
         """
         image_result = []
         for cam in self.cameras:
@@ -290,6 +294,15 @@ class Archiver(object):
                 frame, frame_size = self.get_frame()
                 image_result.append((frame, frame_size))
             else:
+                self.open_stream(StreamFormat.MJPEG)
+                t = time.time()
+                templist = []
+                while time.time() - t < self.duration:
+                    frame, frame_size = self.get_frame()
+                    templist.append((frame, frame_size))
+                self.close_stream()
+                image_result.append(templist)
+        return image_result
 
 class IPCamera_archiver(Archiver):
     """
