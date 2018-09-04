@@ -17,15 +17,15 @@ import unittest
 import sys
 from os import path
 sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
-from camera import Camera, IPCamera, NonIPCamera, StreamFormat
+from archiver import Archiver, IPCamera_archiver, NonIPCamera_archiver, StreamFormat
 from error import ClosedStreamError
 
 class TestCamera(unittest.TestCase):
     def setUp(self):
 
         #Instantiate camera test fixtures
-        self.cam = Camera(1, 1, 1)
-        self.ip_cam = IPCamera(1, 1, 1, "127.1.1.1", "/test_image_path", "/test_mjpeg_path", "3000")
+        self.cam = Archiver(1, 1, 1)
+        self.ip_cam = IPCamera_archiver(1, 1, 1, "127.1.1.1", "/test_image_path", "/test_mjpeg_path", "3000")
 
     def test_get_frame_no_parser(self):
         #Assert camera raises error when no parser is present
@@ -49,7 +49,14 @@ class TestCamera(unittest.TestCase):
         result = self.ip_cam.get_url(StreamFormat.IMAGE)
         self.assertEquals(result, "http://127.1.1.1:3000/test_image_path")
 
-
+    # def test_get_cameras_list(self):
+    #     cam = {
+    #         'camera_type': 'non_ip',
+    #         'snapshot_url': 'http://images.webcams.travel/preview/1169307993.jpg'
+    #     }
+    #     cameras = [
+    #         cam
+    #     ]
 
 if __name__ == '__main__':
     unittest.main()
