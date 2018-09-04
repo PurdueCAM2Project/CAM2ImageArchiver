@@ -72,6 +72,7 @@ camera.close_stream()
 """
 import error
 import StreamParser
+import time
 
 
 class StreamFormat(object):
@@ -91,9 +92,9 @@ class StreamFormat(object):
     MJPEG = 2
 
 
-class Camera(object):
+class Archiver(object):
     """
-    Represent the base class for all types of cameras.
+    Represent the base class for all types of cameras' image archiver.
 
     Parameters
     ----------
@@ -106,6 +107,8 @@ class Camera(object):
         The unique camera ID.
     parser : StreamParser
         The parser of the camera stream.
+    cameras : list of :obj:`Camera`
+        List of camera objects
 
     Notes
     -----
@@ -118,11 +121,12 @@ class Camera(object):
 
     """
 
-    def __init__(self, id, duration, interval):
+    def __init__(self, id, duration, interval, cameras=None):
         self.id = id
         self.duration = duration
         self.interval = interval
         self.parser = None
+        self.cameras = cameras
 
     def open_stream(self, stream_format):
         """
@@ -136,17 +140,39 @@ class Camera(object):
 
         Raises
         ------
+        ValueError
+            If the value of stream_format is invalid.
         error.UnreachableCameraError
             If the camera is unreachable.
 
         """
-        pass
+        # Get the URL of the stream of the given format.
+        url = self.get_url(stream_format)
+        # Initialize and open the parser according to the stream format.
+        if stream_format == StreamFormat.MJPEG:
+            self.parser = StreamParser.MJPEGStreamParser(url)
+            self.parser.open_stream()
+        elif stream_format == StreamFormat.IMAGE:
+            # The image stream parser is always initialized, and the stream
+            # does not need to be opened.
+            pass
+        else:
+            raise ValueError('Invalid Argument: stream_format')
 
     def close_stream(self):
-        """Close the currently open camera stream.
+        """
+        Close the currently open camera stream.
+
+        Notes
+        -----
+        After closing the currently open camera stream, this method initializes
+        an ImageStreamParser so that frames can be retrieved from the image
+        stream without the need to call the open_stream method.
 
         """
-        pass
+        if self.parser is not None:
+            self.parser.close_stream()
+            self.parser = StreamParser.ImageStreamParser(self.get_url())
 
     def restart_stream(self):
         """
@@ -184,8 +210,101 @@ class Camera(object):
             raise error.ClosedStreamError
         return self.parser.get_frame()
 
+    def get_url(self, stream_format=StreamFormat.IMAGE):
+        """
+        Get the URL to the camera stream of the given format.
 
-class IPCamera(Camera):
+        Parameters
+        ----------
+        stream_format : int, optional
+            The stream format of the camera. This can be any of the StreamFormat
+            class variables (e.g. StreamFormat.IMAGE or StreamFormat.MJPEG)
+
+        Returns
+        -------
+        url : str
+            The URL to the camera stream of the given format.
+
+        Raises
+        ------
+        ValueError
+            If the value of stream_format is invalid.
+
+        """
+        # Set the path according to the stream format.
+        if stream_format == StreamFormat.IMAGE:
+            path = self.image_path
+        elif stream_format == StreamFormat.MJPEG:
+            path = self.mjpeg_path
+        else:
+            raise ValueError('Invalid Argument: stream_format')
+
+        # Construct the URL using the IP, port, and path.
+        if self.port is None:
+            url = 'http://{}{}'.format(self.ip, path)
+        else:
+            url = 'http://{}:{}{}'.format(
+                self.ip, self.port, path)
+
+        return url
+
+    def __del__(self):
+        """
+        Close the currently open camera stream before destroying the object.
+
+        This destructor is a backup plan in case the user of this class did not
+        call the close_stream method. The close_stream method has to be called,
+        without relying on this destructor, because __del__ is not guaranteed
+        to be called in some cases and it is also better to close the stream as
+        soon as possible to avoid unnecessary network workload.
+
+        """
+        self.close_stream()
+
+    def archive_image(self, stream_format=StreamFormat.IMAGE):
+        """
+        Parameters
+        ----------
+        stream_format : int
+            Indicator to tell if user want to parse image stream or MJPEG stream
+
+        Returns
+        -------
+        list of tuples
+            For image stream, return a list of tuples ( frame, frame_size )
+
+        list of list of tuples
+            For MJPEG stream, return [[(frame, frame_size)], [(frame, frame_size)]]
+        """
+        image_result = []
+        for cam in self.cameras:
+            if cam['camera_type'] == 'ip':
+                self.ip = cam['ip']
+                self.image_path = cam['image_path']
+                self.mjpeg_path = cam['video_path']
+                self.port = cam['port']
+                self.parser = StreamParser.ImageStreamParser(self.get_url())
+            elif cam['camera_type'] == 'non_ip':
+                self.url = cam['snapshot_url']
+                self.parser = StreamParser.ImageStreamParser(self.url)
+            else:
+                self.url = cam['m3u8_url']
+                self.parser = StreamParser.mjpgm3u8StreamParser(self.url)
+            if stream_format == StreamFormat.IMAGE:
+                frame, frame_size = self.get_frame()
+                image_result.append((frame, frame_size))
+            else:
+                self.open_stream(StreamFormat.MJPEG)
+                t = time.time()
+                templist = []
+                while time.time() - t < self.duration:
+                    frame, frame_size = self.get_frame()
+                    templist.append((frame, frame_size))
+                self.close_stream()
+                image_result.append(templist)
+        return image_result
+
+class IPCamera_archiver(Archiver):
     """
     Represent an IP camera.
 
@@ -225,7 +344,7 @@ class IPCamera(Camera):
     """
 
     def __init__(self, id, duration, interval, ip, image_path, mjpeg_path=None, port=None):
-        super(IPCamera, self).__init__(id, duration, interval)
+        super(IPCamera_archiver, self).__init__(id, duration, interval)
         self.is_video = 1
         self.ip = ip
         self.image_path = image_path
@@ -334,7 +453,7 @@ class IPCamera(Camera):
         self.close_stream()
 
 
-class NonIPCamera(Camera):
+class NonIPCamera_archiver(Archiver):
     """
     Represent a non-IP camera.
 
@@ -364,13 +483,12 @@ class NonIPCamera(Camera):
     """
 
     def __init__(self, id, duration, interval, url):
-        super(NonIPCamera, self).__init__(id, duration, interval)
+        super(NonIPCamera_archiver, self).__init__(id, duration, interval)
         self.is_video = 0
         self.url = url
-
         self.parser = StreamParser.ImageStreamParser(url)
 
-class StreamCamera(Camera):
+class StreamCamera_archiver(Archiver):
     """
     Represent a Stream camera similar to a non-ip camera, but faster frame rates.
 
@@ -394,7 +512,7 @@ class StreamCamera(Camera):
     """
 
     def __init__(self, id, duration, interval, url):
-        super(StreamCamera, self).__init__(id, duration, interval)
+        super(StreamCamera_archiver, self).__init__(id, duration, interval)
         self.is_video = 0
         self.url = url
         self.parser = StreamParser.mjpgm3u8StreamParser(url)
