@@ -118,10 +118,8 @@ class Camera(object):
 
     """
 
-    def __init__(self, id, duration, interval):
+    def __init__(self, id):
         self.id = id
-        self.duration = duration
-        self.interval = interval
         self.parser = None
 
     def open_stream(self, stream_format):
@@ -223,9 +221,8 @@ class IPCamera(Camera):
     call the open_stream method.
 
     """
-
-    def __init__(self, id, duration, interval, ip, image_path, mjpeg_path=None, port=None):
-        super(IPCamera, self).__init__(id, duration, interval)
+    def __init__(self, id, ip, image_path, mjpeg_path=None, port=None):
+        super(IPCamera, self).__init__(id)
         self.is_video = 1
         self.ip = ip
         self.image_path = image_path
@@ -234,7 +231,9 @@ class IPCamera(Camera):
 
         # Initializes an ImageStreamParser so that frames can be retrieved from
         # the image stream without the need to call the open_stream method.
-        self.parser = StreamParser.ImageStreamParser(self.get_url())
+        url = self.get_url()
+        print(url)
+        self.parser = StreamParser.ImageStreamParser(url)
 
     def open_stream(self, stream_format):
         """
@@ -312,7 +311,7 @@ class IPCamera(Camera):
             raise ValueError('Invalid Argument: stream_format')
 
         # Construct the URL using the IP, port, and path.
-        if self.port is None:
+        if self.port in ('', None):
             url = 'http://{}{}'.format(self.ip, path)
         else:
             url = 'http://{}:{}{}'.format(
@@ -363,8 +362,8 @@ class NonIPCamera(Camera):
 
     """
 
-    def __init__(self, id, duration, interval, url):
-        super(NonIPCamera, self).__init__(id, duration, interval)
+    def __init__(self, id, url):
+        super(NonIPCamera, self).__init__(id)
         self.is_video = 0
         self.url = url
 
@@ -393,8 +392,8 @@ class StreamCamera(Camera):
 
     """
 
-    def __init__(self, id, duration, interval, url):
-        super(StreamCamera, self).__init__(id, duration, interval)
+    def __init__(self, id, url):
+        super(StreamCamera, self).__init__(id)
         self.is_video = 0
         self.url = url
         self.parser = StreamParser.mjpgm3u8StreamParser(url)

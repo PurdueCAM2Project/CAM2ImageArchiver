@@ -44,3 +44,9 @@ class ClosedStreamError(Error):
     Represent an error when a stream is closed and a frame is requested.
     """
     pass
+
+class ExpectedCAM2APIClientCameraObject(Error):
+    """
+    CAM2 Image Archiver expects a CAM2 API Python Client Camera Object
+    """
+    pass
