@@ -19,6 +19,7 @@ import time
 import cv2
 import datetime
 import os
+import error
 
 '''
 
@@ -79,8 +80,9 @@ class CameraHandler(Process):
                     frame, _ = camera.get_frame()
                 except Exception as e:
                     if self.remove_after_failure:
-                        raise("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                        print("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                         bad_cams.append(camera)
+                        raise error.UnreachableCameraError
                     else:
                         pass
                 else:
@@ -95,7 +97,7 @@ class CameraHandler(Process):
                         cv2.imwrite(file_name, frame)
                     else:
                         if self.remove_after_failure:
-                            raise("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                            print("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                             bad_cams.append(camera)
                 finally:
                     #These variables are explicitely set to None to encourage the garbage collector. Testing showed that without this these variables would persist.
