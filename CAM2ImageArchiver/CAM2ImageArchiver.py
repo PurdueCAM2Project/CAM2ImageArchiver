@@ -31,10 +31,12 @@ Full documentation available at https://purduecam2project.github.io/CAM2ImageArc
 See README for database setup information.
 """
 
+
 class CAM2ImageArchiver:
     '''
     Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
     '''
+
     def __init__(self, num_processes=1, result_path='results/'):
         self.num_processes = num_processes
         self.result_path = result_path
@@ -44,7 +46,7 @@ class CAM2ImageArchiver:
         Reads camera urls from csv file and archives the images at the requested directory.
         '''
 
-        #verify file exists and can be read
+        # verify file exists and can be read
         if not check_file_exists(camera_url_file):
             raise IOError("The given camera url file does not exist.")
 
@@ -52,17 +54,17 @@ class CAM2ImageArchiver:
             raise IOError("Insufficient permissions to write results to result path.")
 
         with open(camera_url_file, 'r') as camera_file:
-            camera_reader=csv.reader(camera_file)
-            id=1
-            cams=[]
+            camera_reader = csv.reader(camera_file)
+            id = 1
+            cams = []
             for camera_url in camera_reader:
-                #These cameras do not come from the database and so have no ID.  Assign one to them so they can be placed in a result folder.
+                # These cameras do not come from the database and so have no ID.  Assign one to them so they can be placed in a result folder.
                 camera_type = camera_url[0].split(".")[-1]
                 if (camera_type == "m3u8"):
                     camera = {'type': 'stream', 'id': id, 'm3u8_url': camera_url[0]}
                 else:
                     camera = {'type': 'non_ip', 'id': id, 'snapshot_url': camera_url[0]}
-                id+=1
+                id += 1
                 cams.append(camera)
         if len(cams):
             self.archive(cams, duration, interval, result_path, remove_after_failure)

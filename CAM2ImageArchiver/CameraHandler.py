@@ -79,7 +79,7 @@ class CameraHandler(Process):
                     frame, _ = camera.get_frame()
                 except Exception as e:
                     if self.remove_after_failure:
-                        print("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                        raise("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                         bad_cams.append(camera)
                     else:
                         pass
@@ -95,7 +95,7 @@ class CameraHandler(Process):
                         cv2.imwrite(file_name, frame)
                     else:
                         if self.remove_after_failure:
-                            print("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                            raise("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                             bad_cams.append(camera)
                 finally:
                     #These variables are explicitely set to None to encourage the garbage collector. Testing showed that without this these variables would persist.

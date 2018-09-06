@@ -26,26 +26,36 @@ class TestCamera(unittest.TestCase):
 
         #Instantiate camera test fixtures
         cam = {
-            'cameraID': '3028',
+            'cameraID': '101',
             'camera_type': 'non_ip',
             'snapshot_url': 'http://images.webcams.travel/preview/1169307993.jpg'
         }
         cam2 = {
-           'cameraID': '30288',
+           'cameraID': '201',
            'camera_type': 'ip',
            'ip': '207.251.86.238',
            'port': '',
            'image_path': '/cctv290.jpg',
+           # 'image_path': '/axis-cgi/mjpg/video.cgi',
            'video_path': '/axis-cgi/mjpg/video.cgi'
         }
-        self.cameras = [cam, cam2]
+        cam3 = {
+            'cameraID': '301',
+            'camera_type': 'stream',
+            'm3u8_url': 'http://images.webcams.travel/preview/1169307993.jpg'
+        }
+        self.cameras = [cam, cam2, cam3]
+        self.archiver = CAM2ImageArchiver.CAM2ImageArchiver()
         # self.cam = Archiver(1, 1, 1, cameras)
         # self.ip_cam = IPCamera_archiver(1, 1, 1, "127.1.1.1", "/test_image_path", "/test_mjpeg_path", "3000")
 
     def test_get_frame(self):
-        CAM2ImageArchiver().archive(self.cameras)
+        self.assertIsNone(self.archiver.archive(self.cameras))
+    # check folder with cameraID is not empty
 
     # Test result_path change in CAM2ImageArchiver() construction
+    def test_folder_not_generated_when_parsing_failed(self):
+        pass
 
     # def test_get_frame_no_parser(self):
     #     #Assert camera raises error when no parser is present

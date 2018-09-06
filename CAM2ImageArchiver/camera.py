@@ -232,7 +232,6 @@ class IPCamera(Camera):
         # Initializes an ImageStreamParser so that frames can be retrieved from
         # the image stream without the need to call the open_stream method.
         url = self.get_url()
-        print(url)
         self.parser = StreamParser.ImageStreamParser(url)
 
     def open_stream(self, stream_format):
