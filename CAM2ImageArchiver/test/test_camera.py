@@ -19,8 +19,8 @@ import os
 import shutil
 sys.path.append( os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) ) )
 from camera import Camera, IPCamera, NonIPCamera, StreamFormat
-from CAM2ImageArchiver import CAM2ImageArchiver
-from error import *
+from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
+from CAM2ImageArchiver.error import UnreachableCameraError
 
 class TestCamera(unittest.TestCase):
     def setUp(self):
@@ -45,26 +45,26 @@ class TestCamera(unittest.TestCase):
             'm3u8_url': 'http://images.webcams.travel/preview/1169307993.jpg'
         }
         self.cameras = [cam, cam2, cam3]
+        self.archiver = CAM2ImageArchiver(num_processes=1, result_path='testing/')
+
 
         # self.cam = Archiver(1, 1, 1, cameras)
         # self.ip_cam = IPCamera_archiver(1, 1, 1, "127.1.1.1", "/test_image_path", "/test_mjpeg_path", "3000")
 
-    @classmethod
-    def tearDownClass(cls):
-        if os.path.isdir('testing'):
-            shutil.rmtree('testing')
+    # @classmethod
+    # def tearDownClass(cls):
+    #     if os.path.isdir('testing'):
+    #         shutil.rmtree('testing')
 
     def test_get_frame_with_custom_result_path_success(self):
-        self.archiver = CAM2ImageArchiver.CAM2ImageArchiver(num_processes=1, result_path='testing/')
         self.assertIsNone(self.archiver.archive(self.cameras))
 
     def test_get_frame_with_longer_duration_interval_success(self):
-        self.archiver = CAM2ImageArchiver.CAM2ImageArchiver(num_processes=1, result_path='testing/')
-        self.assertIsNone(self.archiver.archive(self.cameras, duration=5, interval=2))
+        self.assertIsNone(self.archiver.archive(self.cameras, duration=3, interval=2))
 
     def test_folder_not_generated_when_parsing_failed(self):
         cam2 = {
-            'cameraID': '201',
+            'cameraID': '202',
             'camera_type': 'ip',
             'ip': '207.251.86.238',
             'port': '',
@@ -72,8 +72,11 @@ class TestCamera(unittest.TestCase):
             'video_path': '/axis-cgi/mjpg/video.cgi'
         }
         self.cameras = [cam2]
-        self.archiver = CAM2ImageArchiver.CAM2ImageArchiver(num_processes=1, result_path='testing/')
-        self.assertRaises(UnreachableCameraError, self.archiver.archive(self.cameras))
+        self.assertIsNone(self.archiver.archive(self.cameras))
+        self.assertEqual(os.listdir('testing'), [], 'Folder 202 should not exist because it is empty')
+
+
+
 
     # def test_get_frame_no_parser(self):
     #     #Assert camera raises error when no parser is present
