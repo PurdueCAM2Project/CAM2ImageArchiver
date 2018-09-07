@@ -51,10 +51,10 @@ class TestCamera(unittest.TestCase):
         # self.cam = Archiver(1, 1, 1, cameras)
         # self.ip_cam = IPCamera_archiver(1, 1, 1, "127.1.1.1", "/test_image_path", "/test_mjpeg_path", "3000")
 
-    # @classmethod
-    # def tearDownClass(cls):
-    #     if os.path.isdir('testing'):
-    #         shutil.rmtree('testing')
+    @classmethod
+    def tearDownClass(cls):
+        if os.path.isdir('testing'):
+            shutil.rmtree('testing')
 
     def test_get_frame_with_custom_result_path_success(self):
         self.assertIsNone(self.archiver.archive(self.cameras))
@@ -74,6 +74,9 @@ class TestCamera(unittest.TestCase):
         self.cameras = [cam2]
         self.assertIsNone(self.archiver.archive(self.cameras))
         self.assertEqual(os.listdir('testing'), [], 'Folder 202 should not exist because it is empty')
+
+    # def test_parse_MJPEGstream(self):
+        
 
 
 
