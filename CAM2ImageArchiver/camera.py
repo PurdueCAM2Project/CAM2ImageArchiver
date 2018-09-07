@@ -70,7 +70,7 @@ while time.time() - t < 5:
 camera.close_stream()
 
 """
-import error
+from error import ClosedStreamError
 import StreamParser
 
 
@@ -179,7 +179,7 @@ class Camera(object):
 
         """
         if self.parser is None:
-            raise error.ClosedStreamError
+            raise ClosedStreamError
         return self.parser.get_frame()
 
 
