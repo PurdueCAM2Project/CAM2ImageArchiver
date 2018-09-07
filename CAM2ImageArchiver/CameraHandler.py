@@ -19,7 +19,6 @@ import time
 import cv2
 import datetime
 import os
-import error
 
 '''
 
@@ -82,7 +81,6 @@ class CameraHandler(Process):
                     if self.remove_after_failure:
                         print("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                         bad_cams.append(camera)
-                        raise error.UnreachableCameraError
                     else:
                         pass
                 else:
