@@ -18,7 +18,7 @@ import sys
 import os
 import shutil
 sys.path.append( os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) ) )
-from camera import Camera, IPCamera, NonIPCamera, StreamFormat
+from CAM2ImageArchiver.camera import Camera, IPCamera, NonIPCamera, StreamFormat
 from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
 from CAM2ImageArchiver.error import UnreachableCameraError, ClosedStreamError
 
