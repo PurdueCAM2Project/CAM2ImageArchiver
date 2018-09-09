@@ -194,7 +194,8 @@ class ImageStreamParser(StreamParser):
         return frame, frame_size
 
 # DEPRECIATED.  Use m3u8mjpgStreamParser
-@DeprecationWarning
+# @DeprecationWarning
+# TODO: Fix DeprecationWarning Decorator 
 class MJPEGStreamParser(StreamParser):
     """
     Represent a parser for a camera MJPEG stream.

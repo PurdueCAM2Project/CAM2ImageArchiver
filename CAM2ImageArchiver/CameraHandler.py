@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
-import threading
+from multiprocessing import Process
 import time
 import cv2
 import datetime
@@ -23,7 +23,7 @@ import os
 '''
 
 '''
-class CameraHandler(threading.Thread):
+class CameraHandler(Process):
     """
     The thread to download snapshots from a single camera.
 
@@ -50,7 +50,7 @@ class CameraHandler(threading.Thread):
     # The path of the results directory.
 
     def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure):
-        threading.Thread.__init__(self)
+        Process.__init__(self)
         self.cameras = cameras
         self.duration = duration
         self.interval = interval

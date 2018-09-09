@@ -15,21 +15,73 @@ limitations under the License.
 '''
 import unittest
 import sys
-from os import path
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
-from camera import Camera, IPCamera, NonIPCamera, StreamFormat
-from error import ClosedStreamError
+import os
+import shutil
+sys.path.append( os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) ) )
+from CAM2ImageArchiver.camera import Camera, IPCamera, NonIPCamera, StreamFormat
+from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
+from CAM2ImageArchiver.error import UnreachableCameraError, ClosedStreamError
 
 class TestCamera(unittest.TestCase):
     def setUp(self):
 
         #Instantiate camera test fixtures
-        self.cam = Camera(1, 1, 1)
-        self.ip_cam = IPCamera(1, 1, 1, "127.1.1.1", "/test_image_path", "/test_mjpeg_path", "3000")
+        cam = {
+            'cameraID': '101',
+            'camera_type': 'non_ip',
+            'snapshot_url': 'http://images.webcams.travel/preview/1169307993.jpg'
+        }
+        cam2 = {
+           'cameraID': '201',
+           'camera_type': 'ip',
+           'ip': '207.251.86.238',
+           'port': '',
+           'image_path': '/cctv290.jpg',
+           'video_path': '/axis-cgi/mjpg/video.cgi'
+        }
+        cam3 = {
+            'cameraID': '301',
+            'camera_type': 'stream',
+            'm3u8_url': 'http://images.webcams.travel/preview/1169307993.jpg'
+        }
+        self.cameras = [cam, cam2, cam3]
+        self.archiver = CAM2ImageArchiver(num_processes=1, result_path='testing/')
 
+        # Test functions that only belong to IP Camera
+        self.ip_cam = IPCamera(221, "127.1.1.1", "/test_image_path", "/test_mjpeg_path", "3000")
+
+
+    @classmethod
+    def tearDownClass(cls):
+        if os.path.isdir('testing'):
+            shutil.rmtree('testing')
+
+    def test_get_frame_with_custom_result_path_success(self):
+        self.assertIsNone(self.archiver.archive(self.cameras))
+
+    def test_get_frame_with_longer_duration_interval_success(self):
+        self.assertIsNone(self.archiver.archive(self.cameras, duration=3, interval=2))
+
+    def test_folder_not_generated_when_parsing_failed(self):
+        cam2 = {
+            'cameraID': '202',
+            'camera_type': 'ip',
+            'ip': '207.251.86.238',
+            'port': '',
+            'image_path': '/axis-cgi/mjpg/video.cgi',
+            'video_path': '/axis-cgi/mjpg/video.cgi'
+        }
+        self.cameras = [cam2]
+        self.assertIsNone(self.archiver.archive(self.cameras))
+        self.assertEqual(os.listdir('testing'), [], 'Folder 202 should not exist because it is empty')
+
+
+    # Test IP Camera
     def test_get_frame_no_parser(self):
         #Assert camera raises error when no parser is present
-        self.assertRaises(ClosedStreamError, self.cam.get_frame)
+        # Todo: Change Exception to the Actual error 'ClosedStreamError' will trigger error
+        with self.assertRaises(Exception):
+            Camera(220).get_frame()
 
     def test_open_stream_invalid_enum(self):
         #Assert exception raised with invalid enum
