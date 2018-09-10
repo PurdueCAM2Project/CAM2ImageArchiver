@@ -19,7 +19,7 @@ import time
 import cv2
 import datetime
 import os
-import filecmp
+import numpy as np
 
 '''
 
@@ -81,7 +81,7 @@ class CameraHandler(Process):
                     frame, _ = camera.get_frame()
                 except Exception as e:
                     if self.remove_after_failure:
-                        print("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                        print("Error retrieving from camera {} @ \"{}\".  Marking camera for removal from chunk {}.".format(str(camera.id), str(camera.get_url()), str(self.chunk)))
                         bad_cams.append(camera)
                     else:
                         pass
@@ -94,9 +94,15 @@ class CameraHandler(Process):
                             cam_directory, camera.id,
                             datetime.datetime.fromtimestamp(
                                 frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
-                        if self.remove_duplicates and filecmp.cmp(camera.last_frame, frame) == False:
-                            cv2.imwrite(file_name, frame)
-                            camera.last_frame = frame
+                        
+                        if self.remove_duplicates: 
+                            if type(camera.last_frame) == type(None) or np.sum(camera.last_frame - frame) != 0:
+                                cv2.imwrite(file_name, frame)
+                                camera.last_frame = frame
+                            else:
+                                # print("diff_{}".format(np.sum(camera.last_frame - frame) == 0))
+                                # cv2.imwrite(file_name, frame)
+                                print("Camera frame has not changed for {}.  Will retry after {}sec.".format(str(camera.id), str(self.interval)))
                         else:
                             cv2.imwrite(file_name, frame)
 

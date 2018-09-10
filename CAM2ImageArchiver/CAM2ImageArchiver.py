@@ -100,7 +100,7 @@ class CAM2ImageArchiver:
             # Increment chunk number
             chunk += 1
             # Create a new thread to handle the camera.
-            camera_handler = CameraHandler(camera_list, chunk, duration, interval, result_path, remove_after_failure, remove_duplicates=remove_duplicates)
+            camera_handler = CameraHandler(camera_list, chunk, duration, interval, result_path, remove_after_failure, remove_duplicates=self.remove_duplicates)
             # Run the thread.
             camera_handler.start()
             # Add the thread to the array of threads.
@@ -113,6 +113,8 @@ class CAM2ImageArchiver:
         # Wait for all the threads to finish execution.
         for camera_handler in camera_handlers:
             camera_handler.join()
+
+        
 
     def __get_camera_from_object(self, cam):
         '''
