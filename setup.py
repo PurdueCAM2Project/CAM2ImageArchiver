@@ -22,7 +22,6 @@ setup(
     'funcsigs',
     'idna',
     'mock',
-    'MySQL-python',
     'numpy',
     'pbr',
     'pytz',
