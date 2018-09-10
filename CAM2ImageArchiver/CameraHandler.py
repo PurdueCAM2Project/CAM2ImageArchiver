@@ -19,6 +19,7 @@ import time
 import cv2
 import datetime
 import os
+import filecmp
 
 '''
 
@@ -49,7 +50,7 @@ class CameraHandler(Process):
 
     # The path of the results directory.
 
-    def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure):
+    def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure, remove_duplicates):
         Process.__init__(self)
         self.cameras = cameras
         self.duration = duration
@@ -57,6 +58,7 @@ class CameraHandler(Process):
         self.result_path = result_path
         self.chunk = chunk
         self.remove_after_failure = remove_after_failure
+        self.remove_duplicates = remove_duplicates
 
     def run(self):
         """
@@ -92,7 +94,13 @@ class CameraHandler(Process):
                             cam_directory, camera.id,
                             datetime.datetime.fromtimestamp(
                                 frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
-                        cv2.imwrite(file_name, frame)
+                        if self.remove_duplicates and filecmp.cmp(camera.last_frame, frame) == False:
+                            cv2.imwrite(file_name, frame)
+                            camera.last_frame = frame
+                        else:
+                            cv2.imwrite(file_name, frame)
+
+                            
                     else:
                         if self.remove_after_failure:
                             print("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))

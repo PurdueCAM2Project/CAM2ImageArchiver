@@ -121,6 +121,7 @@ class Camera(object):
     def __init__(self, id):
         self.id = id
         self.parser = None
+        self.last_frame = None
 
     def open_stream(self, stream_format):
         """
