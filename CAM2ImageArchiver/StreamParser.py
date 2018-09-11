@@ -55,8 +55,8 @@ while time.time() - t < 5:
 parser.close_stream()
 
 """
-import urllib2
-
+import urllib
+from urllib.request import urlopen
 import cv2
 import numpy as np
 
@@ -171,8 +171,8 @@ class ImageStreamParser(StreamParser):
         """
         try:
             # Download the frame data.
-            frame = urllib2.urlopen(self.url, timeout=5).read()
-        except urllib2.URLError:
+            frame = urlopen(self.url, timeout=5).read()
+        except urllib.URLError:
             raise error.UnreachableCameraError
 
         # Handle the cameras that return empty content.

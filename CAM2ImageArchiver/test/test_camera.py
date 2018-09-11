@@ -94,12 +94,12 @@ class TestCamera(unittest.TestCase):
     def test_get_url_mjpeg(self):
         #Assert url correctly created for mjpeg case
         result = self.ip_cam.get_url(StreamFormat.MJPEG)
-        self.assertEquals(result, "http://127.1.1.1:3000/test_mjpeg_path")
+        self.assertEqual(result, "http://127.1.1.1:3000/test_mjpeg_path")
 
     def test_get_url_image(self):
         #Assert url correctly created for image case
         result = self.ip_cam.get_url(StreamFormat.IMAGE)
-        self.assertEquals(result, "http://127.1.1.1:3000/test_image_path")
+        self.assertEqual(result, "http://127.1.1.1:3000/test_image_path")
 
 
 
