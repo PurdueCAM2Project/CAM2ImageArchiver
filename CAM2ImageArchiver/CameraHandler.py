@@ -72,10 +72,14 @@ class CameraHandler(Process):
         while (time.time() - start_timestamp) < self.duration:
             # Set the timestamp of the start of the new loop iteration.
             loop_start_timestamp = time.time()
+            # print("Loop Start", time.time())
 
             # bad_cams is initialized in the while loop so that the array is emptied after each iteration
             bad_cams = []
+            x = 0
             for camera in self.cameras:
+                print("Process {} Downloading Image {} of {} at time {}".format(self.chunk, x, len(self.cameras), datetime.datetime.now()))
+                x = x + 1
                 try:
                     # Download the image.
                     frame, _ = camera.get_frame()
@@ -83,8 +87,6 @@ class CameraHandler(Process):
                     if self.remove_after_failure:
                         print("Error retrieving from camera {} @ \"{}\".  Marking camera for removal from chunk {}.".format(str(camera.id), str(camera.get_url()), str(self.chunk)))
                         bad_cams.append(camera)
-                    else:
-                        pass
                 else:
                     if (frame is not None):
                         # Save the image.
@@ -126,6 +128,7 @@ class CameraHandler(Process):
             # Sleep until the interval between frames ends.
             time_to_sleep = self.interval - (time.time() - loop_start_timestamp)
             if time_to_sleep > 0:
+                print("Process {} going to sleep...".format(self.chunk))
                 time.sleep(time_to_sleep)
             else:
                 print("Warning: Retrieval time exceeded sleep time for chunk {}.  Specified interval cannot be met."
