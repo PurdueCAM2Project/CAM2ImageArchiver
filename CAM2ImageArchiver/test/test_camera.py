@@ -58,11 +58,19 @@ class TestCamera(unittest.TestCase):
 
     def test_get_frame_with_custom_result_path_success(self):
         self.assertIsNone(self.archiver.archive(self.cameras))
+        directories = set(os.listdir('testing'))
+        expected_dirs = set(('301', '101', '201'))
+        self.assertEquals(directories, expected_dirs, 'These folders should exist because they contain images')
 
     def test_get_frame_with_longer_duration_interval_success(self):
         self.assertIsNone(self.archiver.archive(self.cameras, duration=3, interval=2))
+        directories = set(os.listdir('testing'))
+        expected_dirs = set(('301', '101', '201'))
+        self.assertEquals(directories, expected_dirs, 'These folders should exist because they contain images')
 
     def test_folder_not_generated_when_parsing_failed(self):
+        if os.path.isdir('testing'):
+            shutil.rmtree('testing')
         cam2 = {
             'cameraID': '202',
             'camera_type': 'ip',
