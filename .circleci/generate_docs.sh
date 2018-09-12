@@ -29,8 +29,8 @@ fi
 
 # Install sphinx
 sudo pip install sphinx==1.7.5
-sudo pip install sphinx_rtd_theme
 # create new site
+mv -r CAM2ImageArchiver/source .
 rm -rf CAM2ImageArchiver/*
 mkdir CAM2ImageArchiver
 cp -a ../CAM2ImageArchiver/* ./CAM2ImageArchiver/
