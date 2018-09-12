@@ -29,11 +29,12 @@ image stream.
 2. Use the get_frame method to get the most recent frame at any point of time,
 as well as the frame size. There is no need to call open_stream or close_stream.
 
-camera = NonIPCamera(1, 'http://images.webcams.travel/preview/1169307993.jpg')
-frame, frame_size = camera.get_frame()
-cv2.imshow('frame', frame)
-print frame_size
-cv2.waitKey()
+literal blocks::
+    camera = NonIPCamera(1, 'http://images.webcams.travel/preview/1169307993.jpg')
+    frame, frame_size = camera.get_frame()
+    cv2.imshow('frame', frame)
+    print frame_size
+    cv2.waitKey()
 
 Example 2: To get frames from an IP camera image stream:
 1. Initialize an IPCamera object using the ID, IP, image stream path, and
@@ -42,11 +43,12 @@ other optional parameters.
 as well as the frame size. While dealing with image streams of IP cameras,
 there is no need to call open_stream or close_stream.
 
-camera = IPCamera(1, '128.10.29.33', '/axis-cgi/jpg/image.cgi')
-frame, frame_size = camera.get_frame()
-cv2.imshow('frame', frame)
-print frame_size
-cv2.waitKey()
+literal blocks::
+    camera = IPCamera(1, '128.10.29.33', '/axis-cgi/jpg/image.cgi')
+    frame, frame_size = camera.get_frame()
+    cv2.imshow('frame', frame)
+    print frame_size
+    cv2.waitKey()
 
 Example 3: To get frames from an IP camera MJPEG stream:
 1. Initialize an IPCamera object using the ID, IP, image stream path, MJPEG
@@ -58,16 +60,17 @@ as well as the frame size.
 4. At the end when no more frames are needed, Close the camera MJPEG stream by
 calling the close_stream method.
 
-camera = IPCamera(1, '128.10.29.33', '/axis-cgi/jpg/image.cgi',
-                  '/axis-cgi/mjpg/video.cgi')
-camera.open_stream(StreamFormat.MJPEG)
-t = time.time()
-while time.time() - t < 5:
-    frame, frame_size = camera.get_frame()
-    cv2.imshow('frame', frame)
-    print frame_size
-    cv2.waitKey(30)
-camera.close_stream()
+literal blocks::
+    camera = IPCamera(1, '128.10.29.33', '/axis-cgi/jpg/image.cgi',
+                    '/axis-cgi/mjpg/video.cgi')
+    camera.open_stream(StreamFormat.MJPEG)
+    t = time.time()
+    while time.time() - t < 5:
+        frame, frame_size = camera.get_frame()
+        cv2.imshow('frame', frame)
+        print frame_size
+        cv2.waitKey(30)
+    camera.close_stream()
 
 """
 from error import ClosedStreamError
