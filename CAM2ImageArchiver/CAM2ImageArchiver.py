@@ -16,7 +16,7 @@ limitations under the License.
 
 import time
 import csv
-import MySQLdb
+#import MySQLdb
 import os
 
 from utils import check_file_exists, check_result_path_writable
