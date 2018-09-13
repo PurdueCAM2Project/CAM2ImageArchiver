@@ -29,7 +29,7 @@ image stream.
 2. Use the get_frame method to get the most recent frame at any point of time,
 as well as the frame size. There is no need to call open_stream or close_stream.
 
-literal blocks::
+::
     camera = NonIPCamera(1, 'http://images.webcams.travel/preview/1169307993.jpg')
     frame, frame_size = camera.get_frame()
     cv2.imshow('frame', frame)
@@ -43,7 +43,7 @@ other optional parameters.
 as well as the frame size. While dealing with image streams of IP cameras,
 there is no need to call open_stream or close_stream.
 
-literal blocks::
+::
     camera = IPCamera(1, '128.10.29.33', '/axis-cgi/jpg/image.cgi')
     frame, frame_size = camera.get_frame()
     cv2.imshow('frame', frame)
@@ -60,7 +60,7 @@ as well as the frame size.
 4. At the end when no more frames are needed, Close the camera MJPEG stream by
 calling the close_stream method.
 
-literal blocks::
+::
     camera = IPCamera(1, '128.10.29.33', '/axis-cgi/jpg/image.cgi',
                     '/axis-cgi/mjpg/video.cgi')
     camera.open_stream(StreamFormat.MJPEG)

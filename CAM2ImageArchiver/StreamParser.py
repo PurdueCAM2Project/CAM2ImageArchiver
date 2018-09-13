@@ -29,7 +29,7 @@ image stream.
 time, as well as the frame size. There is no need to call open_stream or
 close_stream.
 
-literal blocks::
+::
     parser = ImageStreamParser('http://128.10.29.33/axis-cgi/jpg/image.cgi')
     frame, frame_size = parser.get_frame()
     cv2.imshow('frame', frame)
@@ -45,7 +45,7 @@ as well as the frame size.
 4. At the end when no more frames are needed, close the stream by calling the
 close_stream method.
 
-literal blocks::
+::
     parser = MJPEGStreamParser('http://128.10.29.33/axis-cgi/mjpg/video.cgi')
     parser.open_stream()
     t = time.time()
