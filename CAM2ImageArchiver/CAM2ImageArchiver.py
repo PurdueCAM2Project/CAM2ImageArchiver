@@ -34,15 +34,24 @@ See README for database setup information.
 
 class CAM2ImageArchiver:
     '''
-    Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
+    Retrieve images either from a cvs file or from a list of camera objects
     '''
 
     def __init__(self, num_processes=1, result_path='results/'):
+        '''
+        Attributes
+        ----------
+        num_processes : int
+            Number of processes that are used to run this program
+        result_path : str
+            Name of folder where image is saved
+        '''
         self.num_processes = num_processes
         self.result_path = result_path
 
     def retrieve_csv(self, camera_url_file, duration, interval, result_path, remove_after_failure=True):
         '''
+        Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
         Reads camera urls from csv file and archives the images at the requested directory.
         '''
 
@@ -72,6 +81,23 @@ class CAM2ImageArchiver:
     def archive(self, camObjects, duration=1, interval=1, result_path=None, remove_after_failure=True):
         '''
         Archives images from array of cameras.  Places directory of all results at the given path.
+
+        Attributes
+        ----------
+        camObjects : list
+            A list of cameras dictionary-like object from Client containing camera's data
+        duration : int
+            Duration of parsing images
+        interval : int
+            Interval of time in duration to get image. For example, duration=10, interval=2, will generate 5 images
+        result_path : str
+            Name of folder where image is saved
+        remove_after_failure : Boolean
+            Indicator to decide whether to remove a camera object after parsing failure
+            
+        Example
+        -------
+            Check test cases in test_camera.py
         '''
         if result_path == None:
             result_path = self.result_path
@@ -124,7 +150,17 @@ class CAM2ImageArchiver:
     def __get_camera_from_object(self, cam):
         '''
         Reads converts CAM2 Camera API Camera Object to Archiver Camera Object
+
+        Attributes
+        ----------
+        cam: dictionary-like object
+            A camera dictionary-like object most likely instantiated from camera class in CameraDatabaseClient repo
+
+        Return
+        ------
+            A camera object instantiated from camera class in Archiver repo
         '''
+
         if cam['camera_type'] == 'ip':
             camera = IPCamera(cam['cameraID'], cam['ip'], cam['image_path'],
                               cam['video_path'], cam['port'])
