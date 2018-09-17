@@ -36,7 +36,7 @@ class TestCamera(unittest.TestCase):
            'camera_type': 'ip',
            'ip': '207.251.86.238',
            'port': '',
-           'image_path': '/cctv290.jpg',
+           'image_path': '/cctv254.jpg',
            'video_path': '/axis-cgi/mjpg/video.cgi'
         }
         cam3 = {
