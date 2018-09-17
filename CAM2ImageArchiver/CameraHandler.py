@@ -50,7 +50,7 @@ class CameraHandler(Process):
 
     # The path of the results directory.
 
-    def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure, remove_duplicates):
+    def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure, remove_duplicates_threshold):
         Process.__init__(self)
         self.cameras = cameras
         self.duration = duration
@@ -58,7 +58,7 @@ class CameraHandler(Process):
         self.result_path = result_path
         self.chunk = chunk
         self.remove_after_failure = remove_after_failure
-        self.remove_duplicates = remove_duplicates
+        self.remove_duplicates_threshold = remove_duplicates_threshold
 
     def run(self):
         """
@@ -97,8 +97,8 @@ class CameraHandler(Process):
                             datetime.datetime.fromtimestamp(
                                 frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
                         
-                        if self.remove_duplicates: 
-                            if type(camera.last_frame) == type(None) or np.sum(camera.last_frame - frame) != 0:
+                        if self.remove_duplicates_threshold:
+                            if type(camera.last_frame) == type(None) or abs(np.sum(camera.last_frame - frame))/abs(np.sum(camera.last_frame)) * 100 < self.remove_duplicates_threshold:
                                 cv2.imwrite(file_name, frame)
                                 camera.last_frame = frame
                             else:
