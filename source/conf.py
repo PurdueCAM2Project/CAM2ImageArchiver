@@ -30,7 +30,13 @@ sys.path.insert(0, os.path.abspath('../..'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon', 'sphinxjp.themes.basicstrap', ]
+extensions = [
+	'sphinx.ext.autodoc',
+	'sphinx.ext.viewcode',
+	'sphinx.ext.napoleon',
+	'sphinx.ext.githubpages',
+	'sphinx.ext.autosummary',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -82,26 +88,17 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-	'sidebarbgcolor': '#F5F5F5',
-	'footerbgcolor': '#FFFFFF',
-	'sidebartextcolor': '#008ACA',
-	'sidebarlinkcolor': '#008ACA',
-	'codebgcolor': '#000000',
-	'codetextcolor': '#FFFFFF',
-	'headtextcolor': '#000000',
-	'headlinkcolor': '#008ACA',
-	'relbarbgcolor': '#F5F5F5',
-	'relbartextcolor': '#000000',
-	'relbarlinkcolor': '#000000',
-	'linkcolor': '#008ACA',
-	'visitedlinkcolor': '#006999',
+	'collapse_navigation': True,
+	'sticky_navigation': True,
+	'includehidden': True,
+	'navigation_depth': 4,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
