@@ -25,7 +25,7 @@ setup(
     'numpy',
     'pbr',
     'pytz',
-    'urllib3',
+    'requests',
     'opencv-python'
   ]
 )
