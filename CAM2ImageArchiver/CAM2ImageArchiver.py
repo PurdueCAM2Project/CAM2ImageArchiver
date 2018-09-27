@@ -34,12 +34,12 @@ See README for database setup information.
 class CAM2ImageArchiver:
     '''
     Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
-    remove_duplicates_threshold: Percentage difference between two frames
+    image_difference_percentage: Percentage difference between two frames
     '''
-    def __init__(self, num_processes=1, result_path='results/', remove_duplicates_threshold=10):
+    def __init__(self, num_processes=1, result_path='results/', image_difference_percentage=90):
         self.num_processes = num_processes
         self.result_path = result_path
-        self.remove_duplicates_threshold = remove_duplicates_threshold
+        self.image_difference_percentage = image_difference_percentage
 
     def retrieve_csv(self, camera_url_file, duration, interval, result_path, remove_after_failure=True):
         '''
@@ -100,7 +100,7 @@ class CAM2ImageArchiver:
             # Increment chunk number
             chunk += 1
             # Create a new process to handle the camera.
-            camera_handler = CameraHandler(camera_list, chunk, duration, interval, result_path, remove_after_failure, remove_duplicates_threshold=self.remove_duplicates_threshold)
+            camera_handler = CameraHandler(camera_list, chunk, duration, interval, result_path, remove_after_failure, image_difference_percentage=self.image_difference_percentage)
             # Run the process.
             camera_handler.start()
             # Add the process to the array of process.
