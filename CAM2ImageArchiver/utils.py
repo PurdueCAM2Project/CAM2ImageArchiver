@@ -15,9 +15,9 @@ limitations under the License.
 """
 import os
 
-'''
-Description:  Checks that the given file exists. 
-'''
+"""
+Description:  Checks that the given file exists.
+"""
 
 
 def check_file_exists(file_name):
