@@ -4,7 +4,6 @@ import os
 import shutil
 from CAM2ImageArchiver.camera import Camera, IPCamera, StreamFormat
 from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
-
 '''
 Copyright 2017 Purdue University
 
@@ -25,6 +24,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class TestCamera(unittest.TestCase):
+
     def setUp(self):
 
         # Instantiate camera test fixtures

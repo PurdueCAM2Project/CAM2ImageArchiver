@@ -52,7 +52,9 @@ class CAM2ImageArchiver:
     def retrieve_csv(self, camera_url_file, duration, interval, result_path,
                      remove_after_failure=True):
         '''
-        Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
+        Retrieves images from cameras specified through a csv file.  The csv
+        file either contains the urls of the cameras, or the ID numbers of each
+        camera in the database.
         Reads camera urls from csv file and archives the images at the requested directory.
         '''
 
@@ -68,9 +70,10 @@ class CAM2ImageArchiver:
             id = 1
             cams = []
             for camera_url in camera_reader:
-                # These cameras do not come from the database and so have no ID.  Assign one to them so they can be placed in a result folder.
+                # These cameras do not come from the database and so have no ID.  Assign
+                # one to them so they can be placed in a result folder.
                 camera_type = camera_url[0].split(".")[-1]
-                if (camera_type == "m3u8"):
+                if camera_type == "m3u8":
                     camera = {'type': 'stream', 'id': id, 'm3u8_url': camera_url[0]}
                 else:
                     camera = {'type': 'non_ip', 'id': id, 'snapshot_url': camera_url[0]}
