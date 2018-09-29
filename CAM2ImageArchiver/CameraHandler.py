@@ -16,9 +16,10 @@ limitations under the License.
 
 from multiprocessing import Process
 import time
-import cv2
 import datetime
 import os
+import cv2
+
 
 class CameraHandler(Process):
     """
@@ -95,7 +96,7 @@ class CameraHandler(Process):
                         cv2.imwrite(file_name, frame)
                     else:
                         if self.remove_after_failure:
-                            print("Empty frame retrieved from camera {}.  Marking camera for removal"
+                            print("Empty frame retrieved from camera {}. Marking camera for removal"
                                   " from chunk {}.".format(str(camera.id), str(self.chunk)))
                             bad_cams.append(camera)
                 finally:
@@ -116,6 +117,6 @@ class CameraHandler(Process):
             if time_to_sleep > 0:
                 time.sleep(time_to_sleep)
             else:
-                print("Warning: Retrieval time exceeded sleep time for chunk {}.  Specified interval "
+                print("Warning: Retrieval time exceeded sleep time for chunk {}. Specified interval"
                       "cannot be met."
                       .format(self.chunk))

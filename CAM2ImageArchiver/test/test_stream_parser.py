@@ -1,3 +1,7 @@
+import unittest
+import sys
+import urllib2
+import json
 from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
 from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
 from os import path
@@ -18,10 +22,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
-import unittest
-import sys
-import urllib2
-import json
+
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 

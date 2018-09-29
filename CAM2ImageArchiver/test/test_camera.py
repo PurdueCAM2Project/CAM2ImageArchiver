@@ -1,3 +1,7 @@
+import unittest
+import sys
+import os
+import shutil
 from CAM2ImageArchiver.camera import Camera, IPCamera, StreamFormat
 from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
 """
@@ -15,17 +19,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import unittest
-import sys
-import os
-import shutil
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class TestCamera(unittest.TestCase):
     def setUp(self):
 
-        #Instantiate camera test fixtures
+        # Instantiate camera test fixtures
         cam = {
             'cameraID': '101',
             'camera_type': 'non_ip',
