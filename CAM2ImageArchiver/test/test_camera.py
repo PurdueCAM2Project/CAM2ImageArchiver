@@ -82,7 +82,8 @@ class TestCamera(unittest.TestCase):
         }
         self.cameras = [cam2]
         self.assertIsNone(self.archiver.archive(self.cameras))
-        self.assertEqual(os.listdir('testing'), [], 'Folder 202 should not exist because it is empty')
+        self.assertEqual(os.listdir('testing'), [], 'Folder 202 should not exist because it '
+                                                    'is empty')
 
     # Test IP Camera
     def test_get_frame_no_parser(self):
