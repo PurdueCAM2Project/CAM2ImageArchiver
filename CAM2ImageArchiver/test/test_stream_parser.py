@@ -102,35 +102,35 @@ class TestStreamParser(unittest.TestCase):
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 3)
 
     @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject
-        (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:not_a_digit']))
+           (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:not_a_digit']))
     def test_mjpeg_frame_line_three_invalid_content_length(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 3)
 
     @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject
-        (None, ['--myboundary', 'Content-Type: image/jpeg', 'wrong:10']))
+           (None, ['--myboundary', 'Content-Type: image/jpeg', 'wrong:10']))
     def test_mjpeg_frame_line_three_invalid_content_length(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 3)
 
     @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject
-        (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:10', 'not-empty']))
+           (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:10', 'not-empty']))
     def test_mjpeg_frame_no_empty_line_before_binary(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 4)
 
     @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject
-        (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:10', '', 'not-empty']))
+           (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:10', '', 'not-empty']))
     def test_mjpeg_frame_no_empty_line_after_binary(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 5)
 
     @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject
-        (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:10', '', '']))
+           (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:10', '', '']))
     @patch('StreamParser.cv2.imdecode', return_value=None)
     @patch('StreamParser.np.fromstring', return_value=None)
     def test_mjpeg_frame_is_none(self, mocked_urllib, mocked_cv2, mocked_np):
