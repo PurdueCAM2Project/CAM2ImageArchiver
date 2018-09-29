@@ -100,7 +100,8 @@ class CameraHandler(Process):
                                   " from chunk {}.".format(str(camera.id), str(self.chunk)))
                             bad_cams.append(camera)
                 finally:
-                    # These variables are explicitely set to None to encourage the garbage collector.
+                    # These variables are explicitely set to None to encourage the garbage
+                    # collector.
                     # Testing showed that without this these variables would persist.
                     frame = None
                     frame_timestamp = None
