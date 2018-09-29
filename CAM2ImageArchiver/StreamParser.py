@@ -1,3 +1,7 @@
+import requests
+import cv2
+import numpy as np
+import error
 from six.moves.urllib.request import urlopen
 """
 Copyright 2017 Purdue University
@@ -58,11 +62,7 @@ close_stream method.
     parser.close_stream()
 
 """
-import requests
-import cv2
-import numpy as np
 
-import error
 
 
 class StreamParser(object):
@@ -197,7 +197,7 @@ class ImageStreamParser(StreamParser):
 
 # DEPRECIATED.  Use m3u8mjpgStreamParser
 # @DeprecationWarning
-# TODO: Fix DeprecationWarning Decorator 
+# TODO: Fix DeprecationWarning Decorator
 
 
 class MJPEGStreamParser(StreamParser):

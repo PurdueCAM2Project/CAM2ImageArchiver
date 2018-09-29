@@ -1,6 +1,7 @@
 from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
 from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
-
+from os import path
+from mock import patch
 '''
 Copyright 2017 Purdue University
 
@@ -18,10 +19,8 @@ limitations under the License.
 '''
 
 import unittest
-from mock import patch
 import sys
 import urllib2
-from os import path
 import json
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
