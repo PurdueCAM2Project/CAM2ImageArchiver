@@ -1,3 +1,6 @@
+from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
+from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
+
 '''
 Copyright 2017 Purdue University
 
@@ -20,9 +23,8 @@ import sys
 import urllib2
 from os import path
 import json
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
-from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
-from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__) ) ) )
+
 
 class DummyUrlObject:
 
@@ -42,6 +44,7 @@ class DummyUrlObject:
     def close(self):
         pass
 
+
 class TestStreamParser(unittest.TestCase):
     test_url = "http://testurl.com/camera"
 
@@ -50,6 +53,7 @@ class TestStreamParser(unittest.TestCase):
         self.image_stream_parser = ImageStreamParser(self.test_url)
         self.mjpeg_stream_parser = MJPEGStreamParser(self.test_url)
     # StreamParser Tests
+
     def test_get_frame_not_overwritten(self):
         self.assertRaises(NotImplementedError, self.stream_parser.get_frame)
 
@@ -137,6 +141,7 @@ class TestStreamParser(unittest.TestCase):
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 5)
         self.assertTrue(mocked_np.called)
         self.assertTrue(mocked_cv2.called)
+
 
 if __name__ == '__main__':
     unittest.main()

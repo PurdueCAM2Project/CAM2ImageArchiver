@@ -17,7 +17,7 @@ import unittest
 import sys
 import os
 import shutil
-sys.path.append( os.path.dirname( os.path.dirname( os.path.abspath(__file__) ) ) )
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from CAM2ImageArchiver.camera import Camera, IPCamera, NonIPCamera, StreamFormat
 from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
 from CAM2ImageArchiver.error import UnreachableCameraError, ClosedStreamError
@@ -32,12 +32,12 @@ class TestCamera(unittest.TestCase):
             'snapshot_url': 'http://images.webcams.travel/preview/1169307993.jpg'
         }
         cam2 = {
-           'cameraID': '201',
-           'camera_type': 'ip',
-           'ip': '207.251.86.238',
-           'port': '',
-           'image_path': '/cctv254.jpg',
-           'video_path': '/axis-cgi/mjpg/video.cgi'
+            'cameraID': '201',
+            'camera_type': 'ip',
+            'ip': '207.251.86.238',
+            'port': '',
+            'image_path': '/cctv254.jpg',
+            'video_path': '/axis-cgi/mjpg/video.cgi'
         }
         cam3 = {
             'cameraID': '301',
@@ -83,32 +83,30 @@ class TestCamera(unittest.TestCase):
         self.assertIsNone(self.archiver.archive(self.cameras))
         self.assertEqual(os.listdir('testing'), [], 'Folder 202 should not exist because it is empty')
 
-
     # Test IP Camera
     def test_get_frame_no_parser(self):
-        #Assert camera raises error when no parser is present
+        # Assert camera raises error when no parser is present
         # Todo: Change Exception to the Actual error 'ClosedStreamError' will trigger error
         with self.assertRaises(Exception):
             Camera(220).get_frame()
 
     def test_open_stream_invalid_enum(self):
-        #Assert exception raised with invalid enum
+        # Assert exception raised with invalid enum
         self.assertRaises(ValueError, self.ip_cam.open_stream, "INVALID_ENUM_VAL")
 
     def test_get_url_invalid_enum(self):
-        #Assert exception raised with invalid enum
+        # Assert exception raised with invalid enum
         self.assertRaises(ValueError, self.ip_cam.get_url, "INVALID_ENUM_VAL")
 
     def test_get_url_mjpeg(self):
-        #Assert url correctly created for mjpeg case
+        # Assert url correctly created for mjpeg case
         result = self.ip_cam.get_url(StreamFormat.MJPEG)
         self.assertEqual(result, "http://127.1.1.1:3000/test_mjpeg_path")
 
     def test_get_url_image(self):
-        #Assert url correctly created for image case
+        # Assert url correctly created for image case
         result = self.ip_cam.get_url(StreamFormat.IMAGE)
         self.assertEqual(result, "http://127.1.1.1:3000/test_image_path")
-
 
 
 if __name__ == '__main__':

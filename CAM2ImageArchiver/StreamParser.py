@@ -199,6 +199,7 @@ class ImageStreamParser(StreamParser):
 # @DeprecationWarning
 # TODO: Fix DeprecationWarning Decorator 
 
+
 class MJPEGStreamParser(StreamParser):
     """
     Represent a parser for a camera MJPEG stream.
@@ -328,7 +329,6 @@ class MJPEGStreamParser(StreamParser):
         soon as possible to avoid unnecessary network workload.
         """
         self.close_stream()
-
 
 
 class mjpgm3u8StreamParser(StreamParser):

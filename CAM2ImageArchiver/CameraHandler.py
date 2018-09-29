@@ -20,9 +20,6 @@ import cv2
 import datetime
 import os
 
-'''
-
-'''
 class CameraHandler(Process):
     """
     The thread to download snapshots from a single camera.
