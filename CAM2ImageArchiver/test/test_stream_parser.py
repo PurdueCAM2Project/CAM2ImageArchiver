@@ -2,10 +2,10 @@ import unittest
 import sys
 import urllib2
 import json
-from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
-from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
 from os import path
 from mock import patch
+from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
+from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
 '''
 Copyright 2017 Purdue University
 
@@ -101,7 +101,9 @@ class TestStreamParser(unittest.TestCase):
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 3)
 
-    @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject(None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:not_a_digit']))
+    @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject(None, ['--myboundary',
+                                                                              'Content-Type: image/jpeg',
+                                                                              'Content-Length:not_a_digit']))
     def test_mjpeg_frame_line_three_invalid_content_length(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)

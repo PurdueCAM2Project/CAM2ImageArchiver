@@ -82,7 +82,8 @@ class CAM2ImageArchiver:
         if len(cams):
             self.archive(cams, duration, interval, result_path, remove_after_failure)
 
-    def archive(self, camObjects, duration=1, interval=1, result_path=None, remove_after_failure=True):
+    def archive(self, camObjects, duration=1, interval=1, result_path=None,
+                remove_after_failure=True):
         '''
         Archives images from array of cameras.  Places directory of all results at the given path.
 
@@ -93,12 +94,13 @@ class CAM2ImageArchiver:
         duration : int
             Duration of parsing images
         interval : int
-            Interval of time in duration to get image. For example, duration=10, interval=2, will generate 5 images
+            Interval of time in duration to get image. For example, duration=10,
+            interval=2, will generate 5 images
         result_path : str
             Name of folder where image is saved
         remove_after_failure : Boolean
             Indicator to decide whether to remove a camera object after parsing failure
-            
+
         Example
         -------
             Check test cases in test_camera.py
@@ -132,7 +134,8 @@ class CAM2ImageArchiver:
             # Increment chunk number
             chunk += 1
             # Create a new thread to handle the camera.
-            camera_handler = CameraHandler(camera_list, chunk, duration, interval, result_path, remove_after_failure)
+            camera_handler = CameraHandler(camera_list, chunk, duration, interval,
+                                           result_path, remove_after_failure)
             # Run the thread.
             camera_handler.start()
             # Add the thread to the array of threads.
@@ -158,7 +161,8 @@ class CAM2ImageArchiver:
         Attributes
         ----------
         cam: dictionary-like object
-            A camera dictionary-like object most likely instantiated from camera class in CameraDatabaseClient repo
+            A camera dictionary-like object most likely instantiated from camera class
+            in CameraDatabaseClient repo
 
         Return
         ------
