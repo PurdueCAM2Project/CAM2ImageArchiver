@@ -23,7 +23,7 @@ import sys
 import urllib2
 from os import path
 import json
-sys.path.append(path.dirname(path.dirname(path.abspath(__file__) ) ) )
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
 class DummyUrlObject:
@@ -86,13 +86,17 @@ class TestStreamParser(unittest.TestCase):
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 1)
 
-    @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject(None, ['--myboundary', 'test']))
+    @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject(None, ['--myboundary',
+                                                                              'test']))
     def test_mjpeg_url_wrong_content_type(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 2)
 
-    @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject(None, ['--myboundary', 'Content-Type: image/jpeg', 'first:second:third']))
+    @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject(None, ['--myboundary',
+                                                                              'Content-Type: '
+                                                                              'image/jpeg',
+                                                                              'first:second:third']))
     def test_mjpeg_frame_line_three_too_long(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)

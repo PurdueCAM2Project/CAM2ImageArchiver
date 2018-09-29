@@ -49,7 +49,8 @@ class CAM2ImageArchiver:
         self.num_processes = num_processes
         self.result_path = result_path
 
-    def retrieve_csv(self, camera_url_file, duration, interval, result_path, remove_after_failure=True):
+    def retrieve_csv(self, camera_url_file, duration, interval, result_path,
+                     remove_after_failure=True):
         '''
         Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
         Reads camera urls from csv file and archives the images at the requested directory.

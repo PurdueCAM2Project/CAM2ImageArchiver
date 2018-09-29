@@ -1,3 +1,4 @@
+from six.moves.urllib.request import urlopen
 """
 Copyright 2017 Purdue University
 
@@ -58,7 +59,6 @@ close_stream method.
 
 """
 import requests
-from six.moves.urllib.request import urlopen
 import cv2
 import numpy as np
 
@@ -376,12 +376,11 @@ class mjpgm3u8StreamParser(StreamParser):
         vc = cv2.VideoCapture(self.url)
 
         if vc.isOpened():
-            rval , frame = vc.read()
-            return frame,1
+            rval, frame = vc.read()
+            return frame, 1
         else:
             rval = False
             print("No frame returned")
-            return None,1
+            return None, 1
 
         vc.release()
-
