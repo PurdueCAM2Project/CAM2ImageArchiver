@@ -1,7 +1,6 @@
 import unittest
 import sys
 import urllib2
-import json
 from os import path
 from mock import patch
 from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
@@ -92,10 +91,11 @@ class TestStreamParser(unittest.TestCase):
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 2)
 
-    @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject(None, ['--myboundary',
-                                                                              'Content-Type: '
-                                                                              'image/jpeg',
-                                                                              'first:second:third']))
+    @patch('StreamParser.urllib2.urlopen',
+           return_value=DummyUrlObject(None,
+                                       ['--myboundary',
+                                        'Content-Type:image/jpeg',
+                                        'first:second:third']))
     def test_mjpeg_frame_line_three_too_long(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)

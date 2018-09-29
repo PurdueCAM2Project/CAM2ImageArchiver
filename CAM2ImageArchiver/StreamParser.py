@@ -1,8 +1,8 @@
-import requests
 import cv2
 import numpy as np
 import error
 from six.moves.urllib.request import urlopen
+import requests
 """
 Copyright 2017 Purdue University
 

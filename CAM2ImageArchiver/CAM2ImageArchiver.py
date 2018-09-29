@@ -79,7 +79,7 @@ class CAM2ImageArchiver:
                     camera = {'type': 'non_ip', 'id': id, 'snapshot_url': camera_url[0]}
                 id += 1
                 cams.append(camera)
-        if len(cams):
+        if cams:
             self.archive(cams, duration, interval, result_path, remove_after_failure)
 
     def archive(self, camObjects, duration=1, interval=1, result_path=None,
@@ -105,7 +105,7 @@ class CAM2ImageArchiver:
         -------
             Check test cases in test_camera.py
         '''
-        if result_path == None:
+        if result_path is None:
             result_path = self.result_path
 
         cams = []
