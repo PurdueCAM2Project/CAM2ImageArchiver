@@ -4,6 +4,7 @@ import os
 import shutil
 from CAM2ImageArchiver.camera import Camera, IPCamera, StreamFormat
 from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
+
 """
 Copyright 2017 Purdue University
 
