@@ -62,7 +62,8 @@ class CameraHandler(Process):
         """
         Download snapshots from the camera, and save locally.
         """
-        print("Starting download of {} cameras from chunk {}".format(len(self.cameras), str(self.chunk)))
+        print("Starting download of {} cameras from chunk {}".format(len(self.cameras),
+                                                                     str(self.chunk)))
 
         # Set the starting timestamp, and process until the end of the duration.
         start_timestamp = time.time()
@@ -71,7 +72,8 @@ class CameraHandler(Process):
             # Set the timestamp of the start of the new loop iteration.
             loop_start_timestamp = time.time()
 
-            # bad_cams is initialized in the while loop so that the array is emptied after each iteration
+            # bad_cams is initialized in the while loop so that the array is emptied after
+            # each iteration
             bad_cams = []
             for camera in self.cameras:
                 try:
