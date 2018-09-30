@@ -55,11 +55,9 @@ while time.time() - t < 5:
 parser.close_stream()
 
 """
-import urllib2
-
+from six.moves.urllib.request import urlopen
 import cv2
 import numpy as np
-
 import error
 
 
@@ -171,8 +169,8 @@ class ImageStreamParser(StreamParser):
         """
         try:
             # Download the frame data.
-            frame = urllib2.urlopen(self.url, timeout=5).read()
-        except urllib2.URLError:
+            frame = urlopen(self.url, timeout=5).read()
+        except:
             raise error.UnreachableCameraError
 
         # Handle the cameras that return empty content.
@@ -228,8 +226,8 @@ class MJPEGStreamParser(StreamParser):
             If the camera is unreachable.
         """
         try:
-            self.mjpeg_stream = urllib2.urlopen(self.url, timeout=5)
-        except urllib2.URLError:
+            self.mjpeg_stream = urlopen(self.url, timeout=5)
+        except:
             raise error.UnreachableCameraError
 
     def close_stream(self):

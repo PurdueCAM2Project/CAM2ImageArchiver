@@ -17,7 +17,6 @@ limitations under the License.
 import unittest
 from mock import patch
 import sys
-import urllib2
 from os import path
 import json
 sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
