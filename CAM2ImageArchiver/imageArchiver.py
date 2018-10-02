@@ -18,10 +18,10 @@ import time
 import csv
 import os
 
-from utils import check_file_exists, check_result_path_writable
-from camera import NonIPCamera, IPCamera, StreamCamera
-from CameraHandler import CameraHandler
-from error import ExpectedCAM2APIClientCameraObject
+from Cam2ImageArchiver.utils import check_file_exists, check_result_path_writable
+from Cam2ImageArchiver.camera import NonIPCamera, IPCamera, StreamCamera
+from Cam2ImageArchiver.CameraHandler import CameraHandler
+from Cam2ImageArchiver.error import ExpectedCAM2APIClientCameraObject
 """
 Created on 5 September 2017
 @author: Sam Yellin
@@ -32,7 +32,7 @@ See README for database setup information.
 """
 
 
-class CAM2ImageArchiver:
+class CAM2ImageArchiver(object):
     '''
     Retrieve images either from a cvs file or from a list of camera objects
     '''
@@ -67,17 +67,17 @@ class CAM2ImageArchiver:
 
         with open(camera_url_file, 'r') as camera_file:
             camera_reader = csv.reader(camera_file)
-            id = 1
+            _id = 1
             cams = []
             for camera_url in camera_reader:
                 # These cameras do not come from the database and so have no ID.  Assign
                 # one to them so they can be placed in a result folder.
                 camera_type = camera_url[0].split(".")[-1]
                 if camera_type == "m3u8":
-                    camera = {'type': 'stream', 'id': id, 'm3u8_url': camera_url[0]}
+                    camera = {'type': 'stream', 'id': _id, 'm3u8_url': camera_url[0]}
                 else:
-                    camera = {'type': 'non_ip', 'id': id, 'snapshot_url': camera_url[0]}
-                id += 1
+                    camera = {'type': 'non_ip', 'id': _id, 'snapshot_url': camera_url[0]}
+                _id += 1
                 cams.append(camera)
         if cams:
             self.archive(cams, duration, interval, result_path, remove_after_failure)
@@ -120,7 +120,7 @@ class CAM2ImageArchiver:
             new_cam_directories.append(cam_directory)
             try:
                 os.makedirs(cam_directory)
-            except OSError as e:
+            except OSError:
                 pass
 
         # Split cameras into chunks for threading
