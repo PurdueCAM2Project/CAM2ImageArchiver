@@ -144,8 +144,7 @@ class Camera(object):
         pass
 
     def close_stream(self):
-        """
-        Close the currently open camera stream.
+        """ Close the currently open camera stream.
         """
         pass
 
