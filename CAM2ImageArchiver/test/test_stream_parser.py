@@ -18,7 +18,6 @@ import unittest
 from mock import patch
 import sys
 from os import path
-import requests
 sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
 from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
 from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
@@ -53,7 +52,7 @@ class TestStreamParser(unittest.TestCase):
         self.assertRaises(NotImplementedError, self.stream_parser.get_frame)
 
     # ImageStreamParser Tests
-    @patch('StreamParser.urlopen', side_effect=requests.URLError("test"))
+    @patch('StreamParser.urlopen', side_effect=Exception("test"))
     def test_image_get_frame_unreachable_camera(self, mocked_urllib):
         self.assertRaises(UnreachableCameraError, self.image_stream_parser.get_frame)
 
@@ -71,7 +70,7 @@ class TestStreamParser(unittest.TestCase):
     def test_mjpeg_no_stream(self):
         self.assertRaises(ClosedStreamError, self.mjpeg_stream_parser.get_frame)
 
-    @patch('StreamParser.urlopen', side_effect=urllib2.URLError("test"))
+    @patch('StreamParser.urlopen', side_effect=Exception("test"))
     def test_mjpeg_url_open_failure(self, mocked_urllib):
         self.assertRaises(UnreachableCameraError, self.mjpeg_stream_parser.open_stream)
 
