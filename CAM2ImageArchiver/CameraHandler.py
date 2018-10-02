@@ -19,7 +19,7 @@ import time
 import datetime
 import os
 import cv2
-
+from Cam2ImageArchiver.error import CorruptedFrameError
 
 class CameraHandler(Process):
     """
@@ -77,7 +77,7 @@ class CameraHandler(Process):
                 try:
                     # Download the image.
                     frame, _ = camera.get_frame()
-                except Exception as e:
+                except CorruptedFrameError:
                     if self.remove_after_failure:
                         print("Error retrieving from camera {}.  Marking camera for removal "
                               "from chunk {}.".format(str(camera.id), str(self.chunk)))

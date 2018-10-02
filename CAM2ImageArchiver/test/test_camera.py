@@ -1,9 +1,3 @@
-import unittest
-import sys
-import os
-import shutil
-from CAM2ImageArchiver.camera import Camera, IPCamera, StreamFormat
-from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
 '''
 Copyright 2017 Purdue University
 
@@ -20,6 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
+import unittest
+import sys
+import os
+import shutil
+from Cam2ImageArchiver.camera import Camera, IPCamera, StreamFormat
+from Cam2ImageArchiver.imageArchiver import CAM2ImageArchiver
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 

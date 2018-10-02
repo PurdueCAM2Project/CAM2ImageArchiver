@@ -73,8 +73,8 @@ calling the close_stream method.
     camera.close_stream()
 
 """
-from error import ClosedStreamError
-import StreamParser
+from Cam2ImageArchiver.error import ClosedStreamError
+from Cam2ImageArchiver import StreamParser
 
 
 class StreamFormat(object):
@@ -121,8 +121,8 @@ class Camera(object):
 
     """
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, _id):
+        self.id = _id
         self.parser = None
 
     def open_stream(self, stream_format):
@@ -144,8 +144,8 @@ class Camera(object):
         pass
 
     def close_stream(self):
-        """Close the currently open camera stream.
-
+        """
+        Close the currently open camera stream.
         """
         pass
 
@@ -224,8 +224,8 @@ class IPCamera(Camera):
     call the open_stream method.
 
     """
-    def __init__(self, id, ip, image_path, mjpeg_path=None, port=None):
-        super(IPCamera, self).__init__(id)
+    def __init__(self, _id, ip, image_path, mjpeg_path=None, port=None):
+        super(IPCamera, self).__init__(_id)
         self.is_video = 1
         self.ip = ip
         self.image_path = image_path
@@ -364,8 +364,8 @@ class NonIPCamera(Camera):
 
     """
 
-    def __init__(self, id, url):
-        super(NonIPCamera, self).__init__(id)
+    def __init__(self, _id, url):
+        super(NonIPCamera, self).__init__(_id)
         self.is_video = 0
         self.url = url
 
@@ -394,8 +394,8 @@ class StreamCamera(Camera):
 
     """
 
-    def __init__(self, id, url):
-        super(StreamCamera, self).__init__(id)
+    def __init__(self, _id, url):
+        super(StreamCamera, self).__init__(_id)
         self.is_video = 0
         self.url = url
-        self.parser = StreamParser.mjpgm3u8StreamParser(url)
+        self.parser = StreamParser.MJPGm3u8StreamParser(url)

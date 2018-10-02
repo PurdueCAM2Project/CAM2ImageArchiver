@@ -1,10 +1,3 @@
-from six.moves.urllib.request import urlopen
-import cv2
-import numpy as np
-import requests
-import error
-
-
 """
 Copyright 2017 Purdue University
 
@@ -64,8 +57,10 @@ close_stream method.
     parser.close_stream()
 
 """
-
-
+from six.moves import urllib
+import cv2
+import numpy as np
+from Cam2ImageArchiver import error
 
 class StreamParser(object):
     """
@@ -175,8 +170,8 @@ class ImageStreamParser(StreamParser):
         """
         try:
             # Download the frame data.
-            frame = urlopen(self.url, timeout=5).read()
-        except requests.URLError:
+            frame = urllib.request.urlopen(self.url, timeout=5).read()
+        except:
             raise error.UnreachableCameraError
 
         # Handle the cameras that return empty content.
@@ -234,8 +229,8 @@ class MJPEGStreamParser(StreamParser):
             If the camera is unreachable.
         """
         try:
-            self.mjpeg_stream = urllib2.urlopen(self.url, timeout=5)
-        except urllib2.URLError:
+            self.mjpeg_stream = urllib.request.urlopen(self.url, timeout=5)
+        except:
             raise error.UnreachableCameraError
 
     def close_stream(self):
@@ -333,7 +328,7 @@ class MJPEGStreamParser(StreamParser):
         self.close_stream()
 
 
-class mjpgm3u8StreamParser(StreamParser):
+class MJPGm3u8StreamParser(StreamParser):
     """
     Represent a parser for a camera MJPEG stream.
     *Does not have to be MJPEG, .m3u8 media file works as well.
@@ -353,7 +348,7 @@ class mjpgm3u8StreamParser(StreamParser):
     """
 
     def __init__(self, url):
-        super(mjpgm3u8StreamParser, self).__init__(url)
+        super(MJPGm3u8StreamParser, self).__init__(url)
         self.mjpeg_stream = None
 
     def get_frame(self):
@@ -378,11 +373,10 @@ class mjpgm3u8StreamParser(StreamParser):
         vc = cv2.VideoCapture(self.url)
 
         if vc.isOpened():
-            rval, frame = vc.read()
-            return frame, 1
-        else:
-            rval = False
-            print("No frame returned")
-            return None, 1
+            _, frame = vc.read()
+            vc.release()
 
+            return frame, 1
+        print("No frame returned")
         vc.release()
+        return None, 1

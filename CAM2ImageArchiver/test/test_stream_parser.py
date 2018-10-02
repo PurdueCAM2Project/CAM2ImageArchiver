@@ -1,10 +1,3 @@
-import unittest
-import sys
-import urllib2
-from os import path
-from mock import patch
-from StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
-from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
 '''
 Copyright 2017 Purdue University
 
@@ -20,11 +13,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
-
+import unittest
+import sys
+import urllib2
+from os import path
+from mock import patch
+from Cam2ImageArchiver.StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
+from Cam2ImageArchiver.error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
-class DummyUrlObject:
+class DummyUrlObject(object):
 
     def __init__(self, read_retval, readline_retval):
         self.read_retval = read_retval
@@ -110,7 +109,7 @@ class TestStreamParser(unittest.TestCase):
 
     @patch('StreamParser.urllib2.urlopen', return_value=DummyUrlObject
            (None, ['--myboundary', 'Content-Type: image/jpeg', 'wrong:10']))
-    def test_mjpeg_frame_line_three_invalid_content_length(self, mocked_urllib):
+    def test_mjpeg_frame_line_three_invalid_content_length2(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 3)
@@ -145,7 +144,7 @@ class TestStreamParser(unittest.TestCase):
            (None, ['--myboundary', 'Content-Type: image/jpeg', 'Content-Length:10', '', '']))
     @patch('StreamParser.cv2.imdecode', return_value="Test")
     @patch('StreamParser.np.fromstring', return_value=None)
-    def test_mjpeg_frame_is_none(self, mocked_urllib, mocked_cv2, mocked_np):
+    def test_mjpeg_frame_is_none2(self, mocked_urllib, mocked_cv2, mocked_np):
         self.mjpeg_stream_parser.open_stream()
         self.assertEqual(self.mjpeg_stream_parser.get_frame(), ("Test", 10))
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 5)
