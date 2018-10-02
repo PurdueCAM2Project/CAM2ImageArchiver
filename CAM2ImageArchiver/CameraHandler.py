@@ -96,7 +96,7 @@ class CameraHandler(Process):
                             cam_directory, camera.id,
                             datetime.datetime.fromtimestamp(
                                 frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
-                        
+
                         if self.image_difference_percentage:
                             if frame.size != 0 and (type(camera.last_frame) == type(None) or (np.count_nonzero(cv2.absdiff(camera.last_frame, frame)) * 100) / frame.size >= self.image_difference_percentage):
                                 cv2.imwrite(file_name, frame)

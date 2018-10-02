@@ -60,7 +60,7 @@ class TestCamera(unittest.TestCase):
         self.assertIsNone(self.archiver.archive(self.cameras))
 
     def test_get_frame_with_longer_duration_interval_success(self):
-        self.assertIsNone(self.archiver.archive(self.cameras, duration=3, interval=2))
+        self.assertIsNone(self.archiver.archive(self.cameras, duration=6, interval=2))
 
     def test_folder_not_generated_when_parsing_failed(self):
         cam2 = {
@@ -75,6 +75,17 @@ class TestCamera(unittest.TestCase):
         self.assertIsNone(self.archiver.archive(self.cameras))
         self.assertEqual(os.listdir('testing'), [], 'Folder 202 should not exist because it is empty')
 
+    def test_duplicate_image(self):
+        """
+        Test downloading a image for 5 seconds from Google IMAGE
+        """
+        dupcam = {
+            'cameraID': '203',
+            'camera_type': 'non_ip',
+            'snapshot_url': 'https://cdn.britannica.com/s:700x450/45/5645-004-7461C1BD.jpg'
+        }
+        self.cameras = [dupcam]
+        self.assertIsNone(self.archiver.archive(self.cameras,duration=5,interval=1))
 
     # Test IP Camera
     def test_get_frame_no_parser(self):
