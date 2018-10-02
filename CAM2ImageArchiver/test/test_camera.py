@@ -36,7 +36,7 @@ class TestCamera(unittest.TestCase):
            'camera_type': 'ip',
            'ip': '207.251.86.238',
            'port': '',
-           'image_path': '/cctv290.jpg',
+           'image_path': '/cctv254.jpg',
            'video_path': '/axis-cgi/mjpg/video.cgi'
         }
         cam3 = {
@@ -58,11 +58,19 @@ class TestCamera(unittest.TestCase):
 
     def test_get_frame_with_custom_result_path_success(self):
         self.assertIsNone(self.archiver.archive(self.cameras))
+        directories = set(os.listdir('testing'))
+        expected_dirs = set(('301', '101', '201'))
+        self.assertEqual(directories, expected_dirs, 'Image Parsing Failed.')
 
     def test_get_frame_with_longer_duration_interval_success(self):
         self.assertIsNone(self.archiver.archive(self.cameras, duration=6, interval=2))
+        directories = set(os.listdir('testing'))
+        expected_dirs = set(('301', '101', '201'))
+        self.assertEqual(directories, expected_dirs, 'Image Parsing Failed.')
 
     def test_folder_not_generated_when_parsing_failed(self):
+        if os.path.isdir('testing'):
+            shutil.rmtree('testing')
         cam2 = {
             'cameraID': '202',
             'camera_type': 'ip',
@@ -105,12 +113,12 @@ class TestCamera(unittest.TestCase):
     def test_get_url_mjpeg(self):
         #Assert url correctly created for mjpeg case
         result = self.ip_cam.get_url(StreamFormat.MJPEG)
-        self.assertEquals(result, "http://127.1.1.1:3000/test_mjpeg_path")
+        self.assertEqual(result, "http://127.1.1.1:3000/test_mjpeg_path")
 
     def test_get_url_image(self):
         #Assert url correctly created for image case
         result = self.ip_cam.get_url(StreamFormat.IMAGE)
-        self.assertEquals(result, "http://127.1.1.1:3000/test_image_path")
+        self.assertEqual(result, "http://127.1.1.1:3000/test_image_path")
 
 
 
