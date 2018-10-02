@@ -81,9 +81,12 @@ class CAM2ImageArchiver:
             cams.append(self.__get_camera_from_object(cam))
 
         camera_handlers = []
+        new_cam_directories = []
+
         # Create result directories for all cameras
         for camera in cams:
             cam_directory = os.path.join(result_path, str(camera.id))
+            new_cam_directories.append(cam_directory)
             try:
                 os.makedirs(cam_directory)
             except OSError as e:
@@ -114,7 +117,10 @@ class CAM2ImageArchiver:
         for camera_handler in camera_handlers:
             camera_handler.join()
 
-        
+        # Clean all empty folder
+        for folder in new_cam_directories:
+            if os.listdir(folder) == []:
+                os.rmdir(folder)
 
     def __get_camera_from_object(self, cam):
         '''
