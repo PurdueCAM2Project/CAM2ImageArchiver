@@ -21,7 +21,7 @@ import os
 from utils import check_file_exists, check_result_path_writable
 from camera import NonIPCamera, IPCamera, StreamCamera
 from CameraHandler import CameraHandler
-
+from error import ExpectedCAM2APIClientCameraObject
 """
 Created on 5 September 2017
 @author: Sam Yellin
@@ -43,6 +43,7 @@ class CAM2ImageArchiver:
 
     def retrieve_csv(self, camera_url_file, duration, interval, result_path, remove_after_failure=True):
         '''
+        Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
         Reads camera urls from csv file and archives the images at the requested directory.
         '''
 
@@ -72,6 +73,23 @@ class CAM2ImageArchiver:
     def archive(self, camObjects, duration=1, interval=1, result_path=None, remove_after_failure=True):
         '''
         Archives images from array of cameras.  Places directory of all results at the given path.
+
+        Attributes
+        ----------
+        camObjects : list
+            A list of cameras dictionary-like object from Client containing camera's data
+        duration : int
+            Duration of parsing images
+        interval : int
+            Interval of time in duration to get image. For example, duration=10, interval=2, will generate 5 images
+        result_path : str
+            Name of folder where image is saved
+        remove_after_failure : Boolean
+            Indicator to decide whether to remove a camera object after parsing failure
+            
+        Example
+        -------
+            Check test cases in test_camera.py
         '''
         if result_path == None:
             result_path = self.result_path
@@ -119,7 +137,17 @@ class CAM2ImageArchiver:
     def __get_camera_from_object(self, cam):
         '''
         Reads converts CAM2 Camera API Camera Object to Archiver Camera Object
+
+        Attributes
+        ----------
+        cam: dictionary-like object
+            A camera dictionary-like object most likely instantiated from camera class in CameraDatabaseClient repo
+
+        Return
+        ------
+            A camera object instantiated from camera class in Archiver repo
         '''
+
         if cam['camera_type'] == 'ip':
             camera = IPCamera(cam['cameraID'], cam['ip'], cam['image_path'],
                               cam['video_path'], cam['port'])

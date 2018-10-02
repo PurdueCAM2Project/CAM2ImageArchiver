@@ -29,11 +29,12 @@ image stream.
 time, as well as the frame size. There is no need to call open_stream or
 close_stream.
 
-parser = ImageStreamParser('http://128.10.29.33/axis-cgi/jpg/image.cgi')
-frame, frame_size = parser.get_frame()
-cv2.imshow('frame', frame)
-print frame_size
-cv2.waitKey()
+::
+    parser = ImageStreamParser('http://128.10.29.33/axis-cgi/jpg/image.cgi')
+    frame, frame_size = parser.get_frame()
+    cv2.imshow('frame', frame)
+    print frame_size
+    cv2.waitKey()
 
 Example 2: To parse a camera MJPEG stream:
 1. Initialize an object of MJPEGStreamParser using the URL of the camera
@@ -44,15 +45,16 @@ as well as the frame size.
 4. At the end when no more frames are needed, close the stream by calling the
 close_stream method.
 
-parser = MJPEGStreamParser('http://128.10.29.33/axis-cgi/mjpg/video.cgi')
-parser.open_stream()
-t = time.time()
-while time.time() - t < 5:
-    frame, frame_size = parser.get_frame()
-    cv2.imshow('frame', frame)
-    print frame_size
-    cv2.waitKey(30)
-parser.close_stream()
+::
+    parser = MJPEGStreamParser('http://128.10.29.33/axis-cgi/mjpg/video.cgi')
+    parser.open_stream()
+    t = time.time()
+    while time.time() - t < 5:
+        frame, frame_size = parser.get_frame()
+        cv2.imshow('frame', frame)
+        print frame_size
+        cv2.waitKey(30)
+    parser.close_stream()
 
 """
 from six.moves.urllib.request import urlopen
@@ -194,6 +196,7 @@ class ImageStreamParser(StreamParser):
 # DEPRECIATED.  Use m3u8mjpgStreamParser
 # @DeprecationWarning
 # TODO: Fix DeprecationWarning Decorator 
+
 class MJPEGStreamParser(StreamParser):
     """
     Represent a parser for a camera MJPEG stream.
