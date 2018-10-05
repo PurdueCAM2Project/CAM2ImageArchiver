@@ -19,7 +19,7 @@ import time
 import datetime
 import os
 import cv2
-from Cam2ImageArchiver.error import CorruptedFrameError
+from error import CorruptedFrameError
 
 class CameraHandler(Process):
     """

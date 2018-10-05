@@ -18,10 +18,10 @@ import time
 import csv
 import os
 
-from Cam2ImageArchiver.utils import check_file_exists, check_result_path_writable
-from Cam2ImageArchiver.camera import NonIPCamera, IPCamera, StreamCamera
-from Cam2ImageArchiver.CameraHandler import CameraHandler
-from Cam2ImageArchiver.error import ExpectedCAM2APIClientCameraObject
+from utils import check_file_exists, check_result_path_writable
+from camera import NonIPCamera, IPCamera, StreamCamera
+from CameraHandler import CameraHandler
+from error import ExpectedCAM2APIClientCameraObject
 """
 Created on 5 September 2017
 @author: Sam Yellin

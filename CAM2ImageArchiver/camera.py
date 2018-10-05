@@ -73,8 +73,8 @@ calling the close_stream method.
     camera.close_stream()
 
 """
-from Cam2ImageArchiver.error import ClosedStreamError
-from Cam2ImageArchiver import StreamParser
+from error import ClosedStreamError
+import StreamParser
 
 
 class StreamFormat(object):

@@ -18,8 +18,8 @@ import unittest
 import sys
 import os
 import shutil
-from Cam2ImageArchiver.camera import Camera, IPCamera, StreamFormat
-from Cam2ImageArchiver.imageArchiver import CAM2ImageArchiver
+from CAM2ImageArchiver.camera import Camera, IPCamera, StreamFormat
+from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 

@@ -18,8 +18,8 @@ import sys
 import urllib2
 from os import path
 from mock import patch
-from Cam2ImageArchiver.StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
-from Cam2ImageArchiver.error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
+from CAM2ImageArchiver.StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
+from CAM2ImageArchiver.error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 

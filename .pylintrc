@@ -139,7 +139,8 @@ disable=print-statement,
         protected-access,
         no-self-use,
         pointless-string-statement,
-        superfluous-parens
+        superfluous-parens,
+        relative-import
 
 
 # Enable the message, report, category or checker with the given id(s). You can

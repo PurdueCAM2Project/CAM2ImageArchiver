@@ -60,7 +60,7 @@ close_stream method.
 from six.moves import urllib
 import cv2
 import numpy as np
-from Cam2ImageArchiver import error
+import error
 
 class StreamParser(object):
     """
