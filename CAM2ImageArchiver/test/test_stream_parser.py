@@ -82,8 +82,7 @@ class TestStreamParser(unittest.TestCase):
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
         self.assertEqual(self.mjpeg_stream_parser.mjpeg_stream.readline_count, 1)
 
-    @patch('StreamParser.urllib.request.urlopen', return_value=DummyUrlObject(None, ['--myboundary',
-                                                                              'test']))
+    @patch('StreamParser.urllib.request.urlopen', return_value=DummyUrlObject(None, ['--myboundary', 'test']))
     def test_mjpeg_url_wrong_content_type(self, mocked_urllib):
         self.mjpeg_stream_parser.open_stream()
         self.assertRaises(CorruptedFrameError, self.mjpeg_stream_parser.get_frame)
