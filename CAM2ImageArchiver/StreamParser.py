@@ -60,7 +60,8 @@ close_stream method.
 from six.moves import urllib
 import cv2
 import numpy as np
-from error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
+# from .error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
+import error
 
 class StreamParser(object):
     """
@@ -172,11 +173,14 @@ class ImageStreamParser(StreamParser):
             # Download the frame data.
             frame = urllib.request.urlopen(self.url, timeout=5).read()
         except:
-            raise UnreachableCameraError()
+            raise error.UnreachableCameraError
+            # raise UnreachableCameraError()
 
         # Handle the cameras that return empty content.
         if frame == '':
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
+            # raise CorruptedFrameError()
+
         # Get the size of the downloaded frame in bytes.
         frame_size = len(frame)
 
@@ -187,7 +191,8 @@ class ImageStreamParser(StreamParser):
         # cv2.imdecode returns None if the input buffer is too short
         # or contains invalid data.
         if frame is None:
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
+            # raise CorruptedFrameError()
 
 
         return frame, frame_size
@@ -231,7 +236,8 @@ class MJPEGStreamParser(StreamParser):
         try:
             self.mjpeg_stream = urllib.request.urlopen(self.url, timeout=5)
         except:
-            raise UnreachableCameraError()
+            raise error.UnreachableCameraError
+            # raise UnreachableCameraError()
 
     def close_stream(self):
         """
@@ -276,33 +282,33 @@ class MJPEGStreamParser(StreamParser):
         [empty line]
         """
         if self.mjpeg_stream is None:
-            raise ClosedStreamError()
+            raise error.ClosedStreamError
 
         # Skip the boundary line.
         if self.mjpeg_stream.readline().rstrip() != '--myboundary':
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
 
         # Skip the second line that has "Content-Type: image/jpeg".
         if self.mjpeg_stream.readline().rstrip() != 'Content-Type: image/jpeg':
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
 
         # Verify the format of the third line, and get the frame size.
         line = [s.strip() for s in self.mjpeg_stream.readline().split(':')]
         if len(line) == 2 and line[0] == 'Content-Length' and line[1].isdigit():
             frame_size = int(line[1])
         else:
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
 
         # Skip the empty line before the binary frame data.
         if self.mjpeg_stream.readline().strip() != '':
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
 
         # Read the binary frame data.
         frame = self.mjpeg_stream.read(frame_size)
 
         # Skip the empty line after the binary frame data.
         if self.mjpeg_stream.readline().strip() != '':
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
 
         # Decode the frame data to a numpy.ndarray image.
         frame = cv2.imdecode(np.fromstring(frame, dtype=np.uint8), -1)
@@ -311,7 +317,8 @@ class MJPEGStreamParser(StreamParser):
         # cv2.imdecode returns None if the input buffer is too short or
         # contains invalid data.
         if frame is None:
-            raise CorruptedFrameError()
+            raise error.CorruptedFrameError
+            # raise CorruptedFrameError()
 
         return frame, frame_size
 
