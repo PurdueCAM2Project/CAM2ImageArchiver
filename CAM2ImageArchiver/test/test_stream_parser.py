@@ -15,7 +15,6 @@ limitations under the License.
 '''
 import unittest
 import sys
-import urllib2
 from os import path
 from mock import patch
 from CAM2ImageArchiver.StreamParser import StreamParser, MJPEGStreamParser, ImageStreamParser
@@ -55,7 +54,7 @@ class TestStreamParser(unittest.TestCase):
         self.assertRaises(NotImplementedError, self.stream_parser.get_frame)
 
     # ImageStreamParser Tests
-    @patch('StreamParser.urllib2.urlopen', side_effect=urllib2.URLError("test"))
+    @patch('StreamParser.urllib2.urlopen', side_effect=UnreachableCameraError("test"))
     def test_image_get_frame_unreachable_camera(self, mocked_urllib):
         self.assertRaises(UnreachableCameraError, self.image_stream_parser.get_frame)
 
@@ -73,7 +72,7 @@ class TestStreamParser(unittest.TestCase):
     def test_mjpeg_no_stream(self):
         self.assertRaises(ClosedStreamError, self.mjpeg_stream_parser.get_frame)
 
-    @patch('StreamParser.urllib2.urlopen', side_effect=urllib2.URLError("test"))
+    @patch('StreamParser.urllib2.urlopen', side_effect=UnreachableCameraError("test"))
     def test_mjpeg_url_open_failure(self, mocked_urllib):
         self.assertRaises(UnreachableCameraError, self.mjpeg_stream_parser.open_stream)
 
