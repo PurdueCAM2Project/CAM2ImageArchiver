@@ -140,7 +140,9 @@ disable=print-statement,
         no-self-use,
         pointless-string-statement,
         superfluous-parens,
-        relative-import
+        relative-import,
+        broad-except,
+        line-too-long
 
 
 # Enable the message, report, category or checker with the given id(s). You can

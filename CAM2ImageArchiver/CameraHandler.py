@@ -76,9 +76,10 @@ class CameraHandler(Process):
                 try:
                     # Download the image.
                     frame, _ = camera.get_frame()
-                except Exception as e:
+                except Exception:
                     if self.remove_after_failure:
-                        print("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                        print("Error retrieving from camera {}.  Marking camera for removal "
+                              "from chunk {}.".format(str(camera.id), str(self.chunk)))
                         bad_cams.append(camera)
                     else:
                         pass
