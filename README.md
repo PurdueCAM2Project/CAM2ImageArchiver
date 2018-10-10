@@ -40,7 +40,7 @@ seeing, there are several problems. First, there is no central
 repository where network cameras must register.  Thus, significant
 efforts must be taken to find various sources of data. Second,
 different brands of network cameras need different methods to retrieve
-the data.  The cameas may also provide different data formats: some
+the data.  The cameras may also provide different data formats: some
 provide individual JPEG images; some provide motion JPEG (MJPEG)
 video; some others provide H.264 video.
 
