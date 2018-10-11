@@ -266,7 +266,7 @@ class IPCamera(Camera):
         elif stream_format == StreamFormat.IMAGE:
             # The image stream parser is always initialized, and the stream
             # does not need to be opened.
-            pass
+            self.parser = ImageStreamParser(url)
         else:
             raise ValueError('Invalid Argument: stream_format')
 
