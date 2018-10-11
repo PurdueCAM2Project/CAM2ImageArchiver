@@ -63,7 +63,7 @@ class TestCamera(unittest.TestCase):
         self.assertIsNone(self.archiver.archive(self.cameras))
         directories = set(os.listdir('testing'))
         expected_dirs = set(('301', '101', '201'))
-        self.assertEqual(expected_dirs, directories, 'Image Parsing Failed.')
+        self.assertEqual(directories, expected_dirs, 'Image Parsing Failed.')
 
     def test_get_frame_with_longer_duration_interval_success(self):
         self.assertIsNone(self.archiver.archive(self.cameras, duration=6, interval=3))
