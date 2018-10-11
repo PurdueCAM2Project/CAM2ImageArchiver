@@ -207,11 +207,11 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
+<span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">urllib</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">CAM2ImageArchiver.error</span> <span class="k">import</span> <span class="n">UnreachableCameraError</span><span class="p">,</span> <span class="n">CorruptedFrameError</span><span class="p">,</span> <span class="n">ClosedStreamError</span>
-<span class="c1"># import error</span>
 
 <div class="viewcode-block" id="StreamParser"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.StreamParser.StreamParser">[docs]</a><span class="k">class</span> <span class="nc">StreamParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -321,9 +321,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Download the frame data.</span>
-            <span class="n">frame</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="c1"># raise error.UnreachableCameraError</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">signum</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Signal handler called with signal&#39;</span><span class="p">,</span> <span class="n">signum</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t open device!&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Set the signal handler and a 5-second alarm</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="c1"># This might stuck indefinitely without signal alarm</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="c1"># Close the alarm</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Possible Cause of error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">raise</span> <span class="n">UnreachableCameraError</span><span class="p">()</span>
 
         <span class="c1"># Handle the cameras that return empty content.</span>
@@ -534,11 +546,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">vc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="n">vc</span><span class="o">.</span><span class="n">isOpened</span><span class="p">():</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">vc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="n">vc</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-
             <span class="k">return</span> <span class="n">frame</span><span class="p">,</span> <span class="mi">1</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No frame returned&quot;</span><span class="p">)</span>
         <span class="n">vc</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
