@@ -14,14 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
+from __future__ import absolute_import
+
 import time
 import csv
 import os
 
-from .utils import check_file_exists, check_result_path_writable
-from .camera import NonIPCamera, IPCamera, StreamCamera
-from .CameraHandler import CameraHandler
-from .error import ExpectedCAM2APIClientCameraObject
+from utils import check_file_exists, check_result_path_writable
+from camera import NonIPCamera, IPCamera, StreamCamera
+from CameraHandler import CameraHandler
+from error import ExpectedCAM2APIClientCameraObject
 """
 Created on 5 September 2017
 @author: Sam Yellin

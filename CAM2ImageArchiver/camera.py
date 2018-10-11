@@ -73,8 +73,10 @@ calling the close_stream method.
     camera.close_stream()
 
 """
-from .error import ClosedStreamError
-from .StreamParser import ImageStreamParser, MJPEGStreamParser, MJPGm3u8StreamParser
+from __future__ import absolute_import
+
+from error import ClosedStreamError
+from StreamParser import ImageStreamParser, MJPEGStreamParser, MJPGm3u8StreamParser
 
 
 class StreamFormat(object):
