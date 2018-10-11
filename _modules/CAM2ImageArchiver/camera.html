@@ -414,7 +414,7 @@
         <span class="k">elif</span> <span class="n">stream_format</span> <span class="o">==</span> <span class="n">StreamFormat</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">:</span>
             <span class="c1"># The image stream parser is always initialized, and the stream</span>
             <span class="c1"># does not need to be opened.</span>
-            <span class="k">pass</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">ImageStreamParser</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid Argument: stream_format&#39;</span><span class="p">)</span></div>
 
