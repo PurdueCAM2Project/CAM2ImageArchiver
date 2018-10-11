@@ -75,8 +75,8 @@ calling the close_stream method.
 """
 from __future__ import absolute_import
 
-from error import ClosedStreamError
-from StreamParser import ImageStreamParser, MJPEGStreamParser, MJPGm3u8StreamParser
+from CAM2ImageArchiver.error import ClosedStreamError
+from CAM2ImageArchiver.StreamParser import ImageStreamParser, MJPEGStreamParser, MJPGm3u8StreamParser
 
 
 class StreamFormat(object):

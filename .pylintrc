@@ -147,7 +147,9 @@ disable=print-statement,
         unidiomatic-typecheck,
         import-error,
         not-callable,
-        no-name-in-module
+        no-name-in-module,
+        wildcard-import,
+        unused-wildcard-import
 
 
 # Enable the message, report, category or checker with the given id(s). You can

@@ -13,13 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
+from __future__ import absolute_import
 
 import unittest
 import sys
 import os
 import shutil
-from camera import Camera, IPCamera, StreamFormat
-from CAM2ImageArchiver import CAM2ImageArchiver
+from CAM2ImageArchiver.camera import Camera, IPCamera, StreamFormat
+from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
