@@ -45,7 +45,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            coverage run --source CAM2ImageArchiver/ setup.py test
+            coverage run -m unittest discover
 
       - run:
           name: code coverage
