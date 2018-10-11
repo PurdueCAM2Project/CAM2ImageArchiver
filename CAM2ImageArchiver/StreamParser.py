@@ -60,7 +60,7 @@ close_stream method.
 from six.moves.urllib.request import urlopen
 import cv2
 import numpy as np
-import .error
+import error
 
 
 class StreamParser(object):

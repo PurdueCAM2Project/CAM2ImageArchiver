@@ -73,7 +73,7 @@ calling the close_stream method.
     camera.close_stream()
 
 """
-from .error import ClosedStreamError
+from error import ClosedStreamError
 import StreamParser
 
 
