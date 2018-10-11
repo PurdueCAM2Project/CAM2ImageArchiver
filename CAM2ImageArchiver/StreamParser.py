@@ -59,11 +59,11 @@ close_stream method.
 """
 from __future__ import absolute_import
 
+import signal
 from six.moves import urllib
 import cv2
 import numpy as np
 from CAM2ImageArchiver.error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
-# import error
 
 class StreamParser(object):
     """
@@ -173,9 +173,21 @@ class ImageStreamParser(StreamParser):
         """
         try:
             # Download the frame data.
-            frame = urllib.request.urlopen(self.url, timeout=5).read()
-        except:
-            # raise error.UnreachableCameraError
+            frame = urllib.request.urlopen(self.url, timeout=5)
+            def handler(signum):
+                print('Signal handler called with signal', signum)
+                raise OSError("Couldn't open device!")
+
+            # Set the signal handler and a 5-second alarm
+            signal.signal(signal.SIGALRM, handler)
+            signal.alarm(5)
+            # This might stuck indefinitely without signal alarm
+            frame = frame.read()
+            # Close the alarm
+            signal.alarm(0)
+
+        except Exception as e:
+            print("Possible Cause of error: {}".format(e))
             raise UnreachableCameraError()
 
         # Handle the cameras that return empty content.
@@ -386,11 +398,9 @@ class MJPGm3u8StreamParser(StreamParser):
         """
 
         vc = cv2.VideoCapture(self.url)
-
         if vc.isOpened():
             _, frame = vc.read()
             vc.release()
-
             return frame, 1
         print("No frame returned")
         vc.release()
