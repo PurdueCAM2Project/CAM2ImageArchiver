@@ -35,7 +35,7 @@ mkdir CAM2ImageArchiver
 cp -a ../CAM2ImageArchiver/* ./CAM2ImageArchiver/
 make html
 rm -rf CAM2ImageArchiver/*
-mv -f build/html/* .
+mv -f --backup=numbered build/html/* .
 
 
 # stage any changes and new files
