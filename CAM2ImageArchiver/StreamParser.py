@@ -59,11 +59,11 @@ close_stream method.
 """
 from __future__ import absolute_import
 
+import signal
 from six.moves import urllib
 import cv2
 import numpy as np
 from CAM2ImageArchiver.error import UnreachableCameraError, CorruptedFrameError, ClosedStreamError
-import signal
 
 class StreamParser(object):
     """
