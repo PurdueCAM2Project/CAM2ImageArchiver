@@ -73,8 +73,10 @@ calling the close_stream method.
     camera.close_stream()
 
 """
-from error import ClosedStreamError
-import StreamParser
+from __future__ import absolute_import
+
+from CAM2ImageArchiver.error import ClosedStreamError
+from CAM2ImageArchiver.StreamParser import ImageStreamParser, MJPEGStreamParser, MJPGm3u8StreamParser
 
 
 class StreamFormat(object):
@@ -121,8 +123,8 @@ class Camera(object):
 
     """
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, _id):
+        self.id = _id
         self.parser = None
         self.last_frame = None
 
@@ -145,8 +147,7 @@ class Camera(object):
         pass
 
     def close_stream(self):
-        """Close the currently open camera stream.
-
+        """ Close the currently open camera stream.
         """
         pass
 
@@ -225,8 +226,8 @@ class IPCamera(Camera):
     call the open_stream method.
 
     """
-    def __init__(self, id, ip, image_path, mjpeg_path=None, port=""):
-        super(IPCamera, self).__init__(id)
+    def __init__(self, _id, ip, image_path, mjpeg_path=None, port=None):
+        super(IPCamera, self).__init__(_id)
         self.is_video = 1
         self.ip = ip
         self.image_path = image_path
@@ -236,7 +237,7 @@ class IPCamera(Camera):
         # Initializes an ImageStreamParser so that frames can be retrieved from
         # the image stream without the need to call the open_stream method.
         url = self.get_url()
-        self.parser = StreamParser.ImageStreamParser(url)
+        self.parser = ImageStreamParser(url)
 
     def open_stream(self, stream_format):
         """
@@ -260,7 +261,7 @@ class IPCamera(Camera):
         url = self.get_url(stream_format)
         # Initialize and open the parser according to the stream format.
         if stream_format == StreamFormat.MJPEG:
-            self.parser = StreamParser.MJPEGStreamParser(url)
+            self.parser = MJPEGStreamParser(url)
             self.parser.open_stream()
         elif stream_format == StreamFormat.IMAGE:
             # The image stream parser is always initialized, and the stream
@@ -282,7 +283,7 @@ class IPCamera(Camera):
         """
         if self.parser is not None:
             self.parser.close_stream()
-            self.parser = StreamParser.ImageStreamParser(self.get_url())
+            self.parser = ImageStreamParser(self.get_url())
 
     def get_url(self, stream_format=StreamFormat.IMAGE):
         """
@@ -365,12 +366,12 @@ class NonIPCamera(Camera):
 
     """
 
-    def __init__(self, id, url):
-        super(NonIPCamera, self).__init__(id)
+    def __init__(self, _id, url):
+        super(NonIPCamera, self).__init__(_id)
         self.is_video = 0
         self.url = url
 
-        self.parser = StreamParser.ImageStreamParser(url)
+        self.parser = ImageStreamParser(url)
 
     def get_url(self):
         return self.url
@@ -398,8 +399,8 @@ class StreamCamera(Camera):
 
     """
 
-    def __init__(self, id, url):
-        super(StreamCamera, self).__init__(id)
+    def __init__(self, _id, url):
+        super(StreamCamera, self).__init__(_id)
         self.is_video = 0
         self.url = url
-        self.parser = StreamParser.mjpgm3u8StreamParser(url)
+        self.parser = MJPGm3u8StreamParser(url)

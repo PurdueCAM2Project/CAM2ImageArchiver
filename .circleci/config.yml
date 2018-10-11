@@ -36,6 +36,12 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
 
+      - run:
+          name: run linter
+          command: |
+            . venv/bin/activate
+            pylint -j 0 CAM2ImageArchiver
+
       - save_cache:
           paths:
             - ./venv
