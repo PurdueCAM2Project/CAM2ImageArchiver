@@ -84,7 +84,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CAM2ImageArchiver package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#cam2imagearchiver-camerahandler">CAM2ImageArchiver.CameraHandler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-CAM2ImageArchiver.CameraHandler">CAM2ImageArchiver.CameraHandler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cam2imagearchiver-cam2imagearchiver">CAM2ImageArchiver.CAM2ImageArchiver</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cam2imagearchiver-camera">CAM2ImageArchiver.camera</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-CAM2ImageArchiver.error">CAM2ImageArchiver.error</a></li>
@@ -158,8 +158,70 @@
             
   <div class="section" id="cam2imagearchiver-package">
 <h1>CAM2ImageArchiver package<a class="headerlink" href="#cam2imagearchiver-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="cam2imagearchiver-camerahandler">
-<h2>CAM2ImageArchiver.CameraHandler<a class="headerlink" href="#cam2imagearchiver-camerahandler" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-CAM2ImageArchiver.CameraHandler">
+<span id="cam2imagearchiver-camerahandler"></span><h2>CAM2ImageArchiver.CameraHandler<a class="headerlink" href="#module-CAM2ImageArchiver.CameraHandler" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2017 Purdue University</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="class">
+<dt id="CAM2ImageArchiver.CameraHandler.CameraHandler">
+<em class="property">class </em><code class="descclassname">CAM2ImageArchiver.CameraHandler.</code><code class="descname">CameraHandler</code><span class="sig-paren">(</span><em>cameras</em>, <em>chunk</em>, <em>duration</em>, <em>interval</em>, <em>result_path</em>, <em>remove_after_failure</em>, <em>image_difference_percentage</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/CameraHandler.html#CameraHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.CameraHandler.CameraHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.context.Process</span></code></p>
+<p>The thread to download snapshots from a single camera.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>camera</strong> (<em>camera object</em>) – The camera from which snapshots will be taken.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.CameraHandler.CameraHandler.camera">
+<code class="descname">camera</code><a class="headerlink" href="#CAM2ImageArchiver.CameraHandler.CameraHandler.camera" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>camera object</em> – The camera from which snapshots will be taken.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.CameraHandler.CameraHandler.id">
+<code class="descname">id</code><a class="headerlink" href="#CAM2ImageArchiver.CameraHandler.CameraHandler.id" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – The ID of the the camera.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.CameraHandler.CameraHandler.url">
+<code class="descname">url</code><a class="headerlink" href="#CAM2ImageArchiver.CameraHandler.CameraHandler.url" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – The URL of the camera image stream.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.CameraHandler.CameraHandler.duration">
+<code class="descname">duration</code><a class="headerlink" href="#CAM2ImageArchiver.CameraHandler.CameraHandler.duration" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – The duration of downloading the images in seconds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.CameraHandler.CameraHandler.interval">
+<code class="descname">interval</code><a class="headerlink" href="#CAM2ImageArchiver.CameraHandler.CameraHandler.interval" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – The interval between each two successive snapshots.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.CameraHandler.CameraHandler.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/CameraHandler.html#CameraHandler.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.CameraHandler.CameraHandler.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download snapshots from the camera, and save locally.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="cam2imagearchiver-cam2imagearchiver">
 <h2>CAM2ImageArchiver.CAM2ImageArchiver<a class="headerlink" href="#cam2imagearchiver-cam2imagearchiver" title="Permalink to this headline">¶</a></h2>
