@@ -1,0 +1,615 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CAM2ImageArchiver.camera &mdash; CAM2ImageArchiver 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CAM2ImageArchiver
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CAM2ImageArchiver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>CAM2ImageArchiver.camera</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for CAM2ImageArchiver.camera</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Copyright 2017 Purdue University</span>
+
+<span class="sd">Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="sd">you may not use this file except in compliance with the License.</span>
+<span class="sd">You may obtain a copy of the License at</span>
+
+<span class="sd">    http://www.apache.org/licenses/LICENSE-2.0</span>
+
+<span class="sd">Unless required by applicable law or agreed to in writing, software</span>
+<span class="sd">distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="sd">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="sd">See the License for the specific language governing permissions and</span>
+<span class="sd">limitations under the License.</span>
+
+<span class="sd">Provide classes to deal with different types of cameras.</span>
+
+<span class="sd">This module is used to deal with different types of cameras. The module</span>
+<span class="sd">provides the Camera base class which provides a uniform way of dealing with</span>
+<span class="sd">all types of cameras. The module provides different subclasses, each for a</span>
+<span class="sd">different type of cameras (e.g. IP cameras, and non-IP cameras). The module</span>
+<span class="sd">also provides the StreamFormat Enum for the different camera stream formats.</span>
+
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
+<span class="sd">Example 1: To get frames from a non-IP camera image stream:</span>
+<span class="sd">1. Initialize a NonIPCamera object using the ID and the URL of the camera</span>
+<span class="sd">image stream.</span>
+<span class="sd">2. Use the get_frame method to get the most recent frame at any point of time,</span>
+<span class="sd">as well as the frame size. There is no need to call open_stream or close_stream.</span>
+
+<span class="sd">::</span>
+<span class="sd">    camera = NonIPCamera(1, &#39;http://images.webcams.travel/preview/1169307993.jpg&#39;)</span>
+<span class="sd">    frame, frame_size = camera.get_frame()</span>
+<span class="sd">    cv2.imshow(&#39;frame&#39;, frame)</span>
+<span class="sd">    print frame_size</span>
+<span class="sd">    cv2.waitKey()</span>
+
+<span class="sd">Example 2: To get frames from an IP camera image stream:</span>
+<span class="sd">1. Initialize an IPCamera object using the ID, IP, image stream path, and</span>
+<span class="sd">other optional parameters.</span>
+<span class="sd">2. Use the get_frame method to get the most recent frame at any point of time,</span>
+<span class="sd">as well as the frame size. While dealing with image streams of IP cameras,</span>
+<span class="sd">there is no need to call open_stream or close_stream.</span>
+
+<span class="sd">::</span>
+<span class="sd">    camera = IPCamera(1, &#39;128.10.29.33&#39;, &#39;/axis-cgi/jpg/image.cgi&#39;)</span>
+<span class="sd">    frame, frame_size = camera.get_frame()</span>
+<span class="sd">    cv2.imshow(&#39;frame&#39;, frame)</span>
+<span class="sd">    print frame_size</span>
+<span class="sd">    cv2.waitKey()</span>
+
+<span class="sd">Example 3: To get frames from an IP camera MJPEG stream:</span>
+<span class="sd">1. Initialize an IPCamera object using the ID, IP, image stream path, MJPEG</span>
+<span class="sd">stream path, and other optional parameters.</span>
+<span class="sd">2. Open the camera MJPEG stream by calling the open_stream method with the</span>
+<span class="sd">StreamFormat.MJPEG parameter.</span>
+<span class="sd">3. Use the get_frame method to get the most recent frame at any point of time,</span>
+<span class="sd">as well as the frame size.</span>
+<span class="sd">4. At the end when no more frames are needed, Close the camera MJPEG stream by</span>
+<span class="sd">calling the close_stream method.</span>
+
+<span class="sd">::</span>
+<span class="sd">    camera = IPCamera(1, &#39;128.10.29.33&#39;, &#39;/axis-cgi/jpg/image.cgi&#39;,</span>
+<span class="sd">                    &#39;/axis-cgi/mjpg/video.cgi&#39;)</span>
+<span class="sd">    camera.open_stream(StreamFormat.MJPEG)</span>
+<span class="sd">    t = time.time()</span>
+<span class="sd">    while time.time() - t &lt; 5:</span>
+<span class="sd">        frame, frame_size = camera.get_frame()</span>
+<span class="sd">        cv2.imshow(&#39;frame&#39;, frame)</span>
+<span class="sd">        print frame_size</span>
+<span class="sd">        cv2.waitKey(30)</span>
+<span class="sd">    camera.close_stream()</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">from</span> <span class="nn">CAM2ImageArchiver.error</span> <span class="k">import</span> <span class="n">ClosedStreamError</span>
+<span class="kn">from</span> <span class="nn">CAM2ImageArchiver.StreamParser</span> <span class="k">import</span> <span class="n">ImageStreamParser</span><span class="p">,</span> <span class="n">MJPEGStreamParser</span><span class="p">,</span> <span class="n">MJPGm3u8StreamParser</span>
+
+
+<div class="viewcode-block" id="StreamFormat"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.StreamFormat">[docs]</a><span class="k">class</span> <span class="nc">StreamFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent an Enum for the different camera stream formats.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    IMAGE : int</span>
+<span class="sd">        The constant class variable representing image streams.</span>
+<span class="sd">    MJPEG : int</span>
+<span class="sd">        The constant class variable representing MJPEG streams.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">IMAGE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">MJPEG</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="Camera"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.Camera">[docs]</a><span class="k">class</span> <span class="nc">Camera</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent the base class for all types of cameras.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        The unique camera ID.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        The unique camera ID.</span>
+<span class="sd">    parser : StreamParser</span>
+<span class="sd">        The parser of the camera stream.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A camera handles a single stream at a time. Use the open_stream method to</span>
+<span class="sd">    open the stream of the desired format (e.g. MJPEG). Then, use the method</span>
+<span class="sd">    get_frame to get frames from the currently open stream. Then, use the</span>
+<span class="sd">    method close_stream to close the currently open stream. This class does</span>
+<span class="sd">    not allow dealing with multiple streams from the same camera object at</span>
+<span class="sd">    the same time.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_frame</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Camera.open_stream"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.Camera.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open the camera stream of the given format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stream_format : int</span>
+<span class="sd">            The stream format of the camera. This can be any of the StreamFormat</span>
+<span class="sd">            class variables (e.g. StreamFormat.IMAGE or StreamFormat.MJPEG)</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        error.UnreachableCameraError</span>
+<span class="sd">            If the camera is unreachable.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Camera.close_stream"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.Camera.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Close the currently open camera stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Camera.restart_stream"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.Camera.restart_stream">[docs]</a>    <span class="k">def</span> <span class="nf">restart_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Restart the currently open camera stream.</span>
+
+<span class="sd">        This method restarts the stream by closing then opening it. This is</span>
+<span class="sd">        useful because some cameras closes a stream if it is open for a long</span>
+<span class="sd">        period of time.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">restart_stream</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Camera.get_frame"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.Camera.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the most recent frame from the currently open camera stream.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The downloaded frame.</span>
+<span class="sd">        int</span>
+<span class="sd">            The size of the downloaded frame in bytes.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        error.CorruptedFrameError</span>
+<span class="sd">            If the frame is corrupted.</span>
+<span class="sd">        error.UnreachableCameraError</span>
+<span class="sd">            If the camera is unreachable.</span>
+<span class="sd">        error.ClosedStreamError</span>
+<span class="sd">            If the stream needs to be opened first.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ClosedStreamError</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get_frame</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="IPCamera"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.IPCamera">[docs]</a><span class="k">class</span> <span class="nc">IPCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent an IP camera.</span>
+
+<span class="sd">    This class subclasses the Camera class and inherits its attributes and</span>
+<span class="sd">    extends its constructor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        The unique camera id.</span>
+<span class="sd">    ip : str</span>
+<span class="sd">        The IP address of the camera.</span>
+<span class="sd">    image_path : str</span>
+<span class="sd">        The path to the camera image stream.</span>
+<span class="sd">    mjpeg_path : str, optional</span>
+<span class="sd">        The path to the camera MJPEG stream.</span>
+<span class="sd">    port : int, optional</span>
+<span class="sd">        The port of the camera.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ip : str</span>
+<span class="sd">        The IP address of the camera.</span>
+<span class="sd">    image_path : str</span>
+<span class="sd">        The path to the camera image stream.</span>
+<span class="sd">    mjpeg_path : str</span>
+<span class="sd">        The path to the camera MJPEG stream.</span>
+<span class="sd">    port : int</span>
+<span class="sd">        The port of the camera.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    By default, the constructor of this class initializes an ImageStreamParser</span>
+<span class="sd">    so that frames can be retrieved from the image stream without the need to</span>
+<span class="sd">    call the open_stream method.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">image_path</span><span class="p">,</span> <span class="n">mjpeg_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IPCamera</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_video</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="n">ip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_path</span> <span class="o">=</span> <span class="n">image_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mjpeg_path</span> <span class="o">=</span> <span class="n">mjpeg_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+
+        <span class="c1"># Initializes an ImageStreamParser so that frames can be retrieved from</span>
+        <span class="c1"># the image stream without the need to call the open_stream method.</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">ImageStreamParser</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IPCamera.open_stream"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.IPCamera.open_stream">[docs]</a>    <span class="k">def</span> <span class="nf">open_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open the camera stream of the given format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stream_format : int</span>
+<span class="sd">            The stream format of the camera. This can be any of the StreamFormat</span>
+<span class="sd">            class variables (e.g. StreamFormat.IMAGE or StreamFormat.MJPEG)</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the value of stream_format is invalid.</span>
+<span class="sd">        error.UnreachableCameraError</span>
+<span class="sd">            If the camera is unreachable.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the URL of the stream of the given format.</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">stream_format</span><span class="p">)</span>
+        <span class="c1"># Initialize and open the parser according to the stream format.</span>
+        <span class="k">if</span> <span class="n">stream_format</span> <span class="o">==</span> <span class="n">StreamFormat</span><span class="o">.</span><span class="n">MJPEG</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">MJPEGStreamParser</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">open_stream</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">stream_format</span> <span class="o">==</span> <span class="n">StreamFormat</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">:</span>
+            <span class="c1"># The image stream parser is always initialized, and the stream</span>
+            <span class="c1"># does not need to be opened.</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid Argument: stream_format&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IPCamera.close_stream"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.IPCamera.close_stream">[docs]</a>    <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the currently open camera stream.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        After closing the currently open camera stream, this method initializes</span>
+<span class="sd">        an ImageStreamParser so that frames can be retrieved from the image</span>
+<span class="sd">        stream without the need to call the open_stream method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">close_stream</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">ImageStreamParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="IPCamera.get_url"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.IPCamera.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_format</span><span class="o">=</span><span class="n">StreamFormat</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the URL to the camera stream of the given format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stream_format : int, optional</span>
+<span class="sd">            The stream format of the camera. This can be any of the StreamFormat</span>
+<span class="sd">            class variables (e.g. StreamFormat.IMAGE or StreamFormat.MJPEG)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        url : str</span>
+<span class="sd">            The URL to the camera stream of the given format.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the value of stream_format is invalid.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set the path according to the stream format.</span>
+        <span class="k">if</span> <span class="n">stream_format</span> <span class="o">==</span> <span class="n">StreamFormat</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_path</span>
+        <span class="k">elif</span> <span class="n">stream_format</span> <span class="o">==</span> <span class="n">StreamFormat</span><span class="o">.</span><span class="n">MJPEG</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mjpeg_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid Argument: stream_format&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Construct the URL using the IP, port, and path.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">url</span></div>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the currently open camera stream before destroying the object.</span>
+
+<span class="sd">        This destructor is a backup plan in case the user of this class did not</span>
+<span class="sd">        call the close_stream method. The close_stream method has to be called,</span>
+<span class="sd">        without relying on this destructor, because __del__ is not guaranteed</span>
+<span class="sd">        to be called in some cases and it is also better to close the stream as</span>
+<span class="sd">        soon as possible to avoid unnecessary network workload.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_stream</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="NonIPCamera"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.NonIPCamera">[docs]</a><span class="k">class</span> <span class="nc">NonIPCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent a non-IP camera.</span>
+
+<span class="sd">    This class represents a camera whose IP is not known. A web server hides</span>
+<span class="sd">    the information about the camera, and provides only a URL to get the most</span>
+<span class="sd">    recent frame from the camera. This class subclasses the Camera class and</span>
+<span class="sd">    inherits its attributes and extends its constructor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        The unique camera ID.</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The URL that is used to get the most recent frame from the camera.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The URL that is used to get the most recent frame from the camera.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    By default, the constructor of this class initializes an ImageStreamParser</span>
+<span class="sd">    so that frames can be retrieved from the image stream without the need to</span>
+<span class="sd">    call the open_stream method.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NonIPCamera</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_video</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">ImageStreamParser</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NonIPCamera.get_url"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.NonIPCamera.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span></div></div>
+
+<div class="viewcode-block" id="StreamCamera"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.camera.StreamCamera">[docs]</a><span class="k">class</span> <span class="nc">StreamCamera</span><span class="p">(</span><span class="n">Camera</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent a Stream camera similar to a non-ip camera, but faster frame rates.</span>
+
+<span class="sd">    This class represents a camera whose IP is not known. A web server hides</span>
+<span class="sd">    the information about the camera, and provides only a URL to get the most</span>
+<span class="sd">    recent frame from the camera. The This class subclasses the Camera class and</span>
+<span class="sd">    inherits its attributes and extends its constructor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        The unique camera ID.</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The URL that is used to get the most recent frame from the camera.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The URL that is used to get the most recent frame from the camera.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StreamCamera</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_video</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">MJPGm3u8StreamParser</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Tiffany Chen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'1.0.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
