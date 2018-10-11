@@ -22,11 +22,10 @@ setup(
     'funcsigs',
     'idna',
     'mock',
-    'MySQL-python',
     'numpy',
     'pbr',
     'pytz',
-    'urllib3',
+    'requests',
     'opencv-python'
   ]
 )

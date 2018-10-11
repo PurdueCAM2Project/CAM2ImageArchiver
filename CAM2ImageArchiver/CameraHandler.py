@@ -19,6 +19,7 @@ import time
 import cv2
 import datetime
 import os
+import numpy as np
 
 '''
 
@@ -49,7 +50,7 @@ class CameraHandler(Process):
 
     # The path of the results directory.
 
-    def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure):
+    def __init__(self, cameras, chunk, duration, interval, result_path, remove_after_failure, image_difference_percentage):
         Process.__init__(self)
         self.cameras = cameras
         self.duration = duration
@@ -57,6 +58,7 @@ class CameraHandler(Process):
         self.result_path = result_path
         self.chunk = chunk
         self.remove_after_failure = remove_after_failure
+        self.image_difference_percentage = image_difference_percentage
 
     def run(self):
         """
@@ -70,19 +72,21 @@ class CameraHandler(Process):
         while (time.time() - start_timestamp) < self.duration:
             # Set the timestamp of the start of the new loop iteration.
             loop_start_timestamp = time.time()
+            # print("Loop Start", time.time())
 
             # bad_cams is initialized in the while loop so that the array is emptied after each iteration
             bad_cams = []
+            x = 0
             for camera in self.cameras:
+                print("Process {} Downloading Image {} of {} at time {}".format(self.chunk, x, len(self.cameras), datetime.datetime.now()))
+                x = x + 1
                 try:
                     # Download the image.
                     frame, _ = camera.get_frame()
                 except Exception as e:
                     if self.remove_after_failure:
-                        print("Error retrieving from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
+                        print("Error retrieving from camera {} @ \"{}\".  Marking camera for removal from chunk {}.".format(str(camera.id), str(camera.get_url()), str(self.chunk)))
                         bad_cams.append(camera)
-                    else:
-                        pass
                 else:
                     if (frame is not None):
                         # Save the image.
@@ -92,7 +96,19 @@ class CameraHandler(Process):
                             cam_directory, camera.id,
                             datetime.datetime.fromtimestamp(
                                 frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
-                        cv2.imwrite(file_name, frame)
+
+                        if self.image_difference_percentage:
+                            if frame.size != 0 and (type(camera.last_frame) == type(None) or (np.count_nonzero(cv2.absdiff(camera.last_frame, frame)) * 100) / frame.size >= self.image_difference_percentage):
+                                cv2.imwrite(file_name, frame)
+                                camera.last_frame = frame
+                            else:
+                                # print("diff_{}".format(np.sum(camera.last_frame - frame) == 0))
+                                # cv2.imwrite(file_name, frame)
+                                print("Camera frame has not changed for {}.  Will retry after {}sec.".format(str(camera.id), str(self.interval)))
+                        else:
+                            cv2.imwrite(file_name, frame)
+
+                            
                     else:
                         if self.remove_after_failure:
                             print("Empty frame retrieved from camera {}.  Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
@@ -112,6 +128,7 @@ class CameraHandler(Process):
             # Sleep until the interval between frames ends.
             time_to_sleep = self.interval - (time.time() - loop_start_timestamp)
             if time_to_sleep > 0:
+                print("Process {} going to sleep...".format(self.chunk))
                 time.sleep(time_to_sleep)
             else:
                 print("Warning: Retrieval time exceeded sleep time for chunk {}.  Specified interval cannot be met."
