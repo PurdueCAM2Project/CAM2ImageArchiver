@@ -22,6 +22,7 @@ from CAM2ImageArchiver.error import UnreachableCameraError, CorruptedFrameError,
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 
+
 class DummyUrlObject(object):
 
     def __init__(self, read_retval, readline_retval):

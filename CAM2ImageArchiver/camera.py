@@ -124,6 +124,7 @@ class Camera(object):
     def __init__(self, _id):
         self.id = _id
         self.parser = None
+        self.last_frame = None
 
     def open_stream(self, stream_format):
         """
@@ -369,6 +370,9 @@ class NonIPCamera(Camera):
         self.url = url
 
         self.parser = ImageStreamParser(url)
+
+    def get_url(self):
+        return self.url
 
 class StreamCamera(Camera):
     """

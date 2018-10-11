@@ -34,20 +34,13 @@ See README for database setup information.
 
 class CAM2ImageArchiver(object):
     '''
-    Retrieve images either from a cvs file or from a list of camera objects
+    Retrieves images from cameras specified through a csv file.  The csv file either contains the urls of the cameras, or the ID numbers of each camera in the database.
+    image_difference_percentage: Percentage difference between two frames
     '''
-
-    def __init__(self, num_processes=1, result_path='results/'):
-        '''
-        Attributes
-        ----------
-        num_processes : int
-            Number of processes that are used to run this program
-        result_path : str
-            Name of folder where image is saved
-        '''
+    def __init__(self, num_processes=1, result_path='results/', image_difference_percentage=90):
         self.num_processes = num_processes
         self.result_path = result_path
+        self.image_difference_percentage = image_difference_percentage
 
     def retrieve_csv(self, camera_url_file, duration, interval, result_path,
                      remove_after_failure=True):
@@ -58,7 +51,7 @@ class CAM2ImageArchiver(object):
         Reads camera urls from csv file and archives the images at the requested directory.
         '''
 
-        # verify file exists and can be read
+        #verify file exists and can be read
         if not check_file_exists(camera_url_file):
             raise IOError("The given camera url file does not exist.")
 
@@ -114,6 +107,7 @@ class CAM2ImageArchiver(object):
 
         camera_handlers = []
         new_cam_directories = []
+
         # Create result directories for all cameras
         for camera in cams:
             cam_directory = os.path.join(result_path, str(camera.id))
@@ -138,14 +132,14 @@ class CAM2ImageArchiver(object):
                                            result_path, remove_after_failure)
             # Run the thread.
             camera_handler.start()
-            # Add the thread to the array of threads.
+            # Add the process to the array of process.
             camera_handlers.append(camera_handler)
 
-            # Sleep to shift the starting time of all the threads.
+            # Sleep to shift the starting time of all the process.
             # time.sleep(interval / len(cams)) # Old
             time.sleep(0.5)
 
-        # Wait for all the threads to finish execution.
+        # Wait for all the process to finish execution.
         for camera_handler in camera_handlers:
             camera_handler.join()
 
