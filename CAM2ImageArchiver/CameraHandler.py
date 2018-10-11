@@ -98,7 +98,7 @@ class CameraHandler(Process):
                                 frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
 
                         if self.image_difference_percentage:
-                            if frame.size != 0 and (type(camera.last_frame) == type(None) or (np.count_nonzer.absdiff(camera.last_frame, frame)) * 100) / frame.size >= self.image_difference_percentage):
+                            if frame.size != 0 and (type(camera.last_frame) == type(None) or (np.count_nonzero(np.absolute(camera.last_frame - frame)) * 100) / frame.size >= self.image_difference_percentage):
                                 cv2.imwrite(file_name, frame)
                                 camera.last_frame = frame
                             else:
@@ -107,12 +107,9 @@ class CameraHandler(Process):
                                 print("Camera frame has not changed for {}.  Will retry after {}sec.".format(str(camera.id), str(self.interval)))
                         else:
                             cv2.imwrite(file_name, frame)
-
-                            
                     else:
                         if self.remove_after_failure:
-                            print("Empty frame retrieved from camera {}. Marking camera for removal"
-                                  " from chunk {}.".format(str(camera.id), str(self.chunk)))
+                            print("Empty frame retrieved from camera {}. Marking camera for removal from chunk {}.".format(str(camera.id), str(self.chunk)))
                             bad_cams.append(camera)
                 finally:
                     # These variables are explicitely set to None to encourage the garbage

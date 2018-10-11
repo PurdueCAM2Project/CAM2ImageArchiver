@@ -129,7 +129,7 @@ class CAM2ImageArchiver(object):
             chunk += 1
             # Create a new thread to handle the camera.
             camera_handler = CameraHandler(camera_list, chunk, duration, interval,
-                                           result_path, remove_after_failure)
+                                           result_path, remove_after_failure, image_difference_percentage=self.image_difference_percentage)
             # Run the thread.
             camera_handler.start()
             # Add the process to the array of process.
