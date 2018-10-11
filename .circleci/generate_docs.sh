@@ -36,7 +36,7 @@ cp -a ../CAM2ImageArchiver/* ./CAM2ImageArchiver/
 make html
 rm -rf CAM2ImageArchiver/*
 mv -f --backup=numbered build/html/* .
-
+rm -rf *~
 
 # stage any changes and new files
 git add -A
