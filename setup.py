@@ -27,7 +27,6 @@ setup(
     'Jinja2',
     'MarkupSafe',
     'mock',
-    'MySQL-python',
     'numpy',
     'pbr',
     'Pygments',
