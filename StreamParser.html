@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Stream Parser &mdash; CAM2ImageArchiver 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Error" href="error.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CAM2ImageArchiver
+          
+
+          
+            
+            <img src="_static/cam2logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Quickstart</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver_class.html">CAM2 Image Archiver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CameraHandler.html">Camera Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error.html">Error</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stream Parser</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CAM2ImageArchiver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a> &raquo;</li>
+        
+      <li>Stream Parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/StreamParser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-CAM2ImageArchiver.StreamParser">
+<span id="stream-parser"></span><h1>Stream Parser<a class="headerlink" href="#module-CAM2ImageArchiver.StreamParser" title="Permalink to this headline">¶</a></h1>
+<p>Copyright 2017 Purdue University</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<p>Parse different types of camera streams.</p>
+<p>This module is used to parse different types of camera streams. The module
+provides the StreamParser base class which provides a uniform way of parsing
+all camera streams. The module provides different subclasses, each for a
+different type of camera streams (e.g. image streams, and MJPEG streams).</p>
+<p class="rubric">Examples</p>
+<p>Example 1: To parse a camera image stream:
+1. Initialize an object of ImageStreamParser using the URL of the camera
+image stream.
+2. Use the get_frame method to get the most recent frame at any point of
+time, as well as the frame size. There is no need to call open_stream or
+close_stream.</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd>parser = ImageStreamParser(‘<a class="reference external" href="http://128.10.29.33/axis-cgi/jpg/image.cgi">http://128.10.29.33/axis-cgi/jpg/image.cgi</a>’)
+frame, frame_size = parser.get_frame()
+cv2.imshow(‘frame’, frame)
+print frame_size
+cv2.waitKey()</dd>
+</dl>
+<p>Example 2: To parse a camera MJPEG stream:
+1. Initialize an object of MJPEGStreamParser using the URL of the camera
+MJPEG stream.
+2. Open the stream by calling the open_stream method.
+3. Use the get_frame method to get the most recent frame at any point of time,
+as well as the frame size.
+4. At the end when no more frames are needed, close the stream by calling the
+close_stream method.</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd><p class="first">parser = MJPEGStreamParser(‘<a class="reference external" href="http://128.10.29.33/axis-cgi/mjpg/video.cgi">http://128.10.29.33/axis-cgi/mjpg/video.cgi</a>’)
+parser.open_stream()
+t = time.time()
+while time.time() - t &lt; 5:</p>
+<blockquote>
+<div>frame, frame_size = parser.get_frame()
+cv2.imshow(‘frame’, frame)
+print frame_size
+cv2.waitKey(30)</div></blockquote>
+<p class="last">parser.close_stream()</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="CAM2ImageArchiver.StreamParser.StreamParser">
+<em class="property">class </em><code class="descclassname">CAM2ImageArchiver.StreamParser.</code><code class="descname">StreamParser</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#StreamParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.StreamParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represent the base class for camera stream parsers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>str</em>) – The URL of the stream.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.StreamParser.StreamParser.url">
+<code class="descname">url</code><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.StreamParser.url" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – The URL of the stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.StreamParser.open_stream">
+<code class="descname">open_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#StreamParser.open_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.StreamParser.open_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.UnreachableCameraError</span></code> – If the camera is unreachable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.StreamParser.close_stream">
+<code class="descname">close_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#StreamParser.close_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.StreamParser.close_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the MJPEG stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.StreamParser.restart_stream">
+<code class="descname">restart_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#StreamParser.restart_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.StreamParser.restart_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restart the stream.</p>
+<p>This method restarts the stream by closing then opening it. This is
+useful because some cameras closes a stream if it is open for a long
+period of time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.StreamParser.get_frame">
+<code class="descname">get_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#StreamParser.get_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.StreamParser.get_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the most recent frame from the camera stream.</p>
+<p>This method is an abstract method that must be overridden by subclasses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
+<li><em>numpy.ndarray</em> – The downloaded frame.</li>
+<li><em>int</em> – The size of the downloaded frame in bytes.</li>
+</ul>
+</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.CorruptedFrameError</span></code> – If the frame is corrupted.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.UnreachableCameraError</span></code> – If the camera is unreachable.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.ClosedStreamError</span></code> – If the stream needs to be opened first.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotImplementedError</span></code> – If the method is not overridden in the subclass.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CAM2ImageArchiver.StreamParser.ImageStreamParser">
+<em class="property">class </em><code class="descclassname">CAM2ImageArchiver.StreamParser.</code><code class="descname">ImageStreamParser</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#ImageStreamParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.ImageStreamParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CAM2ImageArchiver.StreamParser.StreamParser" title="CAM2ImageArchiver.StreamParser.StreamParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CAM2ImageArchiver.StreamParser.StreamParser</span></code></a></p>
+<p>Represent a parser for a camera image stream.</p>
+<p>This class subclasses the StreamParser class and inherits its attributes
+and constructor.</p>
+<p class="rubric">Notes</p>
+<p>A camera that provides an image stream is a camera that provides a URL to
+get the most recent frame (regardless of how recent it is). Hence, Parsing
+an image stream is as simple as downloading the most recent frame from the
+given URL whenever requested. There is no need to call open_stream or
+close_stream since they do nothing.</p>
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.ImageStreamParser.get_frame">
+<code class="descname">get_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#ImageStreamParser.get_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.ImageStreamParser.get_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the most recent frame from the camera image stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
+<li><strong>frame</strong> (<em>numpy.ndarray</em>) – The downloaded frame.</li>
+<li><strong>frame_size</strong> (<em>int</em>) – The size of the downloaded frame in bytes.</li>
+</ul>
+</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.CorruptedFrameError</span></code> – If the frame is corrupted.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.UnreachableCameraError</span></code> – If the camera is unreachable.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CAM2ImageArchiver.StreamParser.MJPEGStreamParser">
+<em class="property">class </em><code class="descclassname">CAM2ImageArchiver.StreamParser.</code><code class="descname">MJPEGStreamParser</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#MJPEGStreamParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPEGStreamParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CAM2ImageArchiver.StreamParser.StreamParser" title="CAM2ImageArchiver.StreamParser.StreamParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CAM2ImageArchiver.StreamParser.StreamParser</span></code></a></p>
+<p>Represent a parser for a camera MJPEG stream.</p>
+<p>This class subclasses the StreamParser class and inherits its attributes
+and extends its constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>str</em>) – The URL of the MJPEG stream.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.StreamParser.MJPEGStreamParser.mjpeg_stream">
+<code class="descname">mjpeg_stream</code><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPEGStreamParser.mjpeg_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>file-like object</em> – The handle to the camera MJPEG stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.MJPEGStreamParser.open_stream">
+<code class="descname">open_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#MJPEGStreamParser.open_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPEGStreamParser.open_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the MJPEG stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.UnreachableCameraError</span></code> – If the camera is unreachable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.MJPEGStreamParser.close_stream">
+<code class="descname">close_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#MJPEGStreamParser.close_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPEGStreamParser.close_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the MJPEG stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.MJPEGStreamParser.get_frame">
+<code class="descname">get_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#MJPEGStreamParser.get_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPEGStreamParser.get_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the most recent frame from the camera MJPEG stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
+<li><strong>frame</strong> (<em>numpy.ndarray</em>) – The downloaded frame.</li>
+<li><strong>frame_size</strong> (<em>int</em>) – The size of the downloaded frame in bytes.</li>
+</ul>
+</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.CorruptedFrameError</span></code> – If the frame is corrupted.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.ClosedStreamError</span></code> – If the MJPEG stream needs to be opened first.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>MJPEG Stream Format:
+–myboundary
+Content-Type: image/jpeg
+Content-Length: [size of image in bytes]
+[empty line]
+….. binary data …..
+[empty line]
+–myboundary
+Content-Type: image/jpeg
+Content-Length: [size of image in bytes]
+[empty line]
+….. binary data …..
+[empty line]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="CAM2ImageArchiver.StreamParser.MJPGm3u8StreamParser">
+<em class="property">class </em><code class="descclassname">CAM2ImageArchiver.StreamParser.</code><code class="descname">MJPGm3u8StreamParser</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#MJPGm3u8StreamParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPGm3u8StreamParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CAM2ImageArchiver.StreamParser.StreamParser" title="CAM2ImageArchiver.StreamParser.StreamParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CAM2ImageArchiver.StreamParser.StreamParser</span></code></a></p>
+<p>Represent a parser for a camera MJPEG stream.
+<a href="#id1"><span class="problematic" id="id2">*</span></a>Does not have to be MJPEG, .m3u8 media file works as well.</p>
+<p>This class subclasses the StreamParser class and inherits its attributes
+and extends its constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>str</em>) – The URL of the MJPEG stream.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="CAM2ImageArchiver.StreamParser.MJPGm3u8StreamParser.mjpeg_stream">
+<code class="descname">mjpeg_stream</code><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPGm3u8StreamParser.mjpeg_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>file-like object</em> – The handle to the camera MJPEG stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="CAM2ImageArchiver.StreamParser.MJPGm3u8StreamParser.get_frame">
+<code class="descname">get_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CAM2ImageArchiver/StreamParser.html#MJPGm3u8StreamParser.get_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CAM2ImageArchiver.StreamParser.MJPGm3u8StreamParser.get_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the most recent frame from the camera MJPEG stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
+<li><strong>frame</strong> (<em>numpy.ndarray</em>) – The downloaded frame.</li>
+<li><strong>frame_size</strong> (<em>int</em>) – The size of the downloaded frame in bytes.</li>
+</ul>
+</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.CorruptedFrameError</span></code> – If the frame is corrupted.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">error.ClosedStreamError</span></code> – If the MJPEG stream needs to be opened first.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="error.html" class="btn btn-neutral" title="Error" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Purdue CAM2
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'1.0.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

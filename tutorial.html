@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quickstart &mdash; CAM2ImageArchiver 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CAM2ImageArchiver package Documentation" href="CAM2ImageArchiver.html" />
+    <link rel="prev" title="Installation" href="INSTALL.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CAM2ImageArchiver
+          
+
+          
+            
+            <img src="_static/cam2logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-cam2-image-archiver-instance">Create a CAM2 Image Archiver Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-camera-objects">Creating Camera Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downloading-images">Downloading Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-cam2-image-archiver-with-the-cam2-camera-database-client">Using the CAM2 Image Archiver with the CAM2 Camera Database Client</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CAM2ImageArchiver</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Quickstart</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>We will present here some basic usage examples.</p>
+<p>You may want to use the CAM2 Image Archiver with the <a class="reference external" href="https://purduecam2project.github.io/CameraDatabaseClient/build/html/index.html">CAM2 Camera Database Python Client</a>.</p>
+<div class="section" id="create-a-cam2-image-archiver-instance">
+<h2>Create a CAM2 Image Archiver Instance<a class="headerlink" href="#create-a-cam2-image-archiver-instance" title="Permalink to this headline">¶</a></h2>
+<p>After installing, import the CAM2 Image Archvier class from the CAM2 Image Archiver module.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CAM2ImageArchiver</span> <span class="k">import</span> <span class="n">CAM2ImageArchiver</span>
+</pre></div>
+</div>
+<p>Then, create a CAM2 Image Archiver Instance. Optionally, you can specify the following parameters:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">num_processes:</th><td class="field-body">The number of archiving processes you wish to start during the archiving process. The archiver can download images much faster if you increase the number of processes. Usually the archiver is bandwidth limited so you should pay attention to the amount of bandwidth you have to work with. The default value is 1.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">results_path:</th><td class="field-body">This parameter is a string to the path at which you wish to save your results. All images that the archiver downloads will be stored at: <em>&lt;results_path&gt;/&lt;cameraID&gt;/&lt;datetime string&gt;.png</em> The datetime string has the following format: <em>&lt;Year&gt;-&lt;Month&gt;-&lt;Day&gt;_&lt;Hour&gt;-&lt;Minuet&gt;-&lt;Secound&gt;-&lt;Microsecond&gt;’</em>. The default value is ‘results/’.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">image_difference_percentage:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">This parameter is the threshold percentage at which to discard the image. The archiver will download a new image in the specified time interval and then compare the image to the previous image using: <span class="math notranslate nohighlight">\(\sum_{i = 0}^{frameSize}{(| lastFrame[i] - currentFrame[i] | &gt; 0)} * \frac{100}{frameSize}\)</span> to sum up the percentage of pixels between the images that have changed. If the percentage is greater than or equal to <em>image_difference_percentage</em> then the image will be saved. To disable this feature set <em>image_difference_percentage</em> to <em>0</em> or <em>False</em>. The default value is if at least 90% of the pixels have changed between the images, the image will be saved.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">archiver</span> <span class="o">=</span> <span class="n">CAM2ImageArchiver</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">result_path</span><span class="o">=</span><span class="s1">&#39;results/&#39;</span><span class="p">,</span> <span class="n">image_difference_percentage</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-camera-objects">
+<h2>Creating Camera Objects<a class="headerlink" href="#creating-camera-objects" title="Permalink to this headline">¶</a></h2>
+<p>We then need to specify a list of <a class="reference internal" href="camera.html#CAM2ImageArchiver.camera.Camera" title="CAM2ImageArchiver.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a> objects to pass to the archiver. Camera objects from the <a class="reference external" href="https://purduecam2project.github.io/CameraDatabaseClient/build/html/index.html">CAM2 Camera Database Python Client</a> can be passed directly to the archiver. Camera objects can also manually created as shown in the example below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cam</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;camera_type&#39;</span><span class="p">:</span> <span class="s1">&#39;non_ip&#39;</span><span class="p">,</span> <span class="s1">&#39;cameraID&#39;</span><span class="p">:</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;snapshot_url&#39;</span><span class="p">:</span><span class="s1">&#39;&lt;The URL to the Camera Image Data&gt;&#39;</span><span class="p">}]</span>
+</pre></div>
+</div>
+<p>This is an example of a <em>non_ip</em> camera. At a minimum, each <em>non_ip</em> camera object must contain the information shown above.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">camera_type:</th><td class="field-body">field determines how the camera data will be downloaded. Review the <a class="reference internal" href="StreamParser.html#CAM2ImageArchiver.StreamParser.StreamParser" title="CAM2ImageArchiver.StreamParser.StreamParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamParser</span></code></a> module for more details on how the camera data is downloaded.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cameraID:</th><td class="field-body">is a unique identifier for the camera. The file name of the saved image will have contain the cameraID.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">snapshot_url:</th><td class="field-body">if the camera is a <em>non_ip</em> camera, the camera must contain the <em>snapshot_url</em> field. non_ip cameras are those who’s image data can be downloaded using a HTTP GET request to a static URL.</td>
+</tr>
+</tbody>
+</table>
+<p>The CAM2 Image Archiver supports two other formats of camera data. The other types of cameras are defined as <em>IP</em> cameras and <em>Stream</em> cameras. Below are examples of camera objects of these types.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cam2</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;camera_type&#39;</span><span class="p">:</span> <span class="s1">&#39;stream&#39;</span><span class="p">,</span> <span class="s1">&#39;cameraID&#39;</span><span class="p">:</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;m3u8_url&#39;</span><span class="p">:</span><span class="s1">&#39;&lt;The .m3u8 playlist file URL&gt;&#39;</span><span class="p">}]</span> <span class="c1"># Stream Camera Example</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cam3</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;camera_type&#39;</span><span class="p">:</span> <span class="s1">&#39;ip&#39;</span><span class="p">,</span> <span class="s1">&#39;cameraID&#39;</span><span class="p">:</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;image_path&#39;</span><span class="p">:</span><span class="s1">&#39;&lt;The path to a static image&gt;&#39;</span><span class="p">,</span>
+<span class="go">        &#39;video_path&#39;:&#39;&lt;A video path such as an .mjpeg&gt;&#39;}, &#39;port&#39;:&#39;&lt;The port of the camera&gt;&#39;] # IP Camera Example</span>
+</pre></div>
+</div>
+<p>If you use the CAM2 Camera Database Client to retrieve Camera objects, all the necessary fields will be defined for you.</p>
+</div>
+<div class="section" id="downloading-images">
+<h2>Downloading Images<a class="headerlink" href="#downloading-images" title="Permalink to this headline">¶</a></h2>
+<p>To download images use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">archive()</span></code> method as shown below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">archiver</span><span class="o">.</span><span class="n">archive</span><span class="p">(</span><span class="n">cam</span><span class="p">,</span> <span class="n">duration</span><span class="o">=&lt;</span><span class="n">duration</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span> <span class="n">to</span> <span class="n">archive</span> <span class="n">data</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">interval</span><span class="o">=&lt;</span><span class="n">interval</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span> <span class="n">to</span> <span class="n">archive</span> <span class="n">data</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The archiver will then begin to download images from the cameras specified in the list and saving them to the <em>results_path</em> directory.</p>
+</div>
+<div class="section" id="using-the-cam2-image-archiver-with-the-cam2-camera-database-client">
+<span id="camera-by-city-ref"></span><h2>Using the CAM2 Image Archiver with the CAM2 Camera Database Client<a class="headerlink" href="#using-the-cam2-image-archiver-with-the-cam2-camera-database-client" title="Permalink to this headline">¶</a></h2>
+<p>Below is a sample script that will allow you to use both the CAM2 Image Archiver and the CAM2 Database Client togather. Please note that you must have the <em>clientID</em> and <em>clientSecret</em> from the CAM2 Camera Database API. For more information on the CAM2 Database Client please see <a class="reference external" href="https://purduecam2project.github.io/CameraDatabaseClient/build/html/index.html">the documentation</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import CAM2 Image Archiver and CAM2 Camera Database Client:</span>
+<span class="kn">from</span> <span class="nn">CAM2CameraDatabaseAPIClient.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">CAM2ImageArchiver.CAM2ImageArchiver</span> <span class="kn">import</span> <span class="n">CAM2ImageArchiver</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="c1"># Connect to API</span>
+        <span class="n">clientID</span> <span class="o">=</span> <span class="s2">&quot;&lt;insert clientID here&gt;&quot;</span>
+        <span class="n">clientSecret</span> <span class="o">=</span> <span class="s2">&quot;&lt;insert clientSecret here&gt;&quot;</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">clientID</span><span class="p">,</span> <span class="n">clientSecret</span><span class="p">)</span>
+
+        <span class="c1"># Create an CAM2 Image Archiver Object:</span>
+        <span class="n">archiver</span> <span class="o">=</span> <span class="n">CAM2ImageArchiver</span><span class="p">(</span><span class="n">num_processes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1"># Search the API for cameras from West Lafayette</span>
+        <span class="n">cams</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search_camera</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="s1">&#39;West Lafayette&#39;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+
+        <span class="c1"># Add an additional camera of your own:</span>
+        <span class="n">camera2</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;camera_type&#39;</span><span class="p">:</span> <span class="s1">&#39;stream&#39;</span><span class="p">,</span> <span class="s1">&#39;cameraID&#39;</span><span class="p">:</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;m3u8_url&#39;</span><span class="p">:</span><span class="s1">&#39;&lt;The .m3u8 playlist file URL&gt;&#39;</span><span class="p">}]</span> 
+        <span class="n">cams</span> <span class="o">=</span> <span class="n">cams</span> <span class="o">+</span> <span class="n">camera2</span>
+
+        <span class="c1"># Archive data from the cameras every 20 min for an hour.</span>
+        <span class="n">archiver</span><span class="o">.</span><span class="n">archive</span><span class="p">(</span><span class="n">cams</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">20</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="CAM2ImageArchiver.html" class="btn btn-neutral float-right" title="CAM2ImageArchiver package Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="INSTALL.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Purdue CAM2
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'1.0.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

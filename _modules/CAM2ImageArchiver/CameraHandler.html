@@ -50,6 +50,9 @@
           
 
           
+            
+            <img src="../../_static/cam2logo.png" class="logo" alt="Logo"/>
+          
           </a>
 
           
@@ -80,9 +83,14 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../INSTALL.html">Installation</a></li>
+</ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Quickstart</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a></li>
 </ul>
 
             
@@ -169,7 +177,7 @@
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<div class="viewcode-block" id="CameraHandler"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.CameraHandler.CameraHandler">[docs]</a><span class="k">class</span> <span class="nc">CameraHandler</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+<div class="viewcode-block" id="CameraHandler"><a class="viewcode-back" href="../../CameraHandler.html#CAM2ImageArchiver.CameraHandler.CameraHandler">[docs]</a><span class="k">class</span> <span class="nc">CameraHandler</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The thread to download snapshots from a single camera.</span>
 
@@ -205,7 +213,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">remove_after_failure</span> <span class="o">=</span> <span class="n">remove_after_failure</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_difference_percentage</span> <span class="o">=</span> <span class="n">image_difference_percentage</span>
 
-<div class="viewcode-block" id="CameraHandler.run"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.CameraHandler.CameraHandler.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CameraHandler.run"><a class="viewcode-back" href="../../CameraHandler.html#CAM2ImageArchiver.CameraHandler.CameraHandler.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download snapshots from the camera, and save locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -294,7 +302,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Tiffany Chen
+        &copy; Copyright 2018, Purdue CAM2
 
     </p>
   </div>
@@ -329,6 +337,7 @@
         <script type="text/javascript" src="../../_static/jquery.js"></script>
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

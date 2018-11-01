@@ -50,6 +50,9 @@
           
 
           
+            
+            <img src="../../_static/cam2logo.png" class="logo" alt="Logo"/>
+          
           </a>
 
           
@@ -80,9 +83,14 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../INSTALL.html">Installation</a></li>
+</ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Quickstart</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a></li>
 </ul>
 
             
@@ -165,7 +173,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Error"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.error.Error">[docs]</a><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="Error"><a class="viewcode-back" href="../../error.html#CAM2ImageArchiver.error.Error">[docs]</a><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent a generic error.</span>
 
@@ -173,27 +181,27 @@
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="UnreachableCameraError"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.error.UnreachableCameraError">[docs]</a><span class="k">class</span> <span class="nc">UnreachableCameraError</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+<div class="viewcode-block" id="UnreachableCameraError"><a class="viewcode-back" href="../../error.html#CAM2ImageArchiver.error.UnreachableCameraError">[docs]</a><span class="k">class</span> <span class="nc">UnreachableCameraError</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent an error when a camera is unreachable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="CorruptedFrameError"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.error.CorruptedFrameError">[docs]</a><span class="k">class</span> <span class="nc">CorruptedFrameError</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+<div class="viewcode-block" id="CorruptedFrameError"><a class="viewcode-back" href="../../error.html#CAM2ImageArchiver.error.CorruptedFrameError">[docs]</a><span class="k">class</span> <span class="nc">CorruptedFrameError</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent an error when a camera stream frame is corrupted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ClosedStreamError"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.error.ClosedStreamError">[docs]</a><span class="k">class</span> <span class="nc">ClosedStreamError</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+<div class="viewcode-block" id="ClosedStreamError"><a class="viewcode-back" href="../../error.html#CAM2ImageArchiver.error.ClosedStreamError">[docs]</a><span class="k">class</span> <span class="nc">ClosedStreamError</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represent an error when a stream is closed and a frame is requested.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="ExpectedCAM2APIClientCameraObject"><a class="viewcode-back" href="../../CAM2ImageArchiver.html#CAM2ImageArchiver.error.ExpectedCAM2APIClientCameraObject">[docs]</a><span class="k">class</span> <span class="nc">ExpectedCAM2APIClientCameraObject</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+<div class="viewcode-block" id="ExpectedCAM2APIClientCameraObject"><a class="viewcode-back" href="../../error.html#CAM2ImageArchiver.error.ExpectedCAM2APIClientCameraObject">[docs]</a><span class="k">class</span> <span class="nc">ExpectedCAM2APIClientCameraObject</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    CAM2 Image Archiver expects a CAM2 API Python Client Camera Object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -210,7 +218,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Tiffany Chen
+        &copy; Copyright 2018, Purdue CAM2
 
     </p>
   </div>
@@ -245,6 +253,7 @@
         <script type="text/javascript" src="../../_static/jquery.js"></script>
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

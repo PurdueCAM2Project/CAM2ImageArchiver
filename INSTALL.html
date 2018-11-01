@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CAM2ImageArchiver package Documentation &mdash; CAM2ImageArchiver 1.0.0 documentation</title>
+  <title>Installation &mdash; CAM2ImageArchiver 1.0.0 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="CAM2 Image Archiver" href="CAM2ImageArchiver_class.html" />
-    <link rel="prev" title="Quickstart" href="tutorial.html" /> 
+    <link rel="next" title="Quickstart" href="tutorial.html" />
+    <link rel="prev" title="CAM2 Image Archiver" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,21 +85,18 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-pip-package">Installation from PIP Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-python-source">Installation from Python Source</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Quickstart</a></li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">CAM2ImageArchiver package Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver_class.html">CAM2 Image Archiver</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CameraHandler.html">Camera Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera</a></li>
-<li class="toctree-l2"><a class="reference internal" href="error.html">Error</a></li>
-<li class="toctree-l2"><a class="reference internal" href="StreamParser.html">Stream Parser</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a></li>
 </ul>
 
             
@@ -145,13 +142,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>CAM2ImageArchiver package Documentation</li>
+      <li>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/CAM2ImageArchiver.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/INSTALL.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,16 +161,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cam2imagearchiver-package-documentation">
-<h1>CAM2ImageArchiver package Documentation<a class="headerlink" href="#cam2imagearchiver-package-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="CAM2ImageArchiver_class.html">CAM2 Image Archiver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CameraHandler.html">Camera Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="camera.html">Camera</a></li>
-<li class="toctree-l1"><a class="reference internal" href="error.html">Error</a></li>
-<li class="toctree-l1"><a class="reference internal" href="StreamParser.html">Stream Parser</a></li>
-</ul>
+  <div class="section" id="installation">
+<span id="install-ref"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation-from-pip-package">
+<h2>Installation from PIP Package<a class="headerlink" href="#installation-from-pip-package" title="Permalink to this headline">¶</a></h2>
+<p>The built package of CAM2 Camera Database API Client is uploaded in Pypi. You can check <a class="reference external" href="https://pypi.org/project/CAM2ImageArchiver/">Pypi page of the package</a> for specific environment requirements.</p>
+<p>To install CAM2 Image Archiver, simply run the following command to install the latest version:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install CAM2ImageArchiver
+</pre></div>
+</div>
+<p>To install a specific version, run command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install CAM2ImageArchiver==&lt;desired_version_number&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-from-python-source">
+<h2>Installation from Python Source<a class="headerlink" href="#installation-from-python-source" title="Permalink to this headline">¶</a></h2>
+<p>Source code of CAM2 Camera Database API Client is public on <a class="reference external" href="https://github.com/PurdueCAM2Project/CAM2ImageArchiver">GitHub</a>. You can always install the package from source code by either downloading the zip file or clone the repository with command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:PurdueCAM2Project/CAM2ImageArchiver.git
+</pre></div>
+</div>
+<p>You can add the downloaded source code in your own python package and use CAM2 Image Archiver modules by importing them.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">We are continuously developing the Python client and updating the code. Downloading or cloning the source code will not guarantee you will a stable software to use.</p>
+</div>
 </div>
 </div>
 
@@ -185,10 +197,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="CAM2ImageArchiver_class.html" class="btn btn-neutral float-right" title="CAM2 Image Archiver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tutorial.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tutorial.html" class="btn btn-neutral" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="CAM2 Image Archiver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CAM2ImageArchiver &mdash; CAM2ImageArchiver 1.0.0 documentation</title>
+  <title>CAM2 Image Archiver &mdash; CAM2ImageArchiver 1.0.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="CAM2ImageArchiver package" href="CAM2ImageArchiver.html" /> 
+    <link rel="next" title="Installation" href="INSTALL.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -50,6 +50,9 @@
             <a href="#" class="icon icon-home"> CAM2ImageArchiver
           
 
+          
+            
+            <img src="_static/cam2logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -81,9 +84,14 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+</ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="CAM2ImageArchiver.html">CAM2ImageArchiver package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Quickstart</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a></li>
 </ul>
 
             
@@ -129,7 +137,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li><strong>CAM2ImageArchiver</strong></li>
+      <li>CAM2 Image Archiver</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -148,18 +156,59 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cam2imagearchiver">
-<h1><strong>CAM2ImageArchiver</strong><a class="headerlink" href="#cam2imagearchiver" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="cam2-image-archiver">
+<h1>CAM2 Image Archiver<a class="headerlink" href="#cam2-image-archiver" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to the CAM2 Image Archiver Documentation!</p>
+<p>This is documentation for the
+<a class="reference external" href="https://purduecam2project.github.io/CAM2ImageArchiver/">CAM2 Image Archiver</a>, which is part of the <a class="reference external" href="https://www.cam2project.net/">CAM2 Project</a>.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Thousands of network cameras are connected to the Internet and provide real-time visual data (image or video). Even though the data is publicly available to anyone interested seeing, there are several problems that prevents researchers and developers from effeciently query or retrievel camera information and their data.</p>
+<p>Even though the data is publicly available to anyone interested seeing, there are several problems. First, there is no central repository where network cameras must register. Thus, significant efforts must be taken to find various sources of data. Second, different brands of network cameras need different methods to retrieve the data. The cameas may also provide different data formats: some provide individual JPEG images; some provide motion JPEG (MJPEG) video; some others provide H.264 video.</p>
+<p>To solve these problems, researchers at Purdue University maintains a network camera database and developed an API to retrieve data from heterogeneous sources. See <a class="reference external" href="https://www.cam2project.net/">CAM2 Project</a> website for more information.</p>
+<p>The <a class="reference external" href="https://purduecam2project.github.io/CAM2ImageArchiver/">CAM2 Camera API Database</a> also has a <a class="reference external" href="https://purduecam2project.github.io/CAM2ImageArchiver/">Python client</a> avalable for those with a CAM2 Database API account. This allows developers and researchers to access the large collection of public network camera data with ease. CAM2 team can also manage camera data and accesses to the database through this client.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For more information on retrieving images and/or video from network cameras, please see the below section on <span class="xref std std-ref">image-archiver-ref</span>, and <a class="reference external" href="https://purduecam2project.github.io/CAM2ImageArchiver/">CAM2 Camera API Database Documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="CAM2ImageArchiver.html">CAM2ImageArchiver package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver.html#module-CAM2ImageArchiver.CameraHandler">CAM2ImageArchiver.CameraHandler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver.html#module-CAM2ImageArchiver.CAM2ImageArchiver">CAM2ImageArchiver.CAM2ImageArchiver</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver.html#module-CAM2ImageArchiver.camera">CAM2ImageArchiver.camera</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver.html#module-CAM2ImageArchiver.error">CAM2ImageArchiver.error</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver.html#module-CAM2ImageArchiver.StreamParser">CAM2ImageArchiver.StreamParser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver.html#module-CAM2ImageArchiver.utils">CAM2ImageArchiver.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.html#installation-from-pip-package">Installation from PIP Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSTALL.html#installation-from-python-source">Installation from Python Source</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#create-a-cam2-image-archiver-instance">Create a CAM2 Image Archiver Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#creating-camera-objects">Creating Camera Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#downloading-images">Downloading Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#using-the-cam2-image-archiver-with-the-cam2-camera-database-client">Using the CAM2 Image Archiver with the CAM2 Camera Database Client</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CAM2ImageArchiver.html">CAM2ImageArchiver package Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CAM2ImageArchiver_class.html">CAM2 Image Archiver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CameraHandler.html">Camera Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error.html">Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StreamParser.html">Stream Parser</a></li>
 </ul>
 </li>
 </ul>
@@ -181,7 +230,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="CAM2ImageArchiver.html" class="btn btn-neutral float-right" title="CAM2ImageArchiver package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="INSTALL.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -191,7 +240,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Tiffany Chen
+        &copy; Copyright 2018, Purdue CAM2
 
     </p>
   </div>
@@ -226,6 +275,7 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   
