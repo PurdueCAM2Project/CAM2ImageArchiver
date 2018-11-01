@@ -36,6 +36,7 @@ extensions = [
 	'sphinx.ext.napoleon',
 	'sphinx.ext.githubpages',
 	'sphinx.ext.autosummary',
+    'sphinx.ext.mathjax',
 ]
 
 autodoc_mock_imports = ['cv2', 'numpy']
@@ -53,8 +54,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'CAM2ImageArchiver'
-copyright = u'2017, Tiffany Chen'
-author = u'Tiffany Chen'
+copyright = u'2018, Purdue CAM2'
+author = u'Purdue CAM2'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -122,6 +123,7 @@ html_static_path = ['_static']
 #    ]
 #}
 
+html_logo = '_static/cam2logo.png'
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -153,10 +155,9 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'CAM2ImageArchiver.tex', u'CAM2ImageArchiver Documentation',
-     u'Tiffany Chen', 'manual'),
+    (master_doc, 'CAM2ImageArchiver.tex', u'CAM2 Image Archiver Documentation',
+     u'Purdue CAM2', 'manual'),
 ]
-
 
 # -- Options for manual page output ---------------------------------------
 
@@ -178,3 +179,7 @@ texinfo_documents = [
      author, 'CAM2ImageArchiver', 'One line description of project.',
      'Miscellaneous'),
 ]
+
+# -- Extension configuration -------------------------------------------------
+autodoc_member_order = 'bysource'
+autoclass_content = 'both'
