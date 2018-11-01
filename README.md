@@ -55,10 +55,6 @@ always changing).
 To solve these problems, researchers at Purdue University are
 developing the software to retrieve data from heterogeneous sources.
 
-This software requires a database that stores cameras' information
-(how to retrieve the data). The repository contains some examples of
-entries in a database (using MySQL).
-
 ### Documentation ###
 Full documentation can be found at https://purduecam2project.github.io/CAM2ImageArchiver/index.html
 
