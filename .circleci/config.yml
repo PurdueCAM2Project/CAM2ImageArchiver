@@ -36,6 +36,12 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
 
+      - run:
+          name: run linter
+          command: |
+            . venv/bin/activate
+            pylint -j 0 CAM2ImageArchiver
+
       - save_cache:
           paths:
             - ./venv
@@ -45,11 +51,21 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python -m unittest discover
+            coverage run -m unittest discover
+
+      - run:
+          name: code coverage
+          command: |
+            . venv/bin/activate
+            coverage html
 
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+      - store_artifacts:
+          path: htmlcov
+          destination: code_cov_reports
 
       - run:
           name: Generate Documentation

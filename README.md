@@ -55,46 +55,19 @@ always changing).
 To solve these problems, researchers at Purdue University are
 developing the software to retrieve data from heterogeneous sources.
 
-This software requires a database that stores cameras' information
-(how to retrieve the data). The repository contains some examples of
-entries in a database (using MySQL).
-
 ### Documentation ###
 Full documentation can be found at https://purduecam2project.github.io/CAM2ImageArchiver/index.html
 
-### Prerequisites ###
+### Installation ###
 
-* [Install MySQL](https://help.ubuntu.com/lts/serverguide/mysql.html) to maintain the camera database.
-
-* [Install OpenCV](https://github.com/jayrambhia/Install-OpenCV) to decode the downloaded images.
+* To install from our [PyPi Repository](https://pypi.org/project/CAM2ImageArchiver/) use PIP:
 ```
-sudo apt-get install libopencv-dev python-opencv
+ pip install CAM2ImageArchiver
 ```
 
-* Install MySQLdb to access the MySQL database from Python:
+* To install from source, download this repository and run:
 ```
-sudo apt-get install python-mysqldb
-```
-
-### Database Setup ###
-
-* Create an empty MySQL database using the following MySQL command:
-
-```
-CREATE DATABASE cam2;
-```
-
-* Build the database using the provided file and the following Linux command:
-```
-mysql -u root -p cam2 < sample_database.sql
-```
-
-* Modify the database credentials in the ```archiver.py``` module:
-```
-DB_SERVER = 'localhost'
-DB_USER_NAME = 'root'
-DB_PASSWORD = ''
-DB_NAME = 'cameras'
+python setup.py install
 ```
 
 
@@ -108,10 +81,17 @@ DB_NAME = 'cameras'
 
 ### Usage ###
 
-Example usage can be found in the documentation.
- 
-This program downloads image snapshots from 2 sources
+We recommend using the CAM2 Image Archiver with the [CAM2 Camera Database Python Client](https://github.com/PurdueCAM2Project/CameraDatabaseClient).
 
-  (1) A given URL address
+The CAM2 Image Archiver accepts Camera objects directly from the [CAM2 Camera Client](https://github.com/PurdueCAM2Project/CameraDatabaseClient) users can also create their own camera object on the fly as shown below. The `archive()` method expects a list of dictionary objects with camera_type, cameraID, and snapshot_url fields. 
+```
+[{'camera_type': 'non_ip', 'cameraID':'1', 'snapshot_url':'<The URL to the Camera Image Data>'}]
+```
+Below is an example of how to archive the image data from one camera. More example usage can be found in [the documentation](https://purduecam2project.github.io/CAM2ImageArchiver/index.html).
+```
+from CAM2ImageArchiver import CAM2ImageArchiver
+cams = [{'camera_type': 'non_ip', 'cameraID':'1', 'snapshot_url':'http://example.com/camera1'}]
+cam2 = CAM2ImageArchiver(num_processes=3)
+cam2.archive(cams, duration=<duration(sec) to archive data>, interval=<interval(sec) to archive data>)	
+```
 
-  (2) A camera ID in the MySQL database * MySQL database must be available on host computer.
