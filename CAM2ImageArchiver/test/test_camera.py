@@ -23,7 +23,6 @@ from CAM2ImageArchiver.camera import Camera, IPCamera, StreamFormat
 from CAM2ImageArchiver.CAM2ImageArchiver import CAM2ImageArchiver
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
 class TestCamera(unittest.TestCase):
 
     def setUp(self):
@@ -39,7 +38,7 @@ class TestCamera(unittest.TestCase):
             'camera_type': 'ip',
             'ip': '207.251.86.238',
             'port': '',
-            'image_path': '/cctv254.jpg',
+            'image_path': '/cctv290.jpg',
             'video_path': '/axis-cgi/mjpg/video.cgi'
         }
         cam3 = {
