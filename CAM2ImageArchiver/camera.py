@@ -318,8 +318,12 @@ class IPCamera(Camera):
         if self.port in ('', None):
             url = 'http://{}{}'.format(self.ip, path)
         else:
-            url = 'http://{}:{}{}'.format(
-                self.ip, self.port, path)
+            if path is None:
+                url = 'http://{}:{}'.format(
+                    self.ip, self.port)
+            else:
+                url = 'http://{}:{}{}'.format(
+                    self.ip, self.port, path)
 
         return url
 
