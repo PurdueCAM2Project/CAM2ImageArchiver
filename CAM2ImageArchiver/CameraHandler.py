@@ -98,6 +98,10 @@ class CameraHandler(Process):
                                 frame_timestamp).strftime('%Y-%m-%d_%H-%M-%S-%f'))
 
                         if self.image_difference_percentage:
+                            # Check the percentage difference if last frame is not None
+                            # by calculating the pixel-by-pixel value difference between
+                            # last frame and current frame, then divide the diff by frame size.
+                            # Count pixel value by using numpy. Check numpy docs for np.absolute and np.count_nonzero
                             if frame.size != 0 and (type(camera.last_frame) == type(None) or (np.count_nonzero(np.absolute(camera.last_frame - frame)) * 100) / frame.size >= self.image_difference_percentage):
                                 cv2.imwrite(file_name, frame)
                                 camera.last_frame = frame
