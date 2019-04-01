@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
   name = 'CAM2ImageArchiver',
   packages = ['CAM2ImageArchiver'],
-  version = '2.0.2',
+  version = '2.0.4',
   description = 'Network camera image retrieval and archiving.',
   long_description = long_description,
   long_description_content_type='text/markdown',
