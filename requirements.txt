@@ -20,6 +20,6 @@ snowballstemmer==1.2.1
 Sphinx==1.6.3
 sphinxcontrib-websupport==1.0.1
 typing==3.6.2
-urllib3==1.23
+urllib3==1.24.2
 pylint==1.9.1
 coverage==4.5.1
